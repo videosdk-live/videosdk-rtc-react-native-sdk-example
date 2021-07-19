@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import { MeetingProvider } from "@videosdk.live/react-native-sdk";
 import MeetingContainer from "./src/MeetingContainer";
@@ -8,21 +8,38 @@ export default function App() {
   const [meetingId, setMeetingId] = useState(null);
 
   const getToken = async () => {
-    const res = await fetch(`http://localhost:9000/get-token`, {
-      method: "GET",
-    });
-
-    const { token } = await res.json();
-    return token;
+    try {
+      const response = await fetch("http://192.168.0.89:9000/get-token", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      const { token } = await response.json();
+      return token;
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const validateMeeting = async (token) => {
-    const res = await fetch(`http://localhost:9000/validate-meeting/${token}`, {
-      method: "GET",
-    });
-
-    const { meetingId } = await res.json();
-    return meetingId;
+    try {
+      const response = await fetch(
+        `http://192.168.0.89:9000/validate-meeting/${token}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const { meetingId } = await response.json();
+      return meetingId;
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(async () => {
