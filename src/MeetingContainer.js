@@ -7,6 +7,7 @@ import {
   FlatList,
   StatusBar,
   useWindowDimensions,
+  Platform,
 } from "react-native";
 import {
   useMeeting,
@@ -243,7 +244,7 @@ export default function MeetingContainer({ setToken }) {
           <Button
             onPress={() => {
               leave();
-              setToken("");
+              // setToken("");
             }}
             buttonText={"LEAVE"}
             backgroundColor={"red"}
@@ -265,13 +266,15 @@ export default function MeetingContainer({ setToken }) {
             buttonText={"SWITCH CAMERA"}
             backgroundColor={"#1178F8"}
           />
-          <Button
-            onPress={() => {
-              toggleScreenShare();
-            }}
-            buttonText={"TOGGLE SCREEN SHARE"}
-            backgroundColor={"#1178F8"}
-          />
+          {Platform.OS === "android" ? (
+            <Button
+              onPress={() => {
+                toggleScreenShare();
+              }}
+              buttonText={"TOGGLE SCREEN SHARE"}
+              backgroundColor={"#1178F8"}
+            />
+          ) : null}
           <Button
             onPress={handlestartVideo}
             buttonText={"START VIDEO"}
