@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import { MeetingProvider } from "@videosdk.live/react-native-sdk";
 import MeetingContainer from "./src/MeetingContainer";
+import { API_URL } from "@env";
 
 export default function App() {
   const [token, setToken] = useState(null);
@@ -9,7 +10,7 @@ export default function App() {
 
   const getToken = async () => {
     try {
-      const response = await fetch("http://192.168.0.89:9000/get-token", {
+      const response = await fetch(`${API_URL}/get-token`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -25,16 +26,13 @@ export default function App() {
 
   const validateMeeting = async (token) => {
     try {
-      const response = await fetch(
-        `http://192.168.0.89:9000/validate-meeting/${token}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/validate-meeting/${token}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       const { meetingId } = await response.json();
       return meetingId;
     } catch (e) {
