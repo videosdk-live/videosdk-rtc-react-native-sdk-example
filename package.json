@@ -10,8 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@videosdk.live/react-native-sdk": "^0.0.10",
-    "@videosdk.live/react-native-incallmanager": "^0.0.3",
+    "@videosdk.live/react-native-sdk": "^0.0.11",
+    "@videosdk.live/react-native-incallmanager": "^0.0.4",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-dotenv": "^3.1.1",
