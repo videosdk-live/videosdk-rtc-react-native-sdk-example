@@ -79,6 +79,9 @@ export default function MeetingContainer({ setToken }) {
     toggleScreenShare,
     startVideo,
     stopVideo,
+    resumeVideo,
+    pauseVideo,
+    seekVideo,
     startLivestream,
     stopLivestream,
     externalVideo,
@@ -131,6 +134,18 @@ export default function MeetingContainer({ setToken }) {
   const handlestopVideo = () => {
     stopVideo();
   };
+
+  const handleresumeVideo = () => {
+    resumeVideo();
+  };
+
+  const handlepauseVideo = () => {
+    pauseVideo({ currentTime: 5 });
+  };
+  const handlesseekVideo = () => {
+    seekVideo({ currentTime: 10 });
+  };
+
   const handleStartLiveStream = () => {
     startLivestream([
       {
@@ -173,12 +188,7 @@ export default function MeetingContainer({ setToken }) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F6FF" }}>
       <View style={{ flex: 1, paddingHorizontal: 8 }}>
-        {externalVideo?.link ? (
-          <ExternalVideo
-            link={externalVideo?.link}
-            currentTime={externalVideo?.currentTime}
-          />
-        ) : null}
+        <ExternalVideo />
 
         {participantsArrId.length > 0 ? (
           <FlatList
@@ -278,6 +288,21 @@ export default function MeetingContainer({ setToken }) {
           <Button
             onPress={handlestartVideo}
             buttonText={"START VIDEO"}
+            backgroundColor={"#1178F8"}
+          />
+          <Button
+            onPress={handleresumeVideo}
+            buttonText={"RESUME VIDEO"}
+            backgroundColor={"#1178F8"}
+          />
+          <Button
+            onPress={handlepauseVideo}
+            buttonText={"PAUSE VIDEO"}
+            backgroundColor={"#1178F8"}
+          />
+          <Button
+            onPress={handlesseekVideo}
+            buttonText={"SEEK VIDEO"}
             backgroundColor={"#1178F8"}
           />
           <Button

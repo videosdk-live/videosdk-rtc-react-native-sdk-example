@@ -1,27 +1,70 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Video from "react-native-video";
 import { View, Text } from "react-native";
-export default function ExternalVideo({ link, currentTime }) {
-  const player = useRef();
+import { useMeeting } from "@videosdk.live/react-native-sdk";
+export default function ExternalVideo({}) {
+  const externalPlayer = useRef();
+
+  const [{ link, playing }, setVideoInfo] = useState({
+    link: null,
+    playing: false,
+  });
+  const [paused, setPause] = useState(false);
 
   const seekTo = (duration) => {
-    player.current && player.current.seek && player.current.seek(duration);
+    externalPlayer.current &&
+      externalPlayer.current.seek &&
+      externalPlayer.current.seek(duration);
   };
 
-  return (
+  const onVideoStateChanged = (data) => {
+    const { currentTime, link, status } = data;
+    switch (status) {
+      case "stopped":
+        externalPlayer.current.src = null;
+        setVideoInfo({ link: null, playing: false });
+        break;
+      case "resumed":
+        if (typeof currentTime === "number") {
+          seekTo(currentTime);
+        }
+        setPause(false);
+        setVideoInfo((s) => ({ ...s, playing: true }));
+        break;
+      case "paused":
+        setPause(true);
+        setVideoInfo((s) => ({ ...s, playing: false }));
+        break;
+      case "started":
+        seekTo(currentTime);
+        setVideoInfo({ link, playing: true });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onVideoSeeked = (data) => {
+    const { currentTime } = data;
+    if (typeof currentTime === "number") {
+      seekTo(currentTime);
+    }
+  };
+
+  useMeeting({ onVideoStateChanged, onVideoSeeked });
+
+  return link ? (
     <View
       style={{
         height: 300,
       }}
     >
       <Video
-        ref={player}
+        ref={externalPlayer}
         style={{ flex: 1, backgroundColor: "black" }}
         onError={(e) => {}}
-        onLoad={() => {
-          seekTo(currentTime);
-        }}
         resizeMode={"cover"}
+        paused={paused}
         source={{
           uri: link,
         }}
@@ -43,5 +86,5 @@ export default function ExternalVideo({ link, currentTime }) {
         </Text>
       </View>
     </View>
-  );
+  ) : null;
 }

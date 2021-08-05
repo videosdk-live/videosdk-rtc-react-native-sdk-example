@@ -48,8 +48,6 @@ export default function App() {
     setMeetingId(meetingId);
   }, []);
 
-  console.log("ID", meetingId);
-
   return token ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F6FF" }}>
       <MeetingProvider
