@@ -7,7 +7,6 @@ import { API_URL } from "@env";
 export default function App() {
   const [token, setToken] = useState(null);
   const [meetingId, setMeetingId] = useState(null);
-
   const getToken = async () => {
     try {
       const response = await fetch(`${API_URL}/get-token`, {
@@ -26,15 +25,21 @@ export default function App() {
 
   const validateMeeting = async (token) => {
     try {
-      const response = await fetch(`${API_URL}/validate-meeting/${token}`, {
-        method: "GET",
+      const VIDEOSDK_API_ENDPOINT = `${API_URL}/create-meeting`;
+      const options = {
+        method: "POST",
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json",
         },
-      });
-      const { meetingId } = await response.json();
-      return meetingId;
+        body: JSON.stringify({ token }),
+      };
+      const response = await fetch(VIDEOSDK_API_ENDPOINT, options)
+        .then(async (result) => {
+          const { meetingId } = await result.json();
+          return meetingId;
+        })
+        .catch((error) => console.log("error", error));
+      return response;
     } catch (e) {
       console.log(e);
     }
@@ -43,7 +48,6 @@ export default function App() {
   useEffect(async () => {
     const token = await getToken();
     const meetingId = await validateMeeting(token);
-
     setToken(token);
     setMeetingId(meetingId);
   }, []);
