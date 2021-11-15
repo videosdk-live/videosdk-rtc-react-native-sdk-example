@@ -5,19 +5,11 @@ import {
   RTCView,
   MediaStream,
 } from "@videosdk.live/react-native-sdk";
+import Person from "../icons/Person";
 
 export default function ParticipantView({ participantId }) {
-  const {
-    displayName,
-    webcamStream,
-    screenShareStream,
-    webcamOn,
-    micOn,
-    screenShareOn,
-    isLocal,
-    isActiveSpeaker,
-    isMainParticipant,
-  } = useParticipant(participantId, {});
+  const { displayName, webcamStream, webcamOn, micOn, isLocal } =
+    useParticipant(participantId, {});
 
   const TextContainer = ({ fText, sText }) => {
     return (
@@ -69,19 +61,7 @@ export default function ParticipantView({ participantId }) {
         <TextContainer fText={"Name :"} sText={displayName} />
         <TextContainer fText={"Mute :"} sText={micOn ? "No" : "Yes"} />
         <TextContainer fText={"WebCam :"} sText={webcamOn ? "Yes" : "No"} />
-        <TextContainer
-          fText={"Screen Share :"}
-          sText={screenShareOn ? "Yes" : "No"}
-        />
-        <TextContainer
-          fText={"Active Speaker :"}
-          sText={isActiveSpeaker ? "Yes" : "No"}
-        />
         <TextContainer fText={"Local :"} sText={isLocal ? "Yes" : "No"} />
-        <TextContainer
-          fText={"Main Participant :"}
-          sText={isMainParticipant ? "Yes" : "No"}
-        />
       </View>
     );
   };
@@ -93,56 +73,41 @@ export default function ParticipantView({ participantId }) {
         borderRadius: 8,
         overflow: "hidden",
         flex: 1,
+        backgroundColor: "#333244",
       }}
     >
-      {screenShareOn ? (
-        <>
-          <View style={{ flexDirection: "row", flex: 1 }}>
-            <RTCView
-              streamURL={new MediaStream([webcamStream?.track]).toURL()}
-              objectFit={"cover"}
-              mirror={isLocal ? true : false}
-              style={{
-                flex: 0.5,
-              }}
-            />
-            <RTCView
-              streamURL={new MediaStream([screenShareStream?.track]).toURL()}
-              style={{
-                backgroundColor: "black",
-                flex: 0.5,
-              }}
-            />
-          </View>
-          <InfoOverLay />
-        </>
-      ) : webcamOn ? (
-        <>
-          <RTCView
-            streamURL={new MediaStream([webcamStream.track]).toURL()}
-            objectFit={"cover"}
-            mirror={isLocal ? true : false}
-            style={{
-              flex: 1,
-            }}
-          />
-          <InfoOverLay />
-        </>
+      {webcamOn ? (
+        <RTCView
+          streamURL={new MediaStream([webcamStream?.track]).toURL()}
+          style={{
+            backgroundColor: "black",
+            flex: 1,
+          }}
+        />
       ) : (
-        <>
+        <View
+          style={{
+            backgroundColor: "#333244",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <View
             style={{
-              backgroundColor: "grey",
-              flex: 1,
+              height: 80,
+              aspectRatio: 1,
+              backgroundColor: "white",
+              borderRadius: 50,
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 16 }}>NO MEDIA</Text>
+            <Person fill={"black"} height={50} width={50} />
           </View>
-          <InfoOverLay />
-        </>
+        </View>
       )}
+      <InfoOverLay />
     </View>
   );
 }
