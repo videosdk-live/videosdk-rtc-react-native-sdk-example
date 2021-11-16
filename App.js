@@ -1,29 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import { MeetingProvider } from "@videosdk.live/react-native-sdk";
-import MeetingGrid from "./src/components/MeetingGrid";
+import SessionGrid from "./src/components/SessionGrid";
+import { REACT_APP_SERVER_URL } from "@env";
 
 export default function App() {
   const [token, setToken] = useState("abc-pqr-xyz");
-  const [meetingId, setMeetingId] = useState("butj-a5gy-6u26");
+  const meetingId = "butj-a5gy-6u26";
+
+  useEffect(async () => {
+    // setToken();
+  }, []);
 
   return token ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#212032" }}>
-      <MeetingProvider
-        config={{
-          meetingId: meetingId,
-          name: "Event User",
-          micEnabled: false,
-          webcamEnabled: true,
-          notification: {
-            title: "Code Sample",
-            message: "Meeting is running.",
-          },
-        }}
-        token={token}
-      >
-        <MeetingGrid />
-      </MeetingProvider>
+      <SessionGrid />
     </SafeAreaView>
   ) : null;
 }

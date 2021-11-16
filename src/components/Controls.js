@@ -11,7 +11,7 @@ import VideoDisable from "../icons/VideoDisable";
 
 export default function Controls({ exit }) {
   const {
-    leave,
+    leave, // Leave Session
     toggleMic,
     toggleWebcam,
     changeWebcam,
@@ -35,7 +35,12 @@ export default function Controls({ exit }) {
       >
         <CameraSwitch height={25} width={25} fill="#FFF" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.container} onPress={toggleWebcam}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          toggleWebcam();
+        }}
+      >
         {localWebcamOn ? (
           <VideoEnable height={25} width={25} fill="#FFF" />
         ) : (
@@ -51,7 +56,12 @@ export default function Controls({ exit }) {
       >
         <CallEnd height={30} width={30} fill="#FFF" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.container} onPress={toggleMic}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          toggleMic();
+        }}
+      >
         {localMicOn ? (
           <MicOn height={25} width={25} fill="#FFF" />
         ) : (

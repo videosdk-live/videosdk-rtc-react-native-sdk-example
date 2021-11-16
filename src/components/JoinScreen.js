@@ -1,11 +1,11 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 
-export default function JoinScreen({ joinSession }) {
+export default function JoinScreen({ onPress }) {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <TouchableOpacity
-        onPress={joinSession}
+        onPress={onPress}
         style={{
           padding: 12,
           justifyContent: "center",
