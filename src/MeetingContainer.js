@@ -16,6 +16,7 @@ import {
 import ParticipantView from "./components/ParticipantView";
 import ModalViewer from "./components/ModalViewer";
 import ExternalVideo from "./components/ExternalVideo";
+import VideosdkRPK from "../VideosdkRPK"
 export default function MeetingContainer({ setToken }) {
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
@@ -85,6 +86,8 @@ export default function MeetingContainer({ setToken }) {
     startLivestream,
     stopLivestream,
     externalVideo,
+    enableScreenShare,
+    disableScreenShare
   } = useMeeting({
     onParticipantJoined,
     onParticipantLeft,
@@ -124,6 +127,24 @@ export default function MeetingContainer({ setToken }) {
       leave();
     };
   }, []);
+
+  useEffect(() => {
+    VideosdkRPK.addListener(
+      "onScreenShare",
+      event => {
+        if (event === "Broadcast Started") {
+          enableScreenShare()
+        } else if (event === "Broadcast Stopped") {
+          disableScreenShare()
+        }
+      }
+    )
+
+    return (() => {
+      VideosdkRPK.removeSubscription("onScreenShare")
+    })
+  }, [])
+
 
   const handlestartVideo = () => {
     startVideo({
@@ -276,15 +297,13 @@ export default function MeetingContainer({ setToken }) {
             buttonText={"SWITCH CAMERA"}
             backgroundColor={"#1178F8"}
           />
-          {Platform.OS === "android" ? (
             <Button
               onPress={() => {
-                toggleScreenShare();
+                Platform.OS === "android" ? toggleScreenShare() : VideosdkRPK.startBroadcast()
               }}
               buttonText={"TOGGLE SCREEN SHARE"}
               backgroundColor={"#1178F8"}
             />
-          ) : null}
           <Button
             onPress={handlestartVideo}
             buttonText={"START VIDEO"}

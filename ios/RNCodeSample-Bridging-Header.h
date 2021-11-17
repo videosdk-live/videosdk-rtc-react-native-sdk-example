@@ -1,0 +1,3 @@
+
+ #import "React/RCTEventEmitter.h"
+

@@ -14,6 +14,15 @@
 		27B64C0FB0CEF6C6923E4C25 /* libPods-RNCodeSample-RNCodeSampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 698343F3AABF5AB836809E71 /* libPods-RNCodeSample-RNCodeSampleTests.a */; };
 		61BE0521F9B10900467EC806 /* libPods-RNCodeSample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0170A063519F037AC7C3058 /* libPods-RNCodeSample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8827F2EC275E0F8A00867B47 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8827F2EB275E0F8A00867B47 /* ReplayKit.framework */; };
+		8827F2EF275E0F8A00867B47 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F2EE275E0F8A00867B47 /* SampleHandler.swift */; };
+		8827F2F3275E0F8A00867B47 /* BroadcastScreen.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8827F2EA275E0F8A00867B47 /* BroadcastScreen.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8827F2FC275E102C00867B47 /* SampleUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F2F8275E102C00867B47 /* SampleUploader.swift */; };
+		8827F2FD275E102C00867B47 /* SocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F2F9275E102C00867B47 /* SocketConnection.swift */; };
+		8827F2FE275E102C00867B47 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F2FA275E102C00867B47 /* Atomic.swift */; };
+		8827F2FF275E102C00867B47 /* DarwinNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F2FB275E102C00867B47 /* DarwinNotificationCenter.swift */; };
+		8827F304275E12EE00867B47 /* VideosdkRPK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8827F303275E12EE00867B47 /* VideosdkRPK.swift */; };
+		8827F306275E133400867B47 /* VideosdkRPK.m in Sources */ = {isa = PBXBuildFile; fileRef = 8827F305275E133400867B47 /* VideosdkRPK.m */; };
 		88964DF626A567770034283E /* libReactNativeIncallManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88964DF526A567770034283E /* libReactNativeIncallManager.a */; };
 		88964DF826A5677E0034283E /* libreact-native-webrtc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88964DF726A5677E0034283E /* libreact-native-webrtc.a */; };
 /* End PBXBuildFile section */
@@ -26,7 +35,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = RNCodeSample;
 		};
+		8827F2F1275E0F8A00867B47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8827F2E9275E0F8A00867B47;
+			remoteInfo = BroadcastScreen;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8827F2F4275E0F8A00867B47 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8827F2F3275E0F8A00867B47 /* BroadcastScreen.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* RNCodeSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNCodeSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,6 +73,19 @@
 		698343F3AABF5AB836809E71 /* libPods-RNCodeSample-RNCodeSampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNCodeSample-RNCodeSampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F771C430C3179883CF63F2 /* Pods-RNCodeSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNCodeSample.debug.xcconfig"; path = "Target Support Files/Pods-RNCodeSample/Pods-RNCodeSample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNCodeSample/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8827F2EA275E0F8A00867B47 /* BroadcastScreen.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BroadcastScreen.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8827F2EB275E0F8A00867B47 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		8827F2EE275E0F8A00867B47 /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
+		8827F2F0275E0F8A00867B47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8827F2F8275E102C00867B47 /* SampleUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleUploader.swift; sourceTree = "<group>"; };
+		8827F2F9275E102C00867B47 /* SocketConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketConnection.swift; sourceTree = "<group>"; };
+		8827F2FA275E102C00867B47 /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		8827F2FB275E102C00867B47 /* DarwinNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarwinNotificationCenter.swift; sourceTree = "<group>"; };
+		8827F300275E104200867B47 /* RNCodeSample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RNCodeSample.entitlements; path = RNCodeSample/RNCodeSample.entitlements; sourceTree = "<group>"; };
+		8827F301275E104B00867B47 /* BroadcastScreen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BroadcastScreen.entitlements; sourceTree = "<group>"; };
+		8827F302275E12EE00867B47 /* RNCodeSample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNCodeSample-Bridging-Header.h"; sourceTree = "<group>"; };
+		8827F303275E12EE00867B47 /* VideosdkRPK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosdkRPK.swift; sourceTree = "<group>"; };
+		8827F305275E133400867B47 /* VideosdkRPK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideosdkRPK.m; sourceTree = "<group>"; };
 		88964DF026A567660034283E /* RNCodeSample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = RNCodeSample.xcodeproj; sourceTree = "<group>"; };
 		88964DF526A567770034283E /* libReactNativeIncallManager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactNativeIncallManager.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		88964DF726A5677E0034283E /* libreact-native-webrtc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-webrtc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +113,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8827F2E7275E0F8A00867B47 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8827F2EC275E0F8A00867B47 /* ReplayKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -93,12 +144,15 @@
 		13B07FAE1A68108700A75B9A /* RNCodeSample */ = {
 			isa = PBXGroup;
 			children = (
+				8827F303275E12EE00867B47 /* VideosdkRPK.swift */,
+				8827F300275E104200867B47 /* RNCodeSample.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				8827F305275E133400867B47 /* VideosdkRPK.m */,
 			);
 			name = RNCodeSample;
 			sourceTree = "<group>";
@@ -111,6 +165,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				A0170A063519F037AC7C3058 /* libPods-RNCodeSample.a */,
 				698343F3AABF5AB836809E71 /* libPods-RNCodeSample-RNCodeSampleTests.a */,
+				8827F2EB275E0F8A00867B47 /* ReplayKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,9 +195,11 @@
 				13B07FAE1A68108700A75B9A /* RNCodeSample */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* RNCodeSampleTests */,
+				8827F2ED275E0F8A00867B47 /* BroadcastScreen */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				70260C515BA660963DEFD40E /* Pods */,
+				8827F302275E12EE00867B47 /* RNCodeSample-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -154,8 +211,23 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* RNCodeSample.app */,
 				00E356EE1AD99517003FC87E /* RNCodeSampleTests.xctest */,
+				8827F2EA275E0F8A00867B47 /* BroadcastScreen.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8827F2ED275E0F8A00867B47 /* BroadcastScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8827F301275E104B00867B47 /* BroadcastScreen.entitlements */,
+				8827F2EE275E0F8A00867B47 /* SampleHandler.swift */,
+				8827F2FA275E102C00867B47 /* Atomic.swift */,
+				8827F2FB275E102C00867B47 /* DarwinNotificationCenter.swift */,
+				8827F2F8275E102C00867B47 /* SampleUploader.swift */,
+				8827F2F9275E102C00867B47 /* SocketConnection.swift */,
+				8827F2F0275E0F8A00867B47 /* Info.plist */,
+			);
+			path = BroadcastScreen;
 			sourceTree = "<group>";
 		};
 		88964DF126A567660034283E /* Products */ = {
@@ -201,15 +273,34 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CB14C3BFCB8D659613C084CE /* [CP] Embed Pods Frameworks */,
 				E2014B79CF85C73BCAB839A1 /* [CP] Copy Pods Resources */,
+				8827F2F4275E0F8A00867B47 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8827F2F2275E0F8A00867B47 /* PBXTargetDependency */,
 			);
 			name = RNCodeSample;
 			productName = RNCodeSample;
 			productReference = 13B07F961A680F5B00A75B9A /* RNCodeSample.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8827F2E9275E0F8A00867B47 /* BroadcastScreen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8827F2F7275E0F8A00867B47 /* Build configuration list for PBXNativeTarget "BroadcastScreen" */;
+			buildPhases = (
+				8827F2E6275E0F8A00867B47 /* Sources */,
+				8827F2E7275E0F8A00867B47 /* Frameworks */,
+				8827F2E8275E0F8A00867B47 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BroadcastScreen;
+			productName = BroadcastScreen;
+			productReference = 8827F2EA275E0F8A00867B47 /* BroadcastScreen.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -217,6 +308,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -224,7 +316,10 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1310;
+					};
+					8827F2E9275E0F8A00867B47 = {
+						CreatedOnToolsVersion = 13.1;
 					};
 				};
 			};
@@ -249,6 +344,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* RNCodeSample */,
 				00E356ED1AD99517003FC87E /* RNCodeSampleTests */,
+				8827F2E9275E0F8A00867B47 /* BroadcastScreen */,
 			);
 		};
 /* End PBXProject section */
@@ -267,6 +363,13 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8827F2E8275E0F8A00867B47 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,8 +536,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8827F304275E12EE00867B47 /* VideosdkRPK.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				8827F306275E133400867B47 /* VideosdkRPK.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8827F2E6275E0F8A00867B47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8827F2FF275E102C00867B47 /* DarwinNotificationCenter.swift in Sources */,
+				8827F2FE275E102C00867B47 /* Atomic.swift in Sources */,
+				8827F2EF275E0F8A00867B47 /* SampleHandler.swift in Sources */,
+				8827F2FD275E102C00867B47 /* SocketConnection.swift in Sources */,
+				8827F2FC275E102C00867B47 /* SampleUploader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +563,11 @@
 			target = 13B07F861A680F5B00A75B9A /* RNCodeSample */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		8827F2F2275E0F8A00867B47 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8827F2E9275E0F8A00867B47 /* BroadcastScreen */;
+			targetProxy = 8827F2F1275E0F8A00867B47 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -453,7 +575,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AFF6B5BF3AB53E5E5A64F63A /* Pods-RNCodeSample-RNCodeSampleTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -480,8 +604,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1FB61CB65FA722942AC90A78 /* Pods-RNCodeSample-RNCodeSampleTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
 				INFOPLIST_FILE = RNCodeSampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -504,9 +630,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75F771C430C3179883CF63F2 /* Pods-RNCodeSample.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RNCodeSample/RNCodeSample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -549,6 +678,7 @@
 					"\"$(SRCROOT)/../node_modules/@videosdk.live/react-native-incall-manager/ios/RNInCallManager\"",
 				);
 				INFOPLIST_FILE = RNCodeSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -560,6 +690,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RNCodeSample;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNCodeSample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -570,9 +701,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 68CECE14F8E81078B8380E67 /* Pods-RNCodeSample.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = RNCodeSample/RNCodeSample.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -614,6 +748,7 @@
 					"\"$(SRCROOT)/../node_modules/@videosdk.live/react-native-incall-manager/ios/RNInCallManager\"",
 				);
 				INFOPLIST_FILE = RNCodeSample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -625,6 +760,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = RNCodeSample;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNCodeSample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -753,6 +889,84 @@
 			};
 			name = Release;
 		};
+		8827F2F5275E0F8A00867B47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BroadcastScreen/BroadcastScreen.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastScreen/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BroadcastScreen;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.RNCodeSample.BroadcastScreen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8827F2F6275E0F8A00867B47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BroadcastScreen/BroadcastScreen.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8GZ776NSU2;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BroadcastScreen/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BroadcastScreen;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.RNCodeSample.BroadcastScreen;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -779,6 +993,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8827F2F7275E0F8A00867B47 /* Build configuration list for PBXNativeTarget "BroadcastScreen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8827F2F5275E0F8A00867B47 /* Debug */,
+				8827F2F6275E0F8A00867B47 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
