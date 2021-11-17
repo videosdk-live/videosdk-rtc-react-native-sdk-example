@@ -8,8 +8,6 @@ This code sample demonstrates a one-to-one and group video call application buil
 - Scale it upto 5,000 participants with low code.
 - 10,000 minutes free on monthly basis
 
-![video-sdk-mobile.jpg](./public/video-sdk-mobile.jpg)
-
 ## Features
 
 - [x] Video API with real-time audio, video and data streams
