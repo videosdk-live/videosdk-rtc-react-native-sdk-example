@@ -2,7 +2,7 @@
 
 ## What is it?
 
-This code sample demonstrates a one-to-one and group video call application built with [Video SDK RTC React Native SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-native-sdk/setup) and [Video SDK RTC React SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-sdk/setup)
+This code sample demonstrates a one-to-one and group video call application built with [Video SDK RTC React Native SDK](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/getting-started) and [Video SDK RTC React SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-sdk/setup)
 
 - Built for serverless video calling experience in Android and iOS.
 - Scale it upto 5,000 participants with low code.
@@ -41,13 +41,13 @@ You must have the following installed:
 2. Clone the repo
 
    ```sh
-   $ git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example.git
+   git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example.git
    ```
 
 3. Copy the `.env.example` file to `.env` file.
 
    ```sh
-   $ cp .env.example .env
+   cp .env.example .env
    ```
 
 4. Update the api server url in the `.env` file that points to the authentication server.
@@ -59,18 +59,18 @@ You must have the following installed:
 5. Install NPM packages
 
    ```sh
-   $ npm install
+   npm install
    ```
 
 6. Run the app
 
    ```sh
-   $ npm run start
-   $ npm android
-   $ npm ios
+   npm run start
+   npm android
+   npm ios
    ```
 
-For more information, visit [official documentation](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-native-sdk/setup)
+For more information, visit [official documentation](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/getting-started)
 
 Related
 
