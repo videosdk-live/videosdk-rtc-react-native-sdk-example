@@ -2,7 +2,7 @@
 
 ## What is it?
 
-This code sample demonstrates a one-to-one and group video call application built with [Video SDK RTC React Native SDK](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/getting-started) and [Video SDK RTC React SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-sdk/setup)
+This code sample demonstrates a one-to-one and group video call application built with [Video SDK RTC React Native SDK](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/react-native-android-sdk) and [Video SDK RTC React SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-sdk/setup)
 
 - Built for serverless video calling experience in Android and iOS.
 - Scale it upto 5,000 participants with low code.
