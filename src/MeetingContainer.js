@@ -129,16 +129,13 @@ export default function MeetingContainer({ setToken }) {
   }, []);
 
   useEffect(() => {
-    VideosdkRPK.addListener(
-      "onScreenShare",
-      event => {
-        if (event === "Broadcast Started") {
-          enableScreenShare()
-        } else if (event === "Broadcast Stopped") {
-          disableScreenShare()
-        }
+    VideosdkRPK.addListener("onScreenShare", (event) => {
+      if (event === "START_BROADCAST") {
+        enableScreenShare();
+      } else if (event === "STOP_BROADCAST") {
+        disableScreenShare();
       }
-    )
+    });
 
     return (() => {
       VideosdkRPK.removeSubscription("onScreenShare")
@@ -297,13 +294,13 @@ export default function MeetingContainer({ setToken }) {
             buttonText={"SWITCH CAMERA"}
             backgroundColor={"#1178F8"}
           />
-            <Button
-              onPress={() => {
-                Platform.OS === "android" ? toggleScreenShare() : VideosdkRPK.startBroadcast()
-              }}
-              buttonText={"TOGGLE SCREEN SHARE"}
-              backgroundColor={"#1178F8"}
-            />
+          <Button
+            onPress={() => {
+              Platform.OS === "android" ? toggleScreenShare() : VideosdkRPK.startBroadcast()
+            }}
+            buttonText={"TOGGLE SCREEN SHARE"}
+            backgroundColor={"#1178F8"}
+          />
           <Button
             onPress={handlestartVideo}
             buttonText={"START VIDEO"}
@@ -360,6 +357,9 @@ export default function MeetingContainer({ setToken }) {
             visibleModal={visibleModal}
             setvisibleModal={setvisibleModal}
           />
+
+
+         
         </View>
       ) : null}
     </SafeAreaView>
