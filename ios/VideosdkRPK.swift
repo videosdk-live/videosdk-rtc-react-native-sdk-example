@@ -50,14 +50,14 @@ class VideosdkRPK: RCTEventEmitter {
   }
   
   @objc func startBroadcastCallback(notification: NSNotification){
-    status = "BroadcastStarted"
+    status = "START_BROADCAST"
     sendEvent(withName: "onScreenShare", body: status)
     
   }
   
   
   @objc func stopBroadcastCallback(notification: NSNotification){
-    status = "BroadcastStopped"
+    status = "STOP_BROADCAST"
     sendEvent(withName: "onScreenShare", body: status)
     status = "Empty"
   }
