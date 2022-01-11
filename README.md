@@ -35,8 +35,7 @@ You must have the following installed:
 
 ## Getting started
 
-1. Get Auth Token
-   Get Auth Token from [VideoSDK Dashboard](https://app.videosdk.live/dashboard)
+1. Get Auth Token from [VideoSDK Dashboard](https://app.videosdk.live/dashboard)
 
 2. Clone the repo
 

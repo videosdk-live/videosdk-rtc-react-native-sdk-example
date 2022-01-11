@@ -2,37 +2,23 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import { MeetingProvider } from "@videosdk.live/react-native-sdk";
 import MeetingContainer from "./src/MeetingContainer";
-import { REACT_APP_SERVER_URL } from "@env";
+import { VIDEOSDK_API, AUTH_TOKEN } from "@env";
 
 export default function App() {
   const [token, setToken] = useState(null);
   const [meetingId, setMeetingId] = useState(null);
-  const getToken = async () => {
-    try {
-      const response = await fetch(`${REACT_APP_SERVER_URL}/get-token`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      const { token } = await response.json();
-      return token;
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
-  const validateMeeting = async (token) => {
+  const createMeeting = async (token) => {
     try {
-      const VIDEOSDK_API_ENDPOINT = `${REACT_APP_SERVER_URL}/create-meeting`;
+      const VIDEOSDK_API_ENDPOINT = `${VIDEOSDK_API}/meetings`;
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `${token}`,
         },
-        body: JSON.stringify({ token }),
       };
+
       const response = await fetch(VIDEOSDK_API_ENDPOINT, options)
         .then(async (result) => {
           const { meetingId } = await result.json();
@@ -46,8 +32,8 @@ export default function App() {
   };
 
   useEffect(async () => {
-    const token = await getToken();
-    const meetingId = await validateMeeting(token);
+    const token = AUTH_TOKEN;
+    const meetingId = await createMeeting(token);
     setToken(token);
     setMeetingId(meetingId);
   }, []);
