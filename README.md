@@ -35,8 +35,8 @@ You must have the following installed:
 
 ## Getting started
 
-1. Run the authentication server
-   Follow [videosdk-rtc-nodejs-sdk-example](https://github.com/videosdk-live/videosdk-rtc-nodejs-sdk-example) to run authentication server.
+1. Get Auth Token
+   Get Auth Token from [VideoSDK Dashboard](https://app.videosdk.live/dashboard)
 
 2. Clone the repo
 
@@ -50,10 +50,14 @@ You must have the following installed:
    cp .env.example .env
    ```
 
-4. Update the api server url in the `.env` file that points to the authentication server.
+4. Update the VideoSDK API URL and Auth Token in the `.env` file.
 
    ```
-   REACT_APP_SERVER_URL=http://localhost:9000
+   VIDEOSDK_API=https://api.videosdk.live/v1
+   ```
+
+   ```
+   AUTH_TOKEN=#YOUR_GENERATED_TOKEN
    ```
 
 5. Install NPM packages
