@@ -1,10 +1,9 @@
-import { NativeModules, NativeEventEmitter } from "react-native";
+import { NativeModules, NativeEventEmitter,Platform } from "react-native";
 
 class VideosdkRPK extends NativeEventEmitter {
   constructor(nativeModule) {
     super(nativeModule);
-
-    this.startBroadcast = nativeModule.startBroadcast;
+    this.startBroadcast = Platform.OS === "ios" ? nativeModule.startBroadcast : null
   }
 }
 
