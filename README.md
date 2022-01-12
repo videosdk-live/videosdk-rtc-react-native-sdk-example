@@ -35,7 +35,9 @@ You must have the following installed:
 
 ## Getting started
 
-1. Get Auth Token from [VideoSDK Dashboard](https://app.videosdk.live/dashboard)
+1. There are 2 options
+   Option 1: Get Auth Token from [VideoSDK Dashboard](https://app.videosdk.live/dashboard)
+   Option 2: Setting up Auth Server [Instructions](https://github.com/videosdk-live/videosdk-rtc-nodejs-sdk-example)
 
 2. Clone the repo
 
@@ -49,14 +51,16 @@ You must have the following installed:
    cp .env.example .env
    ```
 
-4. Update the VideoSDK API URL and Auth Token in the `.env` file.
-
-   ```
-   VIDEOSDK_API=https://api.videosdk.live/v1
-   ```
+4. Either update `AUTH_TOKEN` or `AUTH_URL` in the `.env` file.
 
    ```
    AUTH_TOKEN=#YOUR_GENERATED_TOKEN
+   ```
+
+   OR
+
+   ```
+   AUTH_URL=#YOUR_AUTH_SERVER_URL
    ```
 
 5. Install NPM packages
