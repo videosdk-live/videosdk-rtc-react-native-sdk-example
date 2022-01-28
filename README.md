@@ -35,34 +35,33 @@ You must have the following installed:
 
 ## Getting started
 
-1. Run the authentication server
-   Follow [videosdk-rtc-nodejs-sdk-example](https://github.com/videosdk-live/videosdk-rtc-nodejs-sdk-example) to run authentication server.
-
-2. Clone the repo
+1. Clone the repo
 
    ```sh
    git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example.git
    ```
 
-3. Copy the `.env.example` file to `.env` file.
+2. Copy the `.env.example` file to `.env` file.
 
    ```sh
    cp .env.example .env
    ```
 
-4. Update the api server url in the `.env` file that points to the authentication server.
+3. Update the Token value from the videosdk.live dashboard or provide authentication server base url in the `.env` file.
 
    ```
-   REACT_APP_SERVER_URL=http://localhost:9000
+   REACT_APP_VIDEOSDK_TOKEN = ""
+   #OR
+   REACT_APP_AUTH_URL = ""
    ```
 
-5. Install NPM packages
+4. Install NPM packages
 
    ```sh
    npm install
    ```
 
-6. Run the app
+5. Run the app
 
    ```sh
    npm run start
@@ -71,6 +70,10 @@ You must have the following installed:
    ```
 
 For more information, visit [official documentation](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/getting-started)
+
+## Deployment
+
+While deploying for production, we recommend you to use [authentication server](https://github.com/videosdk-live/videosdk-rtc-nodejs-sdk-example) for token generation instead of static token. Remove REACT_APP_VIDEOSDK_TOKEN from `.env` file and add REACT_APP_AUTH_URL to the `.env` file.
 
 Related
 
