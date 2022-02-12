@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   FlatList,
@@ -8,27 +8,27 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import { useMeeting, usePubSub } from "@videosdk.live/react-native-sdk";
 const ChatViewer = ({ setvisibleModal }) => {
+  const mpubsubRef = useRef();
+
+  const mpubsub = usePubSub("CHAT");
+
+  useEffect(() => {
+    mpubsubRef.current = mpubsub;
+  }, [mpubsub]);
+
   const mMeeting = useMeeting({
     onChatMessage: scrollToBottom,
   });
   const localParticipantId = mMeeting?.localParticipant?.id;
-  const messages = mMeeting?.messages;
-  const sendChatMessage = mMeeting?.sendChatMessage;
 
   const [message, setMessage] = useState("");
 
   const flatListRef = React.useRef();
 
   const sendMessage = () => {
-    const data = {
-      type: "CHAT",
-      data: {
-        message,
-      },
-    };
-    sendChatMessage(JSON.stringify(data));
+    mpubsub.publish(message, { persist: true });
     setMessage("");
     scrollToBottom();
   };
@@ -87,71 +87,65 @@ const ChatViewer = ({ setvisibleModal }) => {
           </View>
           <FlatList
             ref={flatListRef}
-            data={messages}
+            data={mpubsub.messages}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, i }) => {
-              const { senderId, senderName, text, timestamp } = item;
+              const { senderId, senderName, message, timestamp } = item;
               const localSender = localParticipantId === senderId;
-              const message = JSON.parse(text)?.data.message;
-              const type = JSON.parse(text)?.type;
 
-              if (type === "CHAT") {
-                return (
+              return (
+                <View
+                  key={i}
+                  style={{
+                    alignItems: localSender ? "flex-end" : "flex-start",
+                    paddingHorizontal: 12,
+                  }}
+                >
                   <View
-                    key={i}
                     style={{
-                      alignItems: localSender ? "flex-end" : "flex-start",
-                      paddingHorizontal: 12,
+                      padding: 12,
+                      marginVertical: 6,
+                      borderRadius: 4,
+                      backgroundColor: "white",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 8,
                     }}
                   >
-                    <View
+                    <Text
                       style={{
-                        padding: 12,
-                        marginVertical: 6,
-                        borderRadius: 4,
-                        backgroundColor: "white",
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowOpacity: 0.8,
-                        shadowRadius: 2,
-                        elevation: 8,
+                        fontSize: 12,
+                        color: "#9FA0A7",
+                        fontWeight: "bold",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "#9FA0A7",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {localSender ? "You" : senderName}
-                      </Text>
+                      {localSender ? "You" : senderName}
+                    </Text>
 
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          color: "black",
-                        }}
-                      >
-                        {message}
-                      </Text>
-                      <Text
-                        style={{
-                          color: "grey",
-                          fontSize: 8,
-                          alignSelf: "flex-end",
-                          marginTop: 4,
-                          fontStyle: "italic",
-                        }}
-                      >
-                        {formatAMPM(new Date(parseInt(timestamp)))}
-                      </Text>
-                    </View>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "black",
+                      }}
+                    >
+                      {message}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "grey",
+                        fontSize: 8,
+                        alignSelf: "flex-end",
+                        marginTop: 4,
+                        fontStyle: "italic",
+                      }}
+                    >
+                      {formatAMPM(new Date(timestamp))}
+                    </Text>
                   </View>
-                );
-              } else {
-                return <></>;
-              }
+                </View>
+              );
             }}
             keyExtractor={(item, index) => `${index}_message_list`}
             style={{

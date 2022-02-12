@@ -16,8 +16,8 @@ import {
 import ParticipantView from "./components/ParticipantView";
 import ModalViewer from "./components/ModalViewer";
 import ExternalVideo from "./components/ExternalVideo";
-import VideosdkRPK from "../VideosdkRPK"
-export default function MeetingContainer({ setToken }) {
+import VideosdkRPK from "../VideosdkRPK";
+export default function MeetingContainer({}) {
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
   }
@@ -87,7 +87,7 @@ export default function MeetingContainer({ setToken }) {
     stopLivestream,
     externalVideo,
     enableScreenShare,
-    disableScreenShare
+    disableScreenShare,
   } = useMeeting({
     onParticipantJoined,
     onParticipantLeft,
@@ -137,11 +137,10 @@ export default function MeetingContainer({ setToken }) {
       }
     });
 
-    return (() => {
-      VideosdkRPK.removeSubscription("onScreenShare")
-    })
-  }, [])
-
+    return () => {
+      VideosdkRPK.removeSubscription("onScreenShare");
+    };
+  }, []);
 
   const handlestartVideo = () => {
     startVideo({
@@ -296,7 +295,9 @@ export default function MeetingContainer({ setToken }) {
           />
           <Button
             onPress={() => {
-              Platform.OS === "android" ? toggleScreenShare() : VideosdkRPK.startBroadcast()
+              Platform.OS === "android"
+                ? toggleScreenShare()
+                : VideosdkRPK.startBroadcast();
             }}
             buttonText={"TOGGLE SCREEN SHARE"}
             backgroundColor={"#1178F8"}
@@ -357,9 +358,6 @@ export default function MeetingContainer({ setToken }) {
             visibleModal={visibleModal}
             setvisibleModal={setvisibleModal}
           />
-
-
-         
         </View>
       ) : null}
     </SafeAreaView>
