@@ -123,7 +123,7 @@ export default function MeetingContainer({}) {
     StatusBar.setHidden(true);
     return () => {
       StatusBar.setHidden(false);
-      ReactNativeForegroundService.stop();
+      Platform.OS === "android" && ReactNativeForegroundService.stop();
       leave();
     };
   }, []);
