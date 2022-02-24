@@ -4,7 +4,7 @@ const API_BASE_URL = "https://api.zujonow.com";
 const API_AUTH_URL = REACT_APP_AUTH_URL;
 
 export const getToken = async () => {
-  if (VIDEOSDK_TOKEN && API_AUTH_URL) {
+  if (REACT_APP_VIDEOSDK_TOKEN && API_AUTH_URL) {
     console.error(
       "Error: Provide only ONE PARAMETER - either Token or Auth API"
     );
