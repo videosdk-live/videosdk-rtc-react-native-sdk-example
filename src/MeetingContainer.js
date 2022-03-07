@@ -52,7 +52,7 @@ export default function MeetingContainer({}) {
     console.log("onMeetingJoined");
     setTimeout(() => {
       leave();
-    }, 20000);
+    }, 600000);
   }
   function onMeetingLeft() {
     console.log("onMeetingLeft");
