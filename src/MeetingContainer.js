@@ -20,6 +20,9 @@ import VideosdkRPK from "../VideosdkRPK";
 export default function MeetingContainer({}) {
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
+    setTimeout(() => {
+      leave();
+    }, 20000);
   }
   function onParticipantLeft(participant) {
     console.log(" onParticipantLeft", participant);
