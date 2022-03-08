@@ -39,7 +39,7 @@ jobs:
     #   run: xcodebuild -exportArchive  -exportFormat ipa -archivePath build/ios/RNCodeSample.xcarchive -exportPath "example.ipa" -exportSigningIdentity "${{secrets.CODE_SIGNING_IDENTITY}}"
 
     - name: Build IOS App
-      uses: sparkfabrik/ios-build-action@v1.2.0
+      uses: yukiarrr/ios-build-action@v1.5.0
       with:
         project-path: ios/RNCodeSample.xcodeproj
         p12-base64: ${{ secrets.P12_BASE64 }}
