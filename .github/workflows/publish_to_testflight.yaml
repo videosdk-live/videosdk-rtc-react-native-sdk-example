@@ -1,0 +1,55 @@
+name: Publish to TestFlight
+on: 
+  push:
+    branches:
+      - 'feature/ci-cd'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Create .env
+      run: touch .env
+    - name: Add AUTH URL
+      run: echo "REACT_APP_VIDEOSDK_TOKEN = ${{secrets.AUTH_TOKEN}}" >> .env
+    - run: npm install
+    - name: Install Pods
+      run: cd ios && pod install && cd ..
+    # - run: xcode-select -p
+    # - run: pod install
+    #   working-directory: ios
+    #   name: Install pod dependencies
+    # - name: Build iOS (debug)
+    #   run: "xcodebuild \
+    #     -workspace ios/RNCodeSample.xcworkspace \
+    #     -scheme RNCodeSample \
+    #     clean archive \
+    #     -sdk iphoneos \
+    #     -configuration Release \
+    #     -UseModernBuildSystem=NO \
+    #     -archivePath $PWD/RNCodeSample \
+    #     CODE_SIGNING_ALLOWED=NO"
+
+    - name: Build IOS App
+      uses: sparkfabrik/ios-build-action@v1.2.0
+      with:
+        project-path: ios/RNCodeSample.xcodeproj
+        p12-base64: ${{ secrets.P12_BASE64 }}
+        mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+        code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+        team-id: ${{ secrets.TEAM_ID }}
+        certificate-password: ${{ secrets.CERTIFICATE_PASSWORD}}
+        workspace-path: ios/RNCodeSample.xcodeproj # optional
+
+    # - name: 'Upload app to TestFlight'
+    #   uses: apple-actions/upload-testflight-build@v1
+    #   with:
+    #     app-path: 'output.ipa'
+    #     issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+    #     api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+    #     api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
