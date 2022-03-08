@@ -13,6 +13,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+    - uses: actions/cache@v2
+      with:
+        path: ios/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock')}}
+        restore-keys: |
+          ${{ runner.os }}-pods-
     - name: Create .env
       run: touch .env
     - name: Add AUTH URL
@@ -44,8 +50,8 @@ jobs:
         project-path: ios/RNCodeSample.xcodeproj
         p12-base64: ${{ secrets.P12_BASE64 }}
         mobileprovision-base64: |
-          ${{ secrets.MOBILEPROVISION_BASE64 }}
           ${{ secrets.MOBILEPROVISION_BROADCAST_BASE64 }}
+          ${{ secrets.MOBILEPROVISION_BASE64 }}
         code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
         team-id: ${{ secrets.TEAM_ID }}
         certificate-password: ${{ secrets.CERTIFICATE_PASSWORD}}
