@@ -44,7 +44,7 @@ jobs:
         code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
         team-id: ${{ secrets.TEAM_ID }}
         certificate-password: ${{ secrets.CERTIFICATE_PASSWORD}}
-        workspace-path: ios/RNCodeSample.xcodeproj # optional
+        workspace-path: ios/RNCodeSample.xcworkspace # optional
 
     # - name: 'Upload app to TestFlight'
     #   uses: apple-actions/upload-testflight-build@v1
