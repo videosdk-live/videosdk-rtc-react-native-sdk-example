@@ -47,6 +47,7 @@ jobs:
         workspace-path: ios/RNCodeSample.xcworkspace # optional
         update-targets: |
           RNCodeSample
+        scheme: RNCodeSample
 
     # - name: 'Upload app to TestFlight'
     #   uses: apple-actions/upload-testflight-build@v1
