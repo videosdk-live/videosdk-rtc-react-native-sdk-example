@@ -51,6 +51,7 @@ jobs:
         certificate-password: ${{ secrets.CERTIFICATE_PASSWORD}}
         workspace-path: ios/RNCodeSample.xcworkspace # optional
         scheme: RNCodeSample
+        export-options: ios/ExportOptions.plist
 
     # - name: 'Upload app to TestFlight'
     #   uses: apple-actions/upload-testflight-build@v1
