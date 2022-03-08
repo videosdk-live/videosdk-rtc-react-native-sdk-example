@@ -752,6 +752,7 @@
 					"\"$(SRCROOT)/../node_modules/@videosdk.live/react-native-incall-manager/ios/RNInCallManager\"",
 				);
 				INFOPLIST_FILE = RNCodeSample/Info.plist;
+				ENABLE_BITCODE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
