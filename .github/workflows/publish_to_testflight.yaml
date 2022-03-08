@@ -26,24 +26,7 @@ jobs:
     - run: npm install
     - name: Install Pods
       run: cd ios && pod install && cd ..
-    # - run: xcode-select -p
-    # - run: pod install
-    #   working-directory: ios
-    #   name: Install pod dependencies
-    # - name: Build iOS (debug)
-    #   run: "xcodebuild \
-    #     -workspace ios/RNCodeSample.xcworkspace \
-    #     -scheme RNCodeSample \
-    #     clean archive \
-    #     -sdk iphoneos \
-    #     -configuration Release \
-    #     -UseModernBuildSystem=NO \
-    #     -archivePath build/ios/RNCodeSample.xarchive \
-    #     CODE_SIGNING_ALLOWED=NO"
-    
-    # - name: Export IPA
-    #   run: xcodebuild -exportArchive  -exportFormat ipa -archivePath build/ios/RNCodeSample.xcarchive -exportPath "example.ipa" -exportSigningIdentity "${{secrets.CODE_SIGNING_IDENTITY}}"
-
+      
     - name: Build IOS App
       uses: yukiarrr/ios-build-action@v1.5.0
       with:
@@ -59,10 +42,10 @@ jobs:
         scheme: RNCodeSample
         export-options: ios/ExportOptions.plist
 
-    # - name: 'Upload app to TestFlight'
-    #   uses: apple-actions/upload-testflight-build@v1
-    #   with:
-    #     app-path: 'output.ipa'
-    #     issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-    #     api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-    #     api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+    - name: 'Upload app to TestFlight'
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-path: 'output.ipa'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
