@@ -48,3 +48,4 @@ buck-out/
 /ios/Pods/
 .env
 yarn.lock
+android/local.properties
