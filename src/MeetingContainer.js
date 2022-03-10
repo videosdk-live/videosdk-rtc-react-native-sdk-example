@@ -8,6 +8,7 @@ import {
   StatusBar,
   useWindowDimensions,
   Platform,
+  Alert
 } from "react-native";
 import {
   useMeeting,
@@ -51,6 +52,7 @@ export default function MeetingContainer({}) {
   function onMeetingJoined() {
     console.log("onMeetingJoined");
     setTimeout(() => {
+      Alert.alert("Meeting Left", "Demo meeting is limited to 10 minutes");
       leave();
     }, 600000);
   }
