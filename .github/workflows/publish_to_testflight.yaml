@@ -1,0 +1,51 @@
+name: Publish to TestFlight
+on: 
+  push:
+    branches:
+      - 'feature/ci-cd'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - uses: actions/cache@v2
+      with:
+        path: ios/Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock')}}
+        restore-keys: |
+          ${{ runner.os }}-pods-
+    - name: Create .env
+      run: touch .env
+    - name: Add AUTH URL
+      run: echo "REACT_APP_VIDEOSDK_TOKEN = ${{secrets.AUTH_TOKEN}}" >> .env
+    - run: npm install
+    - name: Install Pods
+      run: cd ios && pod install && cd ..
+      
+    - name: Build IOS App
+      uses: yukiarrr/ios-build-action@v1.5.0
+      with:
+        project-path: ios/RNCodeSample.xcodeproj
+        p12-base64: ${{ secrets.P12_BASE64 }}
+        mobileprovision-base64: |
+          ${{ secrets.MOBILEPROVISION_BROADCAST_BASE64 }}
+          ${{ secrets.MOBILEPROVISION_BASE64 }}
+        code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+        team-id: ${{ secrets.TEAM_ID }}
+        certificate-password: ${{ secrets.CERTIFICATE_PASSWORD}}
+        workspace-path: ios/RNCodeSample.xcworkspace # optional
+        scheme: RNCodeSample
+        export-options: ios/ExportOptions.plist
+
+    - name: 'Upload app to TestFlight'
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-path: 'output.ipa'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
