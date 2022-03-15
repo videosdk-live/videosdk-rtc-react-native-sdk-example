@@ -8,14 +8,19 @@ export default function App() {
   const [token, setToken] = useState("");
   const [meetingId, setMeetingId] = useState("");
 
-  useEffect(async () => {
+  const setMeetingIdAndToken = async () => {
     const token = await getToken();
     const meetingId = await createMeeting({ token });
+
     setToken(token);
     setMeetingId(meetingId);
+  };
+
+  useEffect(() => {
+    setMeetingIdAndToken();
   }, []);
 
-  return token ? (
+  return token && meetingId ? (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F6FF" }}>
       <MeetingProvider
         config={{
