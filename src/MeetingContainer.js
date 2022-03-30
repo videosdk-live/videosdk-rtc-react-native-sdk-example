@@ -8,7 +8,7 @@ import {
   StatusBar,
   useWindowDimensions,
   Platform,
-  Alert
+  Clipboard,
 } from "react-native";
 import {
   useMeeting,
@@ -18,7 +18,8 @@ import ParticipantView from "./components/ParticipantView";
 import ModalViewer from "./components/ModalViewer";
 import ExternalVideo from "./components/ExternalVideo";
 import VideosdkRPK from "../VideosdkRPK";
-export default function MeetingContainer({}) {
+import { notifyMessage } from "./utils";
+export default function MeetingContainer({ resetMeeting }) {
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
   }
@@ -52,7 +53,7 @@ export default function MeetingContainer({}) {
   function onMeetingJoined() {
     console.log("onMeetingJoined");
     setTimeout(() => {
-      Alert.alert("Meeting Left", "Demo meeting is limited to 10 minutes");
+      notifyMessage("Meeting Left", "Demo meeting is limited to 10 minutes");
       leave();
     }, 600000);
   }
@@ -74,7 +75,6 @@ export default function MeetingContainer({}) {
 
   const {
     participants,
-    isRecording,
     join,
     leave,
     startRecording,
@@ -93,6 +93,7 @@ export default function MeetingContainer({}) {
     externalVideo,
     enableScreenShare,
     disableScreenShare,
+    meetingId,
   } = useMeeting({
     onParticipantJoined,
     onParticipantLeft,
@@ -209,6 +210,19 @@ export default function MeetingContainer({}) {
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F6FF" }}>
+      {meetingId ? (
+        <TouchableOpacity
+          style={{ padding: 12 }}
+          onPress={() => {
+            Clipboard.setString(meetingId);
+            notifyMessage("MeetingId Copied Successfully!");
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+            Meeting Id : {meetingId}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
       <View style={{ flex: 1, paddingHorizontal: 8 }}>
         <ExternalVideo />
 
@@ -276,7 +290,7 @@ export default function MeetingContainer({}) {
           <Button
             onPress={() => {
               leave();
-              // setToken("");
+              resetMeeting();
             }}
             buttonText={"LEAVE"}
             backgroundColor={"red"}
