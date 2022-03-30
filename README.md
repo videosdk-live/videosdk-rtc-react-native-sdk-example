@@ -1,84 +1,72 @@
-# Video SDK React Native App
+# Video SDK for React Native (Android and iOS)
+[![Discord](https://img.shields.io/discord/876774498798551130?label=Join%20on%20Discord)](https://discord.gg/kgAvyxtTxv)
+[![Register](https://img.shields.io/badge/Contact-Know%20More-blue)](https://app.videosdk.live/signup)
 
-## What is it?
+At Video SDK, we’re building tools to help companies create world-class collaborative products with capabilities of live audio/videos, compose cloud recordings/rtmp/hls and interaction APIs
 
-This code sample demonstrates a one-to-one and group video call application built with [Video SDK RTC React Native SDK](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/react-native-android-sdk) and [Video SDK RTC React SDK](https://docs.videosdk.live/docs/realtime-communication/sdk-reference/react-sdk/setup)
+## Demo App
+Check out demo [here](https://videosdk.live/prebuilt/)
 
-- Built for serverless video calling experience in Android and iOS.
-- Scale it upto 5,000 participants with low code.
-- 10,000 minutes free on monthly basis
+## Steps to Integrate
 
-## Features
+### Prerequisites
+- React Native 0.59.10 or later
+- Node 10 or later
+- Valid Video SDK [Account](https://app.videosdk.live/)
+- For Android
+  - Java Development Kit (JDK) 8 or later
+  - Android Studio (latest version recommended)
+  - A physical or virtual mobile device running Android 5.0 or later
+- For iOS
+  - Xcode 9.4 or later
+  - CocoaPods
+  - A physical or virtual mobile device running iOS 9.0 or later
 
-- [x] Video API with real-time audio, video and data streams
-- [x] 5,000+ participants support
-- [x] Chat support with rich media.
-- [x] Screen sharing with HD and Full HD.
-- [x] Play realtime video in meeting
-- [x] Connect it with social media such as Facebook, Youtube etc (RTMP out support).
-- [x] Intelligent speaker switch
-- [x] Record your meetings on cloud
-- [x] Customise UI and built other rich features with our new data streams such as whiteboard, poll, Q & A etc.
-- [x] Develop and launch in both Android and iOS at the same time.
+### Step 1: Clone the sample project
+Clone the repository to your local environment.
+```js
+git clone https://github.com/videosdk-live/videosdk-rtc-react-sdk-example.git
+```
 
-## Device Support
+### Step 2: Copy the .env.example file to .env file.
+Open your favorite code editor and copy `.env.example` to `.env` file.
+```js 
+cp .env.example .env
+```
 
-Visit our official guide for [Device Support](https://docs.videosdk.live/docs/realtime-communication/see-also/device-browser-support)
+### Step 3: Modify .env file
+Generate temporary token from [Video SDK Account](https://app.videosdk.live/signup).
+```js title=".env"
+REACT_APP_VIDEOSDK_TOKEN = "TEMPORARY-TOKEN"
+```
 
-## Prerequisites
+### Step 4: Install the dependecies
+Install dependecies all the project dependencies.
+```js
+npm install
+```
 
-You must have the following installed:
+### Step 5: Run the sample app
+Bingo, it's time to push the launch button. 
+```js
+npm run start
+npm android
+npm ios
+```
 
-- Node.js v12+
-- NPM v6+ (comes installed with newer Node versions)
-- Android Studio or Xcode installed
 
-## Getting started
+## Examples
+- [Prebuilt SDK Examples](https://github.com/videosdk-live/videosdk-rtc-prebuilt-examples)
+- [JavaScript SDK Example](https://github.com/videosdk-live/videosdk-rtc-javascript-sdk-example)
+- [React JS SDK Example](https://github.com/videosdk-live/videosdk-rtc-react-sdk-example)
+- [React Native SDK Example](https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example)
+- [Flutter SDK Example](https://github.com/videosdk-live/videosdk-rtc-flutter-sdk-example)
+- [Android SDK Example](https://github.com/videosdk-live/videosdk-rtc-android-java-sdk-example)
+- [iOS SDK Example](https://github.com/videosdk-live/videosdk-rtc-ios-sdk-example)
 
-1. Clone the repo
+## Documentation
+[Read the documentation](https://docs.videosdk.live/) to start using Video SDK.
 
-   ```sh
-   git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example.git
-   ```
-
-2. Copy the `.env.example` file to `.env` file.
-
-   ```sh
-   cp .env.example .env
-   ```
-
-3. Update the Token value from the videosdk.live dashboard or provide authentication server base url in the `.env` file.
-
-   ```
-   REACT_APP_VIDEOSDK_TOKEN = ""
-   #OR
-   REACT_APP_AUTH_URL = ""
-   ```
-
-4. Install NPM packages
-
-   ```sh
-   npm install
-   ```
-
-5. Run the app
-
-   ```sh
-   npm run start
-   npm android
-   npm ios
-   ```
-
-For more information, visit [official documentation](https://docs.videosdk.live/docs/guide/video-and-audio-calling-api-sdk/getting-started)
-
-## Deployment
-
-While deploying for production, we recommend you to use [authentication server](https://github.com/videosdk-live/videosdk-rtc-nodejs-sdk-example) for token generation instead of static token. Remove REACT_APP_VIDEOSDK_TOKEN from `.env` file and add REACT_APP_AUTH_URL to the `.env` file.
-
-Related
-
-- [Video SDK RTC React Example](https://github.com/videosdk-live/videosdk-rtc-react-sdk-example)
-- [Video SDK RTC React Native Example](https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example)
-- [Video SDK RTC Flutter Example](https://github.com/videosdk-live/videosdk-rtc-flutter-sdk-example)
-- [Video SDK RTC Android Example](https://github.com/videosdk-live/videosdk-rtc-android-java-sdk-example)
-- [Video SDK RTC iOS Example](https://github.com/videosdk-live/videosdk-rtc-ios-sdk-example)
+## Community
+- [Discord](https://discord.gg/Gpmj6eCq5u) - To get involved with the Video SDK community, ask questions and share tips.
+- [Twitter](https://twitter.com/video_sdk) - To receive updates, announcements, blog posts, and general Video SDK tips.
