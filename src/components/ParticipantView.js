@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import {
   useParticipant,
@@ -17,7 +17,17 @@ export default function ParticipantView({ participantId }) {
     isLocal,
     isActiveSpeaker,
     isMainParticipant,
+    setViewPort
   } = useParticipant(participantId, {});
+
+  const videoRef = useRef();
+
+  useEffect(() => {
+    if (videoRef.current && !isLocal && webcamStream) {
+      setViewPort(videoRef.current.offsetWidth, videoRef.current.offsetHeight);
+    }
+  }, [videoRef.current?.offsetHeight, videoRef.current?.offsetWidth, webcamStream])
+
 
   const TextContainer = ({ fText, sText }) => {
     return (
@@ -97,7 +107,14 @@ export default function ParticipantView({ participantId }) {
     >
       {screenShareOn ? (
         <>
-          <View style={{ flexDirection: "row", flex: 1 }}>
+          <View style={{ flexDirection: "row", flex: 1 }}
+            onLayout={(event) => {
+              const { width, height } = event.nativeEvent.layout;
+              if (!isLocal && webcamStream) {
+                console.log({ width, height })
+                setViewPort(width, height);
+              }
+            }}>
             <RTCView
               streamURL={new MediaStream([webcamStream?.track]).toURL()}
               objectFit={"cover"}
@@ -119,6 +136,12 @@ export default function ParticipantView({ participantId }) {
       ) : webcamOn ? (
         <>
           <RTCView
+            onLayout={(event) => {
+              const { width, height } = event.nativeEvent.layout;
+              if (!isLocal && webcamStream) {
+                setViewPort(width, height);
+              }
+            }}
             streamURL={new MediaStream([webcamStream.track]).toURL()}
             objectFit={"cover"}
             mirror={isLocal ? true : false}
