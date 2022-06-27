@@ -116,6 +116,8 @@ export default function MeetingContainer({ resetMeeting }) {
   const [visibleModal, setvisibleModal] = useState(false);
   const [visibleControls, setvisibleControls] = useState(true);
 
+  const [currentWebcamMode, setCurrentWebcamMode] = useState("back");
+
   const layout = useWindowDimensions();
   const mMeetingRef = useRef();
 
@@ -281,7 +283,8 @@ export default function MeetingContainer({ resetMeeting }) {
             onPress={() => {
               join();
               setTimeout(() => {
-                changeWebcam();
+                changeWebcam(currentWebcamMode == "front"? "0" : "1");
+                setCurrentWebcamMode(currentWebcamMode =="front" ? "back" : "front");
               }, 500);
             }}
             buttonText={"JOIN"}
@@ -306,8 +309,9 @@ export default function MeetingContainer({ resetMeeting }) {
             backgroundColor={"#1178F8"}
           />
           <Button
-            onPress={() => {
-              changeWebcam();
+            onPress={async () => {
+              changeWebcam(currentWebcamMode == "front"? "0" : "1");
+              setCurrentWebcamMode(currentWebcamMode =="front" ? "back" : "front");
             }}
             buttonText={"SWITCH CAMERA"}
             backgroundColor={"#1178F8"}
