@@ -20,15 +20,6 @@ export default function ParticipantView({ participantId }) {
     setViewPort
   } = useParticipant(participantId, {});
 
-  const videoRef = useRef();
-
-  useEffect(() => {
-    if (videoRef.current && !isLocal && webcamStream) {
-      setViewPort(videoRef.current.offsetWidth, videoRef.current.offsetHeight);
-    }
-  }, [videoRef.current?.offsetHeight, videoRef.current?.offsetWidth, webcamStream])
-
-
   const TextContainer = ({ fText, sText }) => {
     return (
       <View
@@ -111,7 +102,6 @@ export default function ParticipantView({ participantId }) {
             onLayout={(event) => {
               const { width, height } = event.nativeEvent.layout;
               if (!isLocal && webcamStream) {
-                console.log({ width, height })
                 setViewPort(width, height);
               }
             }}>
