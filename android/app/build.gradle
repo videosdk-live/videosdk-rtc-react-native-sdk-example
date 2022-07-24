@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
-
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
 import com.android.build.OutputFile
 
 /**
@@ -151,6 +152,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+         release {
+            if (project.hasProperty('rncodesample.keystore')) {
+                storeFile file('rncodesample.keystore')
+                storePassword "videosdk"
+                keyAlias "rncodesample"
+                keyPassword "videosdk"
+            }
         }
     }
     buildTypes {

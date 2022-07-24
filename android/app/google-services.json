@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "444875794216",
+    "project_id": "videosdk-codesample-analytics",
+    "storage_bucket": "videosdk-codesample-analytics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444875794216:android:05a0001a0827ad3b39d21d",
+        "android_client_info": {
+          "package_name": "com.rncodesample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATVjrfDqUlrUmpS1uQUPUBNC5eCLO5D6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "444875794216-24ak7o94nife9rsuq2j2ftjtph1sil3i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zujo.videosdk.example"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444875794216:android:00deedf2db72461839d21d",
+        "android_client_info": {
+          "package_name": "live.videosdk.rtc.android.java"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATVjrfDqUlrUmpS1uQUPUBNC5eCLO5D6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "444875794216-24ak7o94nife9rsuq2j2ftjtph1sil3i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zujo.videosdk.example"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444875794216:android:9b8cc17ec983ea4b39d21d",
+        "android_client_info": {
+          "package_name": "live.videosdk.rtc.android.kotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATVjrfDqUlrUmpS1uQUPUBNC5eCLO5D6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444875794216-nt8a5feoajmijfs8ths6m0bb3o4rch97.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "444875794216-24ak7o94nife9rsuq2j2ftjtph1sil3i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zujo.videosdk.example"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

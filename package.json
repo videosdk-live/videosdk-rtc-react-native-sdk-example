@@ -11,6 +11,8 @@
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^15.2.0",
+    "@react-native-firebase/crashlytics": "^15.2.0",
     "@videosdk.live/react-native-incallmanager": "^0.0.5",
     "@videosdk.live/react-native-sdk": "^0.0.25",
     "react": "17.0.1",
