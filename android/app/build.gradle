@@ -206,6 +206,7 @@ dependencies {
     implementation project(':rnfgservice')
     implementation project(':rnwebrtc')
     implementation project(':rnincallmanager')
+    implementation project(':lottie-react-native')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

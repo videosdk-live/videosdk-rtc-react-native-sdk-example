@@ -3,7 +3,13 @@ import { TouchableOpacity, Text } from "react-native";
 import colors from "../../styles/colors";
 import { ROBOTO_FONTS } from "../../styles/fonts";
 
-const Button = ({ text, backgroundColor, onPress }) => {
+const Button = ({
+  text,
+  backgroundColor,
+  onPress,
+  style = {},
+  textStyle = {},
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -14,6 +20,7 @@ const Button = ({ text, backgroundColor, onPress }) => {
         backgroundColor: backgroundColor ? backgroundColor : "#5568FE",
         borderRadius: 12,
         marginVertical: 12,
+        ...style,
       }}
     >
       <Text
@@ -21,6 +28,7 @@ const Button = ({ text, backgroundColor, onPress }) => {
           color: colors.primary["100"],
           fontSize: 16,
           fontFamily: ROBOTO_FONTS.RobotoMedium,
+          ...textStyle,
         }}
       >
         {text}

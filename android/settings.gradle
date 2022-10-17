@@ -12,4 +12,7 @@ project(':rnincallmanager').projectDir = new File(rootProject.projectDir, '../no
 include ':rnfgservice'
 project(':rnfgservice').projectDir = new File(rootProject.projectDir, '../node_modules/@videosdk.live/react-native-foreground-service/android')
 
+include ':lottie-react-native'
+project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
+
 include ':app'

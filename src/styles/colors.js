@@ -11,6 +11,7 @@ const colors = {
     900: "#050A0E",
   },
   black: "#000",
+  purple: "#5568FE",
   // secondary: {
   //   '1000': '#0B0B0B',
   //   '900': '#191919',
