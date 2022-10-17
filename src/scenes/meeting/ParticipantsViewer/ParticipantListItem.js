@@ -1,9 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from "react";
 import { View, Text } from "react-native";
-import colors from "../../styles/colors";
-import Avatar from "../../components/Avatar";
-import { convertRFValue } from "../../styles/spacing";
+import { convertRFValue } from "../../../styles/spacing";
 import {
   MicOff,
   MicOn,
@@ -11,8 +8,10 @@ import {
   VideoOn,
   RaiseHand,
   Person,
-} from "../../assets/icons";
-import { ROBOTO_FONTS } from "../../styles/fonts";
+} from "../../../assets/icons";
+import { ROBOTO_FONTS } from "../../../styles/fonts";
+import colors from "../../../styles/colors";
+import { useParticipant } from "@videosdk.live/react-native-sdk";
 
 // const areEqual = (prevProps, nextProps) => {
 //   return (
@@ -20,11 +19,9 @@ import { ROBOTO_FONTS } from "../../styles/fonts";
 //     prevProps.raisedHand === nextProps.raisedHand
 //   );
 // };
-function ParticipantListItem({ participantId, raisedHand }) {
-  const displayName = "ahmed";
-  const webcamOn = true;
-  const micOn = false;
-  const isLocal = false;
+function ParticipantListItem({ participantId }) {
+  const { displayName, webcamOn, micOn, isLocal } =
+    useParticipant(participantId);
 
   const IconContainer = ({ Icon, style }) => {
     return (

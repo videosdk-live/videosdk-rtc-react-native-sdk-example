@@ -6,7 +6,7 @@ import colors from "../../../styles/colors";
 import Button from "../../../components/Button";
 import { useMeeting } from "@videosdk.live/react-native-sdk";
 
-export default function MoreThan2ParticipantsView() {
+export default function ParticipantLimitViewer() {
   const { leave } = useMeeting({});
   return (
     <View

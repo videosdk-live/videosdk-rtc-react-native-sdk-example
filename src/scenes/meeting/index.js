@@ -2,12 +2,12 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import colors from "../../styles/colors";
 import { MeetingProvider } from "@videosdk.live/react-native-sdk";
-import MeetingViewer from "./Components/MeetingViewer";
+import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
+import MeetingContainer from "./MeetingContainer";
 
 export default function ({ navigation }) {
   const token = "PROVIDE_TOKEN";
   const meetingId = "PROVIDE_MEETINGID";
-
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 18 }}
@@ -26,7 +26,7 @@ export default function ({ navigation }) {
         }}
         token={token}
       >
-        <MeetingViewer />
+        <MeetingContainer />
       </MeetingProvider>
     </SafeAreaView>
   );

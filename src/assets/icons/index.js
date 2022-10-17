@@ -13,6 +13,7 @@ import Chat from "./Chat";
 import More from "./More";
 import RaiseHand from "./RaiseHand";
 import Person from "./Person";
+import Send from "./Send";
 
 export {
   MicOff,
@@ -28,4 +29,5 @@ export {
   More,
   RaiseHand,
   Person,
+  Send,
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -18,18 +18,22 @@ import {
   More,
   VideoOff,
   VideoOn,
-} from "../../../assets/icons";
-import IconContainer from "../../../components/IconContainer";
-import colors from "../../../styles/colors";
-import { ROBOTO_FONTS } from "../../../styles/fonts";
-import LocalViewContainer from "./LocalViewContainer";
-import LargeView from "./LargeView";
-import MiniView from "./MiniView";
-import LocalPresenter from "./LocalPresenter";
-import Menu from "../../../components/Menu";
-import MenuItem from "./MenuItem";
+} from "../../assets/icons";
+import colors from "../../styles/colors";
+import IconContainer from "../../components/IconContainer";
+import LocalViewContainer from "./Components/LocalViewContainer";
+import LargeView from "./Components/LargeView";
+import MiniView from "./Components/MiniView";
+import LocalPresenter from "./Components/LocalPresenter";
+import Menu from "../../components/Menu";
+import MenuItem from "./Components/MenuItem";
+import { ROBOTO_FONTS } from "../../styles/fonts";
+import Toast from "react-native-simple-toast";
+import BottomSheet from "../../components/BottomSheet";
+import ParticipantsViewer from "./ParticipantsViewer";
+import ChatViewer from "./ChatViewer";
 
-export default function MeetingViewer() {
+export default function OneToOneMeetingViewer() {
   const {
     join,
     participants,
@@ -59,6 +63,7 @@ export default function MeetingViewer() {
   });
 
   const leaveMenu = useRef();
+  const bottomSheetRef = useRef();
   const moreOptionsMenu = useRef();
 
   const participantIds = [...participants.keys()];
@@ -66,6 +71,8 @@ export default function MeetingViewer() {
   const participantCount = participantIds ? participantIds.length : null;
 
   const [recordingState, setRecordingState] = useState("STOPPED");
+  const [chatViewer, setchatViewer] = useState(false);
+  const [participantListViewer, setparticipantListViewer] = useState(false);
 
   return (
     <>
@@ -98,7 +105,8 @@ export default function MeetingViewer() {
                 marginTop: 4,
               }}
               onPress={() => {
-                Clipboard.setString("meetingId");
+                Clipboard.setString(meetingId);
+                Toast.show("Meeting Id copied Successfully");
               }}
             >
               <Copy fill={colors.primary[100]} />
@@ -116,7 +124,11 @@ export default function MeetingViewer() {
           </Text>
         </View>
         <View style={{ marginTop: 10 }}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              changeWebcam();
+            }}
+          >
             <CameraSwitch height={26} width={26} fill={colors.primary[100]} />
           </TouchableOpacity>
         </View>
@@ -196,7 +208,7 @@ export default function MeetingViewer() {
           onPress={() => {
             if (recordingState == "STOPPED") {
               startRecording("");
-              setRecordingState("STARTING"); //
+              setRecordingState("STARTING");
             } else if (recordingState == "STARTED") {
               stopRecording();
             }
@@ -222,6 +234,8 @@ export default function MeetingViewer() {
         <MenuItem
           title={"Participants"}
           onPress={() => {
+            setparticipantListViewer(true);
+            bottomSheetRef.current.show();
             moreOptionsMenu.current.close();
           }}
         />
@@ -240,15 +254,12 @@ export default function MeetingViewer() {
           }}
           onPress={() => {
             // leave();
-            console.log(leaveMenu.current.state.modalVisible);
             leaveMenu.current.show();
           }}
         />
         <IconContainer
           isDropDown={true}
-          onDropDownPress={() => {
-            console.log("hello");
-          }}
+          onDropDownPress={() => {}}
           backgroundColor={!localMicOn ? colors.primary[100] : "transparent"}
           onPress={() => {
             toggleMic();
@@ -262,7 +273,10 @@ export default function MeetingViewer() {
           }}
         />
         <IconContainer
-          isDropDown={false}
+          style={{
+            borderWidth: 1.5,
+            borderColor: "#2B3034",
+          }}
           backgroundColor={!localWebcamOn ? colors.primary[100] : "transparent"}
           onPress={() => {
             toggleWebcam();
@@ -277,7 +291,8 @@ export default function MeetingViewer() {
         />
         <IconContainer
           onPress={() => {
-            toggleScreenShare();
+            setchatViewer(true);
+            bottomSheetRef.current.show();
           }}
           style={{
             borderWidth: 1.5,
@@ -301,6 +316,24 @@ export default function MeetingViewer() {
           }}
         />
       </View>
+      <BottomSheet
+        sheetBackgroundColor={"#2B3034"}
+        draggable={false}
+        radius={30}
+        hasDraggableIcon
+        closeFunction={() => {
+          setparticipantListViewer(false);
+          setchatViewer(false);
+        }}
+        ref={bottomSheetRef}
+        height={Dimensions.get("window").height / 2}
+      >
+        {chatViewer ? (
+          <ChatViewer />
+        ) : participantListViewer ? (
+          <ParticipantsViewer participantIds={participantIds} />
+        ) : null}
+      </BottomSheet>
     </>
   );
 }

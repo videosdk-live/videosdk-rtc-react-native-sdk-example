@@ -1,21 +1,13 @@
 import { useMeeting } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
-import MeetingViewer from "./MeetingViewer";
-import MoreThan2ParticipantsView from "./MoreThan2ParticipantsView";
-import WaitingToJoinView from "./WaitingToJoinView";
+import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
+import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
+import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 
 export default function MeetingContainer() {
   const [isJoined, setJoined] = useState(false);
-  const [isMoreThan2Participants, setMoreThan2Participant] = useState(false);
-
-  const onMeetingJoined = () => {
-    setJoined(true);
-    if (meeting.participants.keys().length > 2) {
-      console.log("MOre than 2 participants");
-      setMoreThan2Participant(true);
-    }
-  };
+  const [participantLimit, setParticipantLimit] = useState(false);
 
   const { join, changeWebcam, participants, leave } = useMeeting({
     onMeetingJoined: () => {
@@ -25,7 +17,7 @@ export default function MeetingContainer() {
     },
     onParticipantLeft: () => {
       if (participants.size < 2) {
-        setMoreThan2Participant(false);
+        setParticipantLimit(false);
       }
     },
   });
@@ -33,7 +25,7 @@ export default function MeetingContainer() {
   useEffect(() => {
     if (isJoined) {
       if (participants.size > 2) {
-        setMoreThan2Participant(true);
+        setParticipantLimit(true);
       }
     }
   }, [isJoined]);
@@ -52,10 +44,10 @@ export default function MeetingContainer() {
   }, []);
 
   return isJoined ? (
-    isMoreThan2Participants ? (
-      <MoreThan2ParticipantsView />
+    participantLimit ? (
+      <ParticipantLimitViewer />
     ) : (
-      <MeetingViewer />
+      <OneToOneMeetingViewer />
     )
   ) : (
     <WaitingToJoinView />
