@@ -15,13 +15,15 @@ export default function MenuItem({ title, description, icon, onPress }) {
           alignItems: "center",
         }}
       >
-        <View
-          style={{
-            marginRight: 14,
-          }}
-        >
-          {icon}
-        </View>
+        {icon && (
+          <View
+            style={{
+              marginRight: 14,
+            }}
+          >
+            {icon}
+          </View>
+        )}
 
         <View
           style={{

@@ -1,12 +1,19 @@
 import { RTCView, mediaDevices } from "@videosdk.live/react-native-sdk";
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 import { MicOff, MicOn, VideoOff, VideoOn } from "../../assets/icons";
 import TextInputContainer from "../../components/TextInputContainer";
 import Button from "../../components/Button";
 import colors from "../../styles/colors";
 import { createMeeting, getToken, validateMeeting } from "../../api/api";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -30,6 +37,31 @@ export default function Join({ navigation }) {
         console.log(e);
       });
   }, []);
+
+  const isMainScreen = () => {
+    return !isVisibleJoinMeetingContainer && !isVisibleCreateMeetingContainer;
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (!isMainScreen()) {
+          setisVisibleCreateMeetingContainer(false);
+          setisVisibleJoinMeetingContainer(false);
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
+
+      return () => subscription.remove();
+    }, [isVisibleCreateMeetingContainer, isVisibleJoinMeetingContainer])
+  );
 
   const SelfViewContainer = () => {
     return (

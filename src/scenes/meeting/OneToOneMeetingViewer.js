@@ -7,7 +7,12 @@ import {
   ActivityIndicator,
   Dimensions,
 } from "react-native";
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import {
+  useMeeting,
+  getAudioDeviceList,
+  switchAudioDevice,
+  Constants,
+} from "@videosdk.live/react-native-sdk";
 import {
   CallEnd,
   CameraSwitch,
@@ -40,6 +45,7 @@ import ChatViewer from "./ChatViewer";
 import Lottie from "lottie-react-native";
 import recording_lottie from "../../assets/animation/recording_lottie.json";
 import { fetchSession, getToken } from "../../api/api";
+import Blink from "../../components/Blink";
 
 export default function OneToOneMeetingViewer() {
   const {
@@ -61,50 +67,52 @@ export default function OneToOneMeetingViewer() {
     startRecording,
     stopRecording,
     meeting,
-  } = useMeeting({
-    onRecordingStarted: () => {
-      setRecordingState("STARTED");
-    },
-
-    onRecordingStopped: () => {
-      setRecordingState("STOPPED");
-    },
-  });
+    recordingState,
+  } = useMeeting({});
 
   const leaveMenu = useRef();
   const bottomSheetRef = useRef();
+  const audioDeviceMenuRef = useRef();
   const moreOptionsMenu = useRef();
+  const recordingRef = useRef();
 
   const participantIds = [...participants.keys()];
 
   const participantCount = participantIds ? participantIds.length : null;
 
-  const [recordingState, setRecordingState] = useState("STOPPED");
+  // const [recordingState, setRecordingState] = useState("STOPPED");
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
 
   const [time, setTime] = useState("00:00");
   const timerIntervalRef = useRef();
+  const [audioDevice, setAudioDevice] = useState([]);
 
   async function startTimer() {
     const token = await getToken();
     const session = await fetchSession({ meetingId: meeting.id, token: token });
-    if (!timerIntervalRef.current)
-      timerIntervalRef.current = setInterval(() => {
-        try {
-          const date = new Date(session.start);
-          const diffTime = Math.abs(new Date() - date);
-          const time =
-            Math.trunc(Math.trunc(diffTime / 1000) / 60)
-              .toString()
-              .padStart(2, "0") +
-            ":" +
-            (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
-          setTime(time);
-        } catch (error) {}
-      }, 1000);
+    if (!timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+    }
+    timerIntervalRef.current = setInterval(() => {
+      try {
+        const date = new Date(session.start);
+        const diffTime = Math.abs(new Date() - date);
+        const time =
+          Math.trunc(Math.trunc(diffTime / 1000) / 60)
+            .toString()
+            .padStart(2, "0") +
+          ":" +
+          (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
+        setTime(time);
+      } catch (error) {}
+    }, 1000);
   }
 
+  async function updateAudioDeviceList() {
+    const devices = await getAudioDeviceList();
+    setAudioDevice(devices);
+  }
   useEffect(() => {
     startTimer();
     return () => {
@@ -113,6 +121,19 @@ export default function OneToOneMeetingViewer() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (recordingRef.current) {
+      if (
+        recordingState === Constants.recordingEvents.RECORDING_STARTING ||
+        recordingState === Constants.recordingEvents.RECORDING_STOPPING
+      ) {
+        recordingRef.current.start();
+      } else {
+        recordingRef.current.stop();
+      }
+    }
+  }, [recordingState]);
 
   return (
     <>
@@ -123,17 +144,21 @@ export default function OneToOneMeetingViewer() {
           width: "100%",
         }}
       >
-        {(recordingState == "STARTED" || recordingState == "STARTING") && (
+        {(recordingState === Constants.recordingEvents.RECORDING_STARTED ||
+          recordingState === Constants.recordingEvents.RECORDING_STOPPING ||
+          recordingState === Constants.recordingEvents.RECORDING_STARTING) && (
           <View>
-            <Lottie
-              source={recording_lottie}
-              autoPlay
-              loop
-              style={{
-                height: 30,
-                width: 5,
-              }}
-            />
+            <Blink ref={recordingRef} duration={500}>
+              <Lottie
+                source={recording_lottie}
+                autoPlay
+                loop
+                style={{
+                  height: 30,
+                  width: 5,
+                }}
+              />
+            </Blink>
           </View>
         )}
         <View
@@ -141,7 +166,9 @@ export default function OneToOneMeetingViewer() {
             flex: 1,
             justifyContent: "space-between",
             marginLeft:
-              recordingState == "STARTED" || recordingState == "STARTING"
+              recordingState === Constants.recordingEvents.RECORDING_STARTED ||
+              recordingState === Constants.recordingEvents.RECORDING_STOPPING ||
+              recordingState === Constants.recordingEvents.RECORDING_STARTING
                 ? 10
                 : 0,
           }}
@@ -248,24 +275,48 @@ export default function OneToOneMeetingViewer() {
         />
       </Menu>
       <Menu
+        ref={audioDeviceMenuRef}
+        menuBackgroundColor={colors.primary[700]}
+        placement="left"
+      >
+        {audioDevice.map((device) => {
+          return (
+            <MenuItem
+              title={device}
+              onPress={() => {
+                switchAudioDevice(device);
+                audioDeviceMenuRef.current.close();
+              }}
+            />
+          );
+        })}
+      </Menu>
+      <Menu
         ref={moreOptionsMenu}
         menuBackgroundColor={colors.primary[700]}
         placement="right"
       >
         <MenuItem
           title={`${
-            recordingState == "STOPPED"
+            !recordingState ||
+            recordingState === Constants.recordingEvents.RECORDING_STOPPED
               ? "Start "
-              : recordingState == "STARTING"
+              : recordingState === Constants.recordingEvents.RECORDING_STARTING
               ? "Starting "
+              : recordingState === Constants.recordingEvents.RECORDING_STOPPING
+              ? "Stopping "
               : "Stop"
           } Recording`}
           icon={<Recording />}
           onPress={() => {
-            if (recordingState == "STOPPED") {
+            if (
+              !recordingState ||
+              recordingState === Constants.recordingEvents.RECORDING_STOPPED
+            ) {
               startRecording();
-              setRecordingState("STARTING");
-            } else if (recordingState == "STARTED") {
+            } else if (
+              recordingState === Constants.recordingEvents.RECORDING_STARTED
+            ) {
               stopRecording();
             }
             moreOptionsMenu.current.close();
@@ -323,7 +374,10 @@ export default function OneToOneMeetingViewer() {
         />
         <IconContainer
           isDropDown={true}
-          onDropDownPress={() => {}}
+          onDropDownPress={async () => {
+            await updateAudioDeviceList();
+            audioDeviceMenuRef.current.show();
+          }}
           backgroundColor={!localMicOn ? colors.primary[100] : "transparent"}
           onPress={() => {
             toggleMic();
