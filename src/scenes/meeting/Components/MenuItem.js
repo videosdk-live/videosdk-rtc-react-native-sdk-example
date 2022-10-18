@@ -20,7 +20,7 @@ export default function MenuItem({ title, description, icon, onPress }) {
             marginRight: 14,
           }}
         >
-          <Person />
+          {icon}
         </View>
 
         <View

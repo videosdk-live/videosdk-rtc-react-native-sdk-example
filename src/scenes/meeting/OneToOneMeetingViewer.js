@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,9 +13,14 @@ import {
   CameraSwitch,
   Chat,
   Copy,
+  EndForAll,
+  Leave,
   MicOff,
   MicOn,
   More,
+  Participants,
+  Recording,
+  ScreenShare,
   VideoOff,
   VideoOn,
 } from "../../assets/icons";
@@ -32,6 +37,9 @@ import Toast from "react-native-simple-toast";
 import BottomSheet from "../../components/BottomSheet";
 import ParticipantsViewer from "./ParticipantsViewer";
 import ChatViewer from "./ChatViewer";
+import Lottie from "lottie-react-native";
+import recording_lottie from "../../assets/animation/recording_lottie.json";
+import { fetchSession, getToken } from "../../api/api";
 
 export default function OneToOneMeetingViewer() {
   const {
@@ -52,12 +60,13 @@ export default function OneToOneMeetingViewer() {
     localParticipant,
     startRecording,
     stopRecording,
+    meeting,
   } = useMeeting({
     onRecordingStarted: () => {
       setRecordingState("STARTED");
     },
 
-    onRecordingStarted: () => {
+    onRecordingStopped: () => {
       setRecordingState("STOPPED");
     },
   });
@@ -74,17 +83,67 @@ export default function OneToOneMeetingViewer() {
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
 
+  const [time, setTime] = useState("00:00");
+  const timerIntervalRef = useRef();
+
+  async function startTimer() {
+    const token = await getToken();
+    const session = await fetchSession({ meetingId: meeting.id, token: token });
+    if (!timerIntervalRef.current)
+      timerIntervalRef.current = setInterval(() => {
+        try {
+          const date = new Date(session.start);
+          const diffTime = Math.abs(new Date() - date);
+          const time =
+            Math.trunc(Math.trunc(diffTime / 1000) / 60)
+              .toString()
+              .padStart(2, "0") +
+            ":" +
+            (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
+          setTime(time);
+        } catch (error) {}
+      }, 1000);
+  }
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
         }}
       >
+        {(recordingState == "STARTED" || recordingState == "STARTING") && (
+          <View>
+            <Lottie
+              source={recording_lottie}
+              autoPlay
+              loop
+              style={{
+                height: 30,
+                width: 5,
+              }}
+            />
+          </View>
+        )}
         <View
           style={{
+            flex: 1,
             justifyContent: "space-between",
+            marginLeft:
+              recordingState == "STARTED" || recordingState == "STARTING"
+                ? 10
+                : 0,
           }}
         >
           <View style={{ flexDirection: "row" }}>
@@ -120,10 +179,10 @@ export default function OneToOneMeetingViewer() {
               fontFamily: ROBOTO_FONTS.Roboto,
             }}
           >
-            00:40
+            {time}
           </Text>
         </View>
-        <View style={{ marginTop: 10 }}>
+        <View>
           <TouchableOpacity
             onPress={() => {
               changeWebcam();
@@ -166,6 +225,7 @@ export default function OneToOneMeetingViewer() {
         <MenuItem
           title={"Leave"}
           description={"Only you will leave the call"}
+          icon={<Leave />}
           onPress={() => {
             leave();
             moreOptionsMenu.current.close();
@@ -180,6 +240,7 @@ export default function OneToOneMeetingViewer() {
         <MenuItem
           title={"End"}
           description={"End call for all participants"}
+          icon={<EndForAll />}
           onPress={() => {
             end();
             moreOptionsMenu.current.close();
@@ -199,15 +260,10 @@ export default function OneToOneMeetingViewer() {
               ? "Starting "
               : "Stop"
           } Recording`}
-        />
-        <View
-          style={{
-            height: 1,
-            backgroundColor: colors.primary["600"],
-          }}
+          icon={<Recording />}
           onPress={() => {
             if (recordingState == "STOPPED") {
-              startRecording("");
+              startRecording();
               setRecordingState("STARTING");
             } else if (recordingState == "STARTED") {
               stopRecording();
@@ -215,9 +271,16 @@ export default function OneToOneMeetingViewer() {
             moreOptionsMenu.current.close();
           }}
         />
+        <View
+          style={{
+            height: 1,
+            backgroundColor: colors.primary["600"],
+          }}
+        />
         {(presenterId == null || localScreenShareOn) && (
           <MenuItem
             title={`${localScreenShareOn ? "Stop " : "Start "} Screen Share`}
+            icon={<ScreenShare />}
             onPress={() => {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
@@ -233,6 +296,7 @@ export default function OneToOneMeetingViewer() {
         />
         <MenuItem
           title={"Participants"}
+          icon={<Participants />}
           onPress={() => {
             setparticipantListViewer(true);
             bottomSheetRef.current.show();

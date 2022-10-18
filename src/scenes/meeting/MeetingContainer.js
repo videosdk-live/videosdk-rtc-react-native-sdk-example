@@ -5,7 +5,7 @@ import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 
-export default function MeetingContainer() {
+export default function MeetingContainer({ webcamEnabled }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 
@@ -34,7 +34,7 @@ export default function MeetingContainer() {
     setTimeout(() => {
       if (!isJoined) {
         join();
-        changeWebcam();
+        if (webcamEnabled) changeWebcam();
       }
     }, 1000);
 

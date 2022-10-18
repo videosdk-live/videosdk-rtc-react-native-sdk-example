@@ -124,6 +124,7 @@ class Menu extends Component {
               styles.container,
               {
                 height: "100%",
+                width: "100%",
                 borderRadius: radius || 10,
                 backgroundColor: menuBackgroundColor || "#F3F3F3",
               },

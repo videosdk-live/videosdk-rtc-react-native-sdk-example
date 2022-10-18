@@ -5,6 +5,10 @@ import VideoOn from "./VideoOn";
 import VideoOff from "./VideoOff";
 
 import CallEnd from "./CallEnd";
+import EndForAll from "./EndForAll";
+import Leave from "./Leave";
+import Participants from "./Participants";
+import Recording from "./Recording";
 import CameraSwitch from "./CameraSwitch";
 import Copy from "./Copy";
 import ScreenShare from "./ScreenShare";
@@ -30,4 +34,8 @@ export {
   RaiseHand,
   Person,
   Send,
+  EndForAll,
+  Leave,
+  Recording,
+  Participants,
 };

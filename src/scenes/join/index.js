@@ -5,6 +5,8 @@ import { MicOff, MicOn, VideoOff, VideoOn } from "../../assets/icons";
 import TextInputContainer from "../../components/TextInputContainer";
 import Button from "../../components/Button";
 import colors from "../../styles/colors";
+import { createMeeting, getToken, validateMeeting } from "../../api/api";
+import { SCREEN_NAMES } from "../../navigators/screenNames";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -18,16 +20,16 @@ export default function Join({ navigation }) {
   const [isVisibleJoinMeetingContainer, setisVisibleJoinMeetingContainer] =
     useState(false);
 
-  // useEffect(async () => {
-  //   mediaDevices
-  //     .getUserMedia({ audio: true, video: true })
-  //     .then((stream) => {
-  //       setTrack(stream.toURL());
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // }, []);
+  useEffect(async () => {
+    mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then((stream) => {
+        setTrack(stream.toURL());
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const SelfViewContainer = () => {
     return (
@@ -169,8 +171,20 @@ export default function Join({ navigation }) {
             />
             <Button
               text={"Join a meeting"}
-              onPress={() => {
-                setisVisibleJoinMeetingContainer(true);
+              onPress={async () => {
+                if (name.length <= 0) {
+                  Toast.show("Please enter your name");
+                  return;
+                }
+                const token = await getToken();
+                let meetingId = await createMeeting({ token: token });
+                navigation.navigate(SCREEN_NAMES.Meeting, {
+                  name: name.trim(),
+                  token: token,
+                  meetingId: meetingId,
+                  micEnabled: micOn,
+                  webcamEnabled: videoOn,
+                });
               }}
             />
           </>
@@ -188,8 +202,30 @@ export default function Join({ navigation }) {
             />
             <Button
               text={"Join a meeting"}
-              onPress={() => {
-                setisVisibleJoinMeetingContainer(true);
+              onPress={async () => {
+                if (name.trim().length <= 0) {
+                  Toast.show("Please enter your name");
+                  return;
+                }
+                if (meetingId.trim().length <= 0) {
+                  Toast.show("Please enter meetingId");
+
+                  return;
+                }
+                const token = await getToken();
+                let valid = await validateMeeting({
+                  token: token,
+                  meetingId: meetingId.trim(),
+                });
+                if (valid) {
+                  navigation.navigate(SCREEN_NAMES.Meeting, {
+                    name: name.trim(),
+                    token: token,
+                    meetingId: meetingId.trim(),
+                    micEnabled: micOn,
+                    webcamEnabled: videoOn,
+                  });
+                }
               }}
             />
           </>
