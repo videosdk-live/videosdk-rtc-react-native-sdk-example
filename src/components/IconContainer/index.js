@@ -21,10 +21,11 @@ const IconContainer = ({
       style={{
         flexDirection: "row",
 
-        borderRadius: 12,
+        borderRadius: 14,
         borderWidth: 1.5,
         borderColor: "#2B3034",
         backgroundColor: backgroundColor,
+        ...style,
       }}
     >
       <TouchableOpacity
@@ -38,7 +39,8 @@ const IconContainer = ({
       <TouchableOpacity
         onPress={onDropDownPress}
         style={{
-          marginHorizontal: 6,
+          marginLeft: 0,
+          marginRight: 10,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -52,7 +54,7 @@ const IconContainer = ({
       style={{
         backgroundColor: backgroundColor ? backgroundColor : "transparent",
         ...buttonStyle,
-        borderRadius: 12,
+        borderRadius: 14,
         ...style,
       }}
     >

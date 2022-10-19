@@ -419,11 +419,11 @@ If you want to learn more about the SDK, read the Complete Documentation of [Rea
 
     - `EditText for ParticipantName` - This edit text will contain name of the participant.
     - `EditText for MeetingId` - This edit text will contain the meeting Id that you want to join.
-    - `Join Meeting Button` - This button will call api for join meeting with meetingId that you
+    - `Join Meeting Button` - This button will call api for join meeting with meetingId that you entered
 
   - If `Create Meeting` is clicked, it will show following:
     - `EditText for ParticipantName` - This edit text will contain name of the participant.
-    - `Join Meeting Button` - This button will call api for join meeting with meetingId that you
+    - `Join Meeting Button` - This button will call api for join meeting with a new meetingId
 
   <p align="center">
   <img width="230" height="450" src="https://www.linkpicture.com/q/img_CreateOrJoinFragment.jpg"/>

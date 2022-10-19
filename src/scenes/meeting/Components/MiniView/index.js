@@ -1,12 +1,16 @@
 import { useParticipant } from "@videosdk.live/react-native-sdk";
-import React from "react";
+import React, { useEffect } from "react";
 import MiniVideoRTCView from "./MiniVideoRTCView";
 
 export default MiniViewContainer = ({ participantId }) => {
-  const { webcamOn, webcamStream, displayName } = useParticipant(
+  const { webcamOn, webcamStream, displayName, setQuality } = useParticipant(
     participantId,
     {}
   );
+
+  useEffect(() => {
+    setQuality("high");
+  }, []);
 
   return (
     <MiniVideoRTCView

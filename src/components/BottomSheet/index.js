@@ -64,7 +64,10 @@ class BottomSheet extends Component {
         if (gestureDistance > gestureLimitArea) {
           this.setModalVisible(false);
         } else {
-          Animated.spring(pan, { toValue: { x: 0, y: 0 }, useNativeDriver: false, }).start();
+          Animated.spring(pan, {
+            toValue: { x: 0, y: 0 },
+            useNativeDriver: false,
+          }).start();
         }
       },
     });
@@ -122,19 +125,6 @@ class BottomSheet extends Component {
               },
             ]}
           >
-            {hasDraggableIcon && (
-              <View style={styles.draggableContainer}>
-                <View
-                  style={[
-                    styles.draggableIcon,
-                    dragIconStyle,
-                    {
-                      backgroundColor: dragIconColor || "#A3A3A3",
-                    },
-                  ]}
-                />
-              </View>
-            )}
             {children}
           </Animated.View>
         </View>

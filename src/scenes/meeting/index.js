@@ -17,7 +17,7 @@ export default function ({ navigation, route }) {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.primary[900], padding: 18 }}
+      style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
     >
       <MeetingProvider
         config={{

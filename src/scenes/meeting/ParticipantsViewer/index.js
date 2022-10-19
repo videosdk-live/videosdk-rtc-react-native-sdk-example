@@ -14,20 +14,20 @@ function ParticipantsViewer({ participantIds }) {
     >
       <View
         style={{
-          height: 30,
-          marginTop: 12,
+          height: 42,
+          marginTop: 6,
           alignItems: "center",
           justifyContent: "center",
         }}
       >
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: colors.primary[100],
-            fontFamily: ROBOTO_FONTS.Roboto,
+            fontFamily: ROBOTO_FONTS.RobotoBold,
           }}
         >
-          Participants (2)
+          Participants ({participantIds.length})
         </Text>
       </View>
       <FlatList

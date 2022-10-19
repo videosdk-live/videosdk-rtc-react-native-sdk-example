@@ -89,6 +89,8 @@ class Menu extends Component {
       onClose = () => this.close(),
       radius,
       placement,
+      left,
+      right,
     } = this.props;
     const { animatedHeight, pan, modalVisible } = this.state;
     const panStyle = {
@@ -111,10 +113,10 @@ class Menu extends Component {
             },
             placement == "left"
               ? {
-                  left: 20,
+                  left: left ? left : 20,
                 }
               : {
-                  right: 20,
+                  right: right ? right : 20,
                 },
           ]}
         >

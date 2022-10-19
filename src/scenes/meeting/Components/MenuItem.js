@@ -11,7 +11,8 @@ export default function MenuItem({ title, description, icon, onPress }) {
       <View
         style={{
           flexDirection: "row",
-          padding: 14,
+          paddingHorizontal: 18,
+          paddingVertical: 16,
           alignItems: "center",
         }}
       >
@@ -19,6 +20,7 @@ export default function MenuItem({ title, description, icon, onPress }) {
           <View
             style={{
               marginRight: 14,
+              // marginLeft: 4,
             }}
           >
             {icon}
@@ -32,9 +34,9 @@ export default function MenuItem({ title, description, icon, onPress }) {
         >
           <Text
             style={{
-              fontFamily: ROBOTO_FONTS.RobotoBold,
+              fontFamily: ROBOTO_FONTS.RobotoMedium,
               color: colors.primary[100],
-              fontSize: convertRFValue(14),
+              fontSize: convertRFValue(12),
             }}
           >
             {title}
@@ -43,7 +45,7 @@ export default function MenuItem({ title, description, icon, onPress }) {
           {description && (
             <Text
               style={{
-                fontFamily: ROBOTO_FONTS.RobotoBold,
+                fontFamily: ROBOTO_FONTS.Roboto,
                 color: colors.primary[400],
                 fontSize: convertRFValue(12),
               }}

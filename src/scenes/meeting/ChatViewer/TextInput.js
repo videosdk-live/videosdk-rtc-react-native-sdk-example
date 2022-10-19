@@ -2,6 +2,7 @@ import React from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
 import { Send } from "../../../assets/icons";
 import colors from "../../../styles/colors";
+import { ROBOTO_FONTS } from "../../../styles/fonts";
 import { useStandardHeight } from "../../../styles/spacing";
 
 export default function TextInputContainer({
@@ -15,6 +16,7 @@ export default function TextInputContainer({
       <View
         style={{
           height: vertical_40,
+          marginBottom: 14,
           flexDirection: "row",
           borderRadius: 10,
           backgroundColor: colors.primary[600],
@@ -24,35 +26,44 @@ export default function TextInputContainer({
           <TextInput
             multiline
             value={message}
-            placeholder={"Write your Message"}
-            style={{ flex: 1, color: "white", marginLeft: 12 }}
+            placeholder={"Write your message"}
+            style={{
+              flex: 1,
+              color: "white",
+              marginLeft: 12,
+              fontFamily: ROBOTO_FONTS.RobotoMedium,
+            }}
             numberOfLines={2}
             onChangeText={setMessage}
             selectionColor={"white"}
             placeholderTextColor={"#9FA0A7"}
           />
         </View>
-        {message ? (
-          <View
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: message.length > 0 ? colors.purple : "transparent",
+            margin: 4,
+            padding: 4,
+            borderRadius: 8,
+          }}
+        >
+          <TouchableOpacity
+            onPress={sendMessage}
             style={{
+              height: 30,
+              aspectRatio: 1,
               justifyContent: "center",
               alignItems: "center",
+              paddingVertical: 8,
+              paddingVertical: 4,
             }}
           >
-            <TouchableOpacity
-              onPress={sendMessage}
-              style={{
-                height: 30,
-                aspectRatio: 1,
-                marginHorizontal: 8,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Send fill="#FFF" />
-            </TouchableOpacity>
-          </View>
-        ) : null}
+            <Send fill="#FFF" width={20} height={20} />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };

@@ -47,7 +47,7 @@ function ParticipantListItem({ participantId }) {
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        padding: 14,
+        padding: 10,
         marginVertical: 8,
         borderRadius: 10,
         backgroundColor: colors.primary[600],
@@ -73,7 +73,6 @@ function ParticipantListItem({ participantId }) {
         </View>
         <View
           style={{
-            height: 40,
             marginLeft: 8,
             justifyContent: "center",
             alignItems: "center",
@@ -102,23 +101,23 @@ function ParticipantListItem({ participantId }) {
           }}
           Icon={() => {
             return micOn ? (
-              <MicOn width={16} height={16} />
+              <MicOn width={18} height={18} />
             ) : (
-              <MicOff width={16} height={16} fill={colors.primary[100]} />
+              <MicOff width={20} height={20} fill={colors.primary[100]} />
             );
           }}
         />
 
         <IconContainer
           style={{
-            borderWidth: webcamOn ? 1 : 0,
-            backgroundColor: webcamOn ? "transparent" : "#FF5D5D",
+            borderWidth: !webcamOn ? 1 : 0,
+            backgroundColor: !webcamOn ? "transparent" : "#FF5D5D",
           }}
           Icon={() => {
-            return webcamOn ? (
+            return !webcamOn ? (
               <VideoOn height={16} width={16} fill={colors.primary[100]} />
             ) : (
-              <VideoOff width={22} height={22} fill={colors.primary[100]} />
+              <VideoOff width={24} height={24} fill={colors.primary[100]} />
             );
           }}
         />

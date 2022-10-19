@@ -9,11 +9,12 @@ export default MiniVideoRTCView = ({ stream, isOn, displayName }) => {
     <View
       style={{
         position: "absolute",
-        bottom: 20,
-        right: 20,
-        height: 140,
+        bottom: 10,
+        right: 10,
+        height: 160,
         aspectRatio: 0.7,
         borderRadius: 8,
+        borderColor: "#ff0000",
         overflow: "hidden",
       }}
     >

@@ -9,7 +9,7 @@ export const ROBOTO_FONTS = {
   RobotoThin: "Roboto-Thin",
   RobotoThinItalic: "Roboto-ThinItalic",
   Roboto: "Roboto",
-  RobotoMedium: "Roboto-medium",
+  RobotoMedium: "Roboto-Medium",
   RobotoBlack: "Roboto-Black",
   RobotoBlackItalic: "Roboto-BlackItalic",
 };

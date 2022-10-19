@@ -169,7 +169,7 @@ export default function OneToOneMeetingViewer() {
               recordingState === Constants.recordingEvents.RECORDING_STARTED ||
               recordingState === Constants.recordingEvents.RECORDING_STOPPING ||
               recordingState === Constants.recordingEvents.RECORDING_STARTING
-                ? 10
+                ? 8
                 : 0,
           }}
         >
@@ -177,7 +177,7 @@ export default function OneToOneMeetingViewer() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: ROBOTO_FONTS.RobotoBlack,
+                fontFamily: ROBOTO_FONTS.RobotoBold,
                 color: colors.primary[100],
               }}
             >
@@ -188,22 +188,22 @@ export default function OneToOneMeetingViewer() {
               style={{
                 justifyContent: "center",
                 marginLeft: 10,
-                marginTop: 4,
+                // marginTop: 4,
               }}
               onPress={() => {
                 Clipboard.setString(meetingId);
                 Toast.show("Meeting Id copied Successfully");
               }}
             >
-              <Copy fill={colors.primary[100]} />
+              <Copy fill={colors.primary[100]} width={18} height={18} />
             </TouchableOpacity>
           </View>
 
           <Text
             style={{
               color: "#9A9FA5",
-              fontSize: 16,
-              fontFamily: ROBOTO_FONTS.Roboto,
+              fontSize: 14,
+              fontFamily: ROBOTO_FONTS.RobotoMedium,
             }}
           >
             {time}
@@ -220,7 +220,7 @@ export default function OneToOneMeetingViewer() {
         </View>
       </View>
       {/* Center */}
-      <View style={{ flex: 1, marginVertical: 16 }}>
+      <View style={{ flex: 1, marginTop: 8, marginBottom: 12 }}>
         {participantCount > 1 ? (
           <>
             {localScreenShareOn ? (
@@ -252,7 +252,7 @@ export default function OneToOneMeetingViewer() {
         <MenuItem
           title={"Leave"}
           description={"Only you will leave the call"}
-          icon={<Leave />}
+          icon={<Leave width={22} height={22} />}
           onPress={() => {
             leave();
             moreOptionsMenu.current.close();
@@ -278,16 +278,36 @@ export default function OneToOneMeetingViewer() {
         ref={audioDeviceMenuRef}
         menuBackgroundColor={colors.primary[700]}
         placement="left"
+        left={70}
       >
-        {audioDevice.map((device) => {
+        {audioDevice.map((device, index) => {
           return (
-            <MenuItem
-              title={device}
-              onPress={() => {
-                switchAudioDevice(device);
-                audioDeviceMenuRef.current.close();
-              }}
-            />
+            <>
+              <MenuItem
+                title={
+                  device == "SPEAKER_PHONE"
+                    ? "Speaker"
+                    : device == "EARPIECE"
+                    ? "Earpiece"
+                    : device == "BLUETOOTH"
+                    ? "Bluetooth"
+                    : "Wired Headset"
+                }
+                onPress={() => {
+                  switchAudioDevice(device);
+                  audioDeviceMenuRef.current.close();
+                }}
+              />
+
+              {index != audioDevice.length - 1 && (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: colors.primary["600"],
+                  }}
+                />
+              )}
+            </>
           );
         })}
       </Menu>
@@ -300,14 +320,14 @@ export default function OneToOneMeetingViewer() {
           title={`${
             !recordingState ||
             recordingState === Constants.recordingEvents.RECORDING_STOPPED
-              ? "Start "
+              ? "Start"
               : recordingState === Constants.recordingEvents.RECORDING_STARTING
-              ? "Starting "
+              ? "Starting"
               : recordingState === Constants.recordingEvents.RECORDING_STOPPING
-              ? "Stopping "
+              ? "Stopping"
               : "Stop"
           } Recording`}
-          icon={<Recording />}
+          icon={<Recording width={22} height={22} />}
           onPress={() => {
             if (
               !recordingState ||
@@ -330,8 +350,8 @@ export default function OneToOneMeetingViewer() {
         />
         {(presenterId == null || localScreenShareOn) && (
           <MenuItem
-            title={`${localScreenShareOn ? "Stop " : "Start "} Screen Share`}
-            icon={<ScreenShare />}
+            title={`${localScreenShareOn ? "Stop" : "Start"} Screen Share`}
+            icon={<ScreenShare width={22} height={22} />}
             onPress={() => {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
@@ -347,7 +367,7 @@ export default function OneToOneMeetingViewer() {
         />
         <MenuItem
           title={"Participants"}
-          icon={<Participants />}
+          icon={<Participants width={22} height={22} />}
           onPress={() => {
             setparticipantListViewer(true);
             bottomSheetRef.current.show();
@@ -359,13 +379,13 @@ export default function OneToOneMeetingViewer() {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-around",
+          justifyContent: "space-evenly",
         }}
       >
         <IconContainer
           backgroundColor={"red"}
           Icon={() => {
-            return <CallEnd height={30} width={30} fill="#FFF" />;
+            return <CallEnd height={26} width={26} fill="#FFF" />;
           }}
           onPress={() => {
             // leave();
@@ -373,6 +393,10 @@ export default function OneToOneMeetingViewer() {
           }}
         />
         <IconContainer
+          style={{
+            paddingLeft: 0,
+            height: 52,
+          }}
           isDropDown={true}
           onDropDownPress={async () => {
             await updateAudioDeviceList();
@@ -384,9 +408,9 @@ export default function OneToOneMeetingViewer() {
           }}
           Icon={() => {
             return localMicOn ? (
-              <MicOn height={26} width={26} fill="#FFF" />
+              <MicOn height={24} width={24} fill="#FFF" />
             ) : (
-              <MicOff height={26} width={26} fill="#1D2939" />
+              <MicOff height={28} width={28} fill="#1D2939" />
             );
           }}
         />
@@ -401,7 +425,7 @@ export default function OneToOneMeetingViewer() {
           }}
           Icon={() => {
             return localWebcamOn ? (
-              <VideoOn height={26} width={26} fill="#FFF" />
+              <VideoOn height={24} width={24} fill="#FFF" />
             ) : (
               <VideoOff height={36} width={36} fill="#1D2939" />
             );
@@ -430,21 +454,21 @@ export default function OneToOneMeetingViewer() {
             moreOptionsMenu.current.show();
           }}
           Icon={() => {
-            return <More height={20} width={20} fill="#FFF" />;
+            return <More height={18} width={18} fill="#FFF" />;
           }}
         />
       </View>
       <BottomSheet
         sheetBackgroundColor={"#2B3034"}
-        draggable={false}
-        radius={30}
+        draggable={true}
+        radius={12}
         hasDraggableIcon
         closeFunction={() => {
           setparticipantListViewer(false);
           setchatViewer(false);
         }}
         ref={bottomSheetRef}
-        height={Dimensions.get("window").height / 2}
+        height={Dimensions.get("window").height * 0.5}
       >
         {chatViewer ? (
           <ChatViewer />

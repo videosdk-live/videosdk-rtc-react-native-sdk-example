@@ -17,7 +17,7 @@ export default function Avatar({
         backgroundColor: containerBackgroundColor,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 20,
+        borderRadius: 12,
         overflow: "hidden",
       }}
     >

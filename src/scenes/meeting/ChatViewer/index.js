@@ -36,7 +36,9 @@ const ChatViewer = ({}) => {
   const sendMessage = () => {
     mpubsub.publish(message, { persist: true });
     setMessage("");
-    scrollToBottom();
+    setTimeout(() => {
+      scrollToBottom();
+    }, 100);
   };
   const scrollToBottom = () => {
     flatListRef.current.scrollToEnd({ animated: true });
@@ -50,7 +52,7 @@ const ChatViewer = ({}) => {
     >
       <View
         style={{
-          height: 30,
+          // height: 30,
           marginTop: 12,
           alignItems: "center",
           justifyContent: "center",
@@ -58,9 +60,9 @@ const ChatViewer = ({}) => {
       >
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: colors.primary[100],
-            fontFamily: ROBOTO_FONTS.Roboto,
+            fontFamily: ROBOTO_FONTS.RobotoBold,
           }}
         >
           Chat
@@ -88,7 +90,8 @@ const ChatViewer = ({}) => {
                   key={i}
                   style={{
                     backgroundColor: colors.primary[600],
-                    padding: 12,
+                    paddingVertical: 8,
+                    paddingHorizontal: 10,
                     marginVertical: 6,
                     borderRadius: 4,
                     borderRadius: 10,
@@ -98,8 +101,8 @@ const ChatViewer = ({}) => {
                 >
                   <Text
                     style={{
-                      fontSize: 12,
-                      fontFamily: ROBOTO_FONTS.RobotoRegular,
+                      fontSize: convertRFValue(12),
+                      fontFamily: ROBOTO_FONTS.Roboto,
                       color: "#9A9FA5",
                       fontWeight: "bold",
                     }}
@@ -115,8 +118,8 @@ const ChatViewer = ({}) => {
                       style={{
                         fontSize: convertRFValue(14),
                         color: "white",
-                        fontFamily: ROBOTO_FONTS.RobotoRegular,
-                        marginTop: 8,
+                        fontFamily: ROBOTO_FONTS.RobotoMedium,
+                        // marginTop: 8,
                       }}
                     >
                       {message}
@@ -125,10 +128,10 @@ const ChatViewer = ({}) => {
                   <Text
                     style={{
                       color: "grey",
-                      fontSize: convertRFValue(8),
-                      fontFamily: ROBOTO_FONTS.RobotoItalic,
+                      fontSize: convertRFValue(10),
+                      fontFamily: ROBOTO_FONTS.Roboto,
                       alignSelf: "flex-end",
-                      marginTop: 8,
+                      marginTop: 4,
                     }}
                   >
                     {time}

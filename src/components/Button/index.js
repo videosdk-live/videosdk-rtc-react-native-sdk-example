@@ -14,7 +14,7 @@ const Button = ({
     <TouchableOpacity
       onPress={onPress}
       style={{
-        height: 60,
+        height: 50,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: backgroundColor ? backgroundColor : "#5568FE",
@@ -27,7 +27,7 @@ const Button = ({
         style={{
           color: colors.primary["100"],
           fontSize: 16,
-          fontFamily: ROBOTO_FONTS.RobotoMedium,
+          fontFamily: ROBOTO_FONTS.RobotoBold,
           ...textStyle,
         }}
       >

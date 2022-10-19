@@ -29,7 +29,7 @@ export default function Join({ navigation }) {
 
   useEffect(async () => {
     mediaDevices
-      .getUserMedia({ audio: true, video: true })
+      .getUserMedia({ audio: false, video: true })
       .then((stream) => {
         setTrack(stream.toURL());
       })
@@ -81,7 +81,7 @@ export default function Join({ navigation }) {
           <View
             style={{
               flex: 1,
-              borderRadius: 20,
+              borderRadius: 12,
               overflow: "hidden",
             }}
           >
@@ -105,7 +105,7 @@ export default function Join({ navigation }) {
                   backgroundColor: "#202427",
                 }}
               >
-                <Text style={{ color: colors.primary[100] }}>No media</Text>
+                <Text style={{ color: colors.primary[100] }}>Camera Off</Text>
               </View>
             )}
           </View>
@@ -136,7 +136,7 @@ export default function Join({ navigation }) {
               }}
             >
               {micOn ? (
-                <MicOn width={20} height={20} fill={colors.black} />
+                <MicOn width={25} height={25} fill={colors.black} />
               ) : (
                 <MicOff width={25} height={25} fill={colors.primary["100"]} />
               )}
@@ -156,9 +156,9 @@ export default function Join({ navigation }) {
               }}
             >
               {videoOn ? (
-                <VideoOn width={20} height={20} fill={colors.black} />
+                <VideoOn width={25} height={25} fill={colors.black} />
               ) : (
-                <VideoOff width={30} height={30} fill={colors.primary["100"]} />
+                <VideoOff width={35} height={35} fill={colors.primary["100"]} />
               )}
             </TouchableOpacity>
           </View>

@@ -1,3 +1,4 @@
+import { useMeeting } from "@videosdk.live/react-native-sdk";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ScreenShare } from "../../../assets/icons";
@@ -6,6 +7,7 @@ import { ROBOTO_FONTS } from "../../../styles/fonts";
 import { convertRFValue } from "../../../styles/spacing";
 
 export default LocalPresenter = ({}) => {
+  const { toggleScreenShare } = useMeeting({});
   return (
     <View
       style={{
@@ -19,7 +21,7 @@ export default LocalPresenter = ({}) => {
           alignItems: "center",
         }}
       >
-        <ScreenShare width={54} height={54} fill={"#FFF"} />
+        <ScreenShare width={40} height={40} fill={"#FFF"} />
         <Text
           style={{
             fontFamily: ROBOTO_FONTS.Roboto,
@@ -32,18 +34,22 @@ export default LocalPresenter = ({}) => {
         </Text>
         <TouchableOpacity
           style={{
-            padding: 14,
+            paddingHorizontal: 16,
+            paddingVertical: 12,
             alignItems: "center",
             backgroundColor: "#5568FE",
             borderRadius: 12,
             marginVertical: 12,
+          }}
+          onPress={() => {
+            toggleScreenShare();
           }}
         >
           <Text
             style={{
               color: colors.primary["100"],
               fontSize: 16,
-              fontFamily: ROBOTO_FONTS.RobotoBlack,
+              fontFamily: ROBOTO_FONTS.RobotoBold,
             }}
           >
             Stop Presenting
