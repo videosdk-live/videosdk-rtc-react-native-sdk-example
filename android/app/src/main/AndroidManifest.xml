@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.rncodesample">
-
-   <uses-permission android:name="android.permission.INTERNET" />
+  
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Needed to communicate with already-paired Bluetooth devices. (Legacy up to Android 11) -->
     <uses-permission
@@ -13,14 +13,13 @@
 
     <!-- Needed to communicate with already-paired Bluetooth devices. (Android 12 upwards)-->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-​
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
