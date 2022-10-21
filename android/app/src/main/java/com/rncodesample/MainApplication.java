@@ -11,6 +11,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.airbnb.android.react.lottie.LottiePackage;
 import live.videosdk.rnfgservice.ForegroundServicePackage;
 import live.videosdk.rnincallmanager.InCallManagerPackage;
 import live.videosdk.rnwebrtc.WebRTCModulePackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new ForegroundServicePackage());
           packages.add(new InCallManagerPackage());
           packages.add(new WebRTCModulePackage());
+          packages.add(new LottiePackage());
 
           return packages;
         }
