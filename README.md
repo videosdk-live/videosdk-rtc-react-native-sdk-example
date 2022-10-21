@@ -236,7 +236,7 @@ switchAudioDevice("BLUETOOTH"); // for bluetooth device
 
 <br/>
 
-## [Enable/Disable Local Webcam](https://docs.videosdk.live/flutter/guide/video-and-audio-calling-api-sdk/features/camera-controls)
+## [Enable/Disable Local Webcam](https://docs.videosdk.live/react-native/guide/video-and-audio-calling-api-sdk/features/camera-controls)
 
 ```js
 const { enableWebcam, disableWebcam } = useMeeting();
@@ -251,7 +251,7 @@ const onPress = async () => {
 
 <br/>
 
-## [Switch Local Webcam](https://docs.videosdk.live/flutter/guide/video-and-audio-calling-api-sdk/features/camera-controls)
+## [Switch Local Webcam](https://docs.videosdk.live/react-native/guide/video-and-audio-calling-api-sdk/features/camera-controls)
 
 ```js
 const { changeWebcam, getWebcams } = useMeeting();
@@ -384,7 +384,7 @@ By registering callback handlers, VideoSDK sends callbacks to the client app whe
   });
 ```
 
-If you want to learn more about the SDK, read the Complete Documentation of [React Native VideoSDK](https://docs.videosdk.live/flutter/react-native/video-and-audio-calling-api-sdk/getting-started)
+If you want to learn more about the SDK, read the Complete Documentation of [React Native VideoSDK](https://docs.videosdk.live/react-native/guide/video-and-audio-calling-api-sdk/getting-started)
 
 <br/>
 
@@ -426,14 +426,14 @@ If you want to learn more about the SDK, read the Complete Documentation of [Rea
     - `Join Meeting Button` - This button will call api for join meeting with a new meetingId
 
   <p align="center">
-  <img width="230" height="450" src="https://www.linkpicture.com/q/img_CreateOrJoinFragment.jpg"/>
+  <img width="230" height="450" src="./public/create_join.gif"/>
   </p>
 
 **2. PartcipantList**
 
 - `scenes/meeting/ParticipantViewer/index.js` and `scenes/meeting/ParticipantViewer/ParticipantListItem.js` files are used to show Participant list.
   <p align="center">
-  <img width="250" height="450" src="https://www.linkpicture.com/q/img_participantList.jpg"/>
+  <img width="220" height="450" src="./public/participants.jpg"/>
   </p>
 
 **3. Chat**
@@ -448,15 +448,15 @@ If you want to learn more about the SDK, read the Complete Documentation of [Rea
 
     - **MoreOptions**:
       <p align="center">
-      <img width="350" height="250" src="https://www.linkpicture.com/q/img_MoreOptionList.jpg"/>
+      <img width="230" height="450" src="./public/more_options.gif"/>
       </p>
     - **AudioDeviceList**:
       <p align="center">
-      <img width="350" height="250" src="https://www.linkpicture.com/q/img_AudioDeviceList.jpg"/>
+      <img width="230" height="450" src="./public/audio_device.gif"/>
       </p>
     - **LeaveOrEndDialog**:
       <p align="center">
-      <img width="350" height="250" src="https://www.linkpicture.com/q/img_LeaveorEndDialog.jpg"/>
+      <img width="230" height="450" src="./public/end_call.gif"/>
       </p>
 
   - `scenes/meeting/Components` contains all the components that are used to create the one to one meeting screen.
