@@ -11,13 +11,10 @@
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
   },
   "dependencies": {
-    "@react-native-firebase/app": "^15.2.0",
-    "@react-native-firebase/crashlytics": "^15.2.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.2",
     "@videosdk.live/react-native-incallmanager": "^0.0.9",
     "@videosdk.live/react-native-sdk": "^0.0.36",
-    "lottie-ios": "^3.4.0",
     "lottie-react-native": "^5.1.4",
     "moment": "^2.29.4",
     "react": "17.0.1",

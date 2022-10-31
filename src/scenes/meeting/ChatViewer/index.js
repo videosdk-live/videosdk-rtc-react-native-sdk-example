@@ -52,7 +52,6 @@ const ChatViewer = ({}) => {
     >
       <View
         style={{
-          // height: 30,
           marginTop: 12,
           alignItems: "center",
           justifyContent: "center",
