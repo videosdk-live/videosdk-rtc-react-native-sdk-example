@@ -27,7 +27,7 @@ export default function Join({ navigation }) {
   const [isVisibleJoinMeetingContainer, setisVisibleJoinMeetingContainer] =
     useState(false);
 
-  useEffect(async () => {
+  useEffect(() => {
     mediaDevices
       .getUserMedia({ audio: false, video: true })
       .then((stream) => {
