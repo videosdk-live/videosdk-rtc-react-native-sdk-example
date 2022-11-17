@@ -15,6 +15,7 @@
     "@react-navigation/stack": "^6.3.2",
     "@videosdk.live/react-native-incallmanager": "^0.0.9",
     "@videosdk.live/react-native-sdk": "^0.0.38",
+    "lottie-ios": "3.4.0",
     "lottie-react-native": "^5.1.4",
     "moment": "^2.29.4",
     "react": "18.1.0",

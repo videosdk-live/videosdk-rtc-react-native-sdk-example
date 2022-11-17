@@ -14,6 +14,7 @@ import colors from "../../styles/colors";
 import { createMeeting, getToken, validateMeeting } from "../../api/api";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-simple-toast";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -101,7 +102,6 @@ export default function Join({ navigation }) {
                   flex: 1,
                   justifyContent: "center",
                   alignItems: "center",
-                  // backgroundColor: colors.black,
                   backgroundColor: "#202427",
                 }}
               >
