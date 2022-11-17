@@ -14,6 +14,7 @@ import colors from "../../styles/colors";
 import { createMeeting, getToken, validateMeeting } from "../../api/api";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
 import { useFocusEffect } from "@react-navigation/native";
+import Toast from "react-native-simple-toast";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -63,8 +64,14 @@ export default function Join({ navigation }) {
     }, [isVisibleCreateMeetingContainer, isVisibleJoinMeetingContainer])
   );
 
-  const SelfViewContainer = () => {
-    return (
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.primary["900"],
+        justifyContent: "space-between",
+      }}
+    >
       <View
         style={{
           paddingTop: "15%",
@@ -101,7 +108,6 @@ export default function Join({ navigation }) {
                   flex: 1,
                   justifyContent: "center",
                   alignItems: "center",
-                  // backgroundColor: colors.black,
                   backgroundColor: "#202427",
                 }}
               >
@@ -164,18 +170,6 @@ export default function Join({ navigation }) {
           </View>
         </View>
       </View>
-    );
-  };
-
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.primary["900"],
-        justifyContent: "space-between",
-      }}
-    >
-      <SelfViewContainer />
       <View style={{ marginHorizontal: 32 }}>
         {!isVisibleCreateMeetingContainer && !isVisibleJoinMeetingContainer && (
           <>

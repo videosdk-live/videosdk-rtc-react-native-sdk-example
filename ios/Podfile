@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '11.0'
+platform :ios, '13.0'
 
 target 'RNCodeSample' do
   config = use_native_modules!
@@ -12,7 +12,6 @@ target 'RNCodeSample' do
     :hermes_enabled => false
   )
 
-  pod 'react-native-video', :path => '../node_modules/react-native-video'
   pod 'react-native-webrtc', :path => '../node_modules/@videosdk.live/react-native-webrtc'
 
 
