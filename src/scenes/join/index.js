@@ -64,8 +64,14 @@ export default function Join({ navigation }) {
     }, [isVisibleCreateMeetingContainer, isVisibleJoinMeetingContainer])
   );
 
-  const SelfViewContainer = () => {
-    return (
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.primary["900"],
+        justifyContent: "space-between",
+      }}
+    >
       <View
         style={{
           paddingTop: "15%",
@@ -164,18 +170,6 @@ export default function Join({ navigation }) {
           </View>
         </View>
       </View>
-    );
-  };
-
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.primary["900"],
-        justifyContent: "space-between",
-      }}
-    >
-      <SelfViewContainer />
       <View style={{ marginHorizontal: 32 }}>
         {!isVisibleCreateMeetingContainer && !isVisibleJoinMeetingContainer && (
           <>

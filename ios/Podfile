@@ -12,7 +12,6 @@ target 'RNCodeSample' do
     :hermes_enabled => false
   )
 
-  pod 'react-native-video', :path => '../node_modules/react-native-video'
   pod 'react-native-webrtc', :path => '../node_modules/@videosdk.live/react-native-webrtc'
 
 
