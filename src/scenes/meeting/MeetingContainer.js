@@ -1,4 +1,7 @@
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import {
+  useMeeting,
+  ReactNativeForegroundService,
+} from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
 import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
@@ -40,6 +43,7 @@ export default function MeetingContainer({ webcamEnabled }) {
 
     return () => {
       leave();
+      ReactNativeForegroundService.stopAll();
     };
   }, []);
 
