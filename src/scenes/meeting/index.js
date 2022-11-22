@@ -22,7 +22,6 @@ export default function ({ navigation, route }) {
       <MeetingProvider
         config={{
           meetingId: meetingId,
-          // participantId: "ahmed@videosdk.live",
           micEnabled: micEnabled,
           webcamEnabled: webcamEnabled,
           name: name,
