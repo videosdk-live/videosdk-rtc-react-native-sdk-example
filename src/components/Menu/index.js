@@ -20,7 +20,7 @@ class Menu extends Component {
     // this.createPanResponder(props);
   }
 
-  setModalVisible(visible) {
+  setModalVisible(visible, withAnimation) {
     const { closeFunction, height } = this.props;
     const { animatedHeight, pan } = this.state;
     if (visible) {
@@ -33,7 +33,7 @@ class Menu extends Component {
     } else {
       Animated.timing(animatedHeight, {
         toValue: 0,
-        duration: 400,
+        duration: withAnimation ? 400 : 0,
         useNativeDriver: false,
       }).start(() => {
         pan.setValue({ x: 0, y: 0 });
@@ -77,8 +77,8 @@ class Menu extends Component {
     this.setModalVisible(true);
   }
 
-  close() {
-    this.setModalVisible(false);
+  close(withAnimation = true) {
+    this.setModalVisible(false, withAnimation);
   }
 
   render() {

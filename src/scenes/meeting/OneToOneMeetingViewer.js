@@ -370,8 +370,8 @@ export default function OneToOneMeetingViewer() {
           icon={<Participants width={22} height={22} />}
           onPress={() => {
             setparticipantListViewer(true);
+            moreOptionsMenu.current.close(false);
             bottomSheetRef.current.show();
-            moreOptionsMenu.current.close();
           }}
         />
       </Menu>
