@@ -1,5 +1,5 @@
 import { RTCView, mediaDevices } from "@videosdk.live/react-native-sdk";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   View,
@@ -19,6 +19,9 @@ import { createMeeting, getToken, validateMeeting } from "../../api/api";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-simple-toast";
+import Menu from "../../components/Menu";
+import MenuItem from "../meeting/Components/MenuItem";
+import { ROBOTO_FONTS } from "../../styles/fonts";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -26,6 +29,9 @@ export default function Join({ navigation }) {
   const [videoOn, setVideoOn] = useState(true);
   const [name, setName] = useState("");
   const [meetingId, setMeetingId] = useState("");
+
+  const joinTypes = ["One to One", "Group"];
+  const [joinType, setJoinType] = useState(joinTypes[0]);
 
   const [isVisibleCreateMeetingContainer, setisVisibleCreateMeetingContainer] =
     useState(false);
@@ -43,6 +49,7 @@ export default function Join({ navigation }) {
       });
   }, []);
 
+  const optionRef = useRef();
   const isMainScreen = () => {
     return !isVisibleJoinMeetingContainer && !isVisibleCreateMeetingContainer;
   };
@@ -212,6 +219,56 @@ export default function Join({ navigation }) {
               )}
             {isVisibleCreateMeetingContainer ? (
               <>
+                <TouchableOpacity
+                  onPress={async () => {
+                    optionRef.current.show();
+                  }}
+                  style={{
+                    height: 50,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#202427",
+                    borderRadius: 12,
+                    marginVertical: 12,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: colors.primary["100"],
+                      fontSize: 16,
+                      fontFamily: ROBOTO_FONTS.RobotoBold,
+                    }}
+                  >
+                    {joinType}
+                  </Text>
+                </TouchableOpacity>
+                <Menu
+                  ref={optionRef}
+                  menuBackgroundColor={colors.primary[700]}
+                  fullWidth
+                >
+                  {joinTypes.map((joinType, index) => {
+                    return (
+                      <>
+                        <MenuItem
+                          title={joinType}
+                          onPress={() => {
+                            optionRef.current.close(true);
+                            setJoinType(joinType);
+                          }}
+                        />
+                        {index != joinTypes.length - 1 && (
+                          <View
+                            style={{
+                              height: 1,
+                              backgroundColor: colors.primary["600"],
+                            }}
+                          />
+                        )}
+                      </>
+                    );
+                  })}
+                </Menu>
                 <TextInputContainer
                   placeholder={"Enter your name"}
                   value={name}

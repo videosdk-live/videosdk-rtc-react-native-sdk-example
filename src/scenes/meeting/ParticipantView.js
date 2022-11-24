@@ -45,7 +45,7 @@ export default function ParticipantView({ participantId }) {
           right: 10,
           height: 26,
           aspectRatio: 1,
-          backgroundColor: colors.primary[600],
+          backgroundColor: colors.primary[700],
           flexDirection: "row",
           borderRadius: 12,
           justifyContent: "center",

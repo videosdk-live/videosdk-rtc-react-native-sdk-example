@@ -91,6 +91,7 @@ class Menu extends Component {
       placement,
       left,
       right,
+      fullWidth,
     } = this.props;
     const { animatedHeight, pan, modalVisible } = this.state;
     const panStyle = {
@@ -111,13 +112,20 @@ class Menu extends Component {
               position: "absolute",
               bottom: 80,
             },
-            placement == "left"
-              ? {
-                  left: left ? left : 20,
-                }
-              : {
-                  right: right ? right : 20,
-                },
+            fullWidth && {
+              flexGrow: 1,
+              flexDirection: "row",
+              marginHorizontal: 35,
+            },
+            placement
+              ? placement == "left"
+                ? {
+                    left: left ? left : 20,
+                  }
+                : {
+                    right: right ? right : 20,
+                  }
+              : null,
           ]}
         >
           <Animated.View
