@@ -4,7 +4,6 @@ import {
   Text,
   Clipboard,
   TouchableOpacity,
-  ActivityIndicator,
   Dimensions,
 } from "react-native";
 import {
@@ -31,9 +30,6 @@ import {
 } from "../../assets/icons";
 import colors from "../../styles/colors";
 import IconContainer from "../../components/IconContainer";
-import LocalViewContainer from "./Components/LocalViewContainer";
-import LargeView from "./Components/LargeView";
-import MiniView from "./Components/MiniView";
 import LocalParticipantPresenter from "./Components/LocalParticipantPresenter";
 import Menu from "../../components/Menu";
 import MenuItem from "./Components/MenuItem";
@@ -46,10 +42,11 @@ import Lottie from "lottie-react-native";
 import recording_lottie from "../../assets/animation/recording_lottie.json";
 import { fetchSession, getToken } from "../../api/api";
 import Blink from "../../components/Blink";
+import ParticipantView from "./ParticipantView";
+import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
 
-export default function OneToOneMeetingViewer() {
+export default function ConferenceMeetingViewer() {
   const {
-    join,
     participants,
     localWebcamOn,
     localMicOn,
@@ -58,12 +55,10 @@ export default function OneToOneMeetingViewer() {
     changeWebcam,
     toggleWebcam,
     toggleMic,
-    enableScreenShare,
     presenterId,
     localScreenShareOn,
     toggleScreenShare,
     meetingId,
-    localParticipant,
     startRecording,
     stopRecording,
     meeting,
@@ -80,7 +75,8 @@ export default function OneToOneMeetingViewer() {
 
   const participantCount = participantIds ? participantIds.length : null;
 
-  // const [recordingState, setRecordingState] = useState("STOPPED");
+  const perRow = participantCount >= 3 ? 2 : 1;
+
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
 
@@ -188,7 +184,6 @@ export default function OneToOneMeetingViewer() {
               style={{
                 justifyContent: "center",
                 marginLeft: 10,
-                // marginTop: 4,
               }}
               onPress={() => {
                 Clipboard.setString(meetingId);
@@ -220,28 +215,34 @@ export default function OneToOneMeetingViewer() {
         </View>
       </View>
       {/* Center */}
-      <View style={{ flex: 1, marginTop: 8, marginBottom: 12 }}>
-        {participantCount > 1 ? (
-          <>
-            {localScreenShareOn ? (
-              <LocalParticipantPresenter />
-            ) : (
-              <LargeView participantId={participantIds[1]} />
-            )}
-            <MiniView
-              participantId={
-                participantIds[localScreenShareOn || presenterId ? 1 : 0]
-              }
-            />
-          </>
-        ) : participantCount === 1 ? (
-          <LocalViewContainer participantId={participantIds[0]} />
+      <View style={{ flex: 1, marginVertical: 12 }}>
+        {presenterId && !localScreenShareOn ? (
+          <RemoteParticipantPresenter
+            presenterId={presenterId}
+            participantIdArr={participantIds.splice(0, 2)}
+          />
+        ) : presenterId && localScreenShareOn ? (
+          <LocalParticipantPresenter />
         ) : (
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <ActivityIndicator size={"large"} />
-          </View>
+          Array.from(
+            { length: Math.ceil(participantCount / perRow) },
+            (_, i) => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                  }}
+                >
+                  {participantIds
+                    .slice(i * perRow, (i + 1) * perRow)
+                    .map((participantId) => {
+                      return <ParticipantView participantId={participantId} />;
+                    })}
+                </View>
+              );
+            }
+          )
         )}
       </View>
       <Menu
@@ -388,7 +389,6 @@ export default function OneToOneMeetingViewer() {
             return <CallEnd height={26} width={26} fill="#FFF" />;
           }}
           onPress={() => {
-            // leave();
             leaveMenu.current.show();
           }}
         />

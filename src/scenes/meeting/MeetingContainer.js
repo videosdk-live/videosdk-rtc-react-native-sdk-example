@@ -4,6 +4,7 @@ import {
 } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
+import ConferenceMeetingViewer from "./ConferenceMeetingViewer";
 import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
@@ -47,13 +48,5 @@ export default function MeetingContainer({ webcamEnabled }) {
     };
   }, []);
 
-  return isJoined ? (
-    participantLimit ? (
-      <ParticipantLimitViewer />
-    ) : (
-      <OneToOneMeetingViewer />
-    )
-  ) : (
-    <WaitingToJoinView />
-  );
+  return isJoined ? <ConferenceMeetingViewer /> : <WaitingToJoinView />;
 }

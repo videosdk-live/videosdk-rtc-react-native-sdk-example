@@ -21,7 +21,7 @@ export default function ({ navigation, route }) {
     >
       <MeetingProvider
         config={{
-          meetingId: meetingId,
+          meetingId: "l3vu-s2ow-6h9n",
           micEnabled: micEnabled,
           webcamEnabled: webcamEnabled,
           name: name,
@@ -30,7 +30,10 @@ export default function ({ navigation, route }) {
             message: "Meeting is running.",
           },
         }}
-        token={token}
+        token={
+          // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiI1MzUxM2ZlOC1lNTNlLTQyNzgtYmFiYS1lN2FmOTM0NzcxNmQiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIiwiYWxsb3dfbW9kIl0sImlhdCI6MTY1MTA1MTgyNCwiZXhwIjozMTcxOTU0OTQyMjR9.plGF_bBbvA15_2TmpuQ0qxUJ4guyEMNAQ5qmjWlYSDc"
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiIxYTgyNjA2YS02MjcyLTQzZWItODZiYy0xYjE1OWM1ZDE2MWIiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTY1MzY1NjQ1NH0.vDHFiVygyf7lz8CuttjjIIeeQLBxtXoQnikHVSg4BQE"
+        }
       >
         <MeetingConsumer
           {...{

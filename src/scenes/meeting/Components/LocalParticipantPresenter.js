@@ -6,7 +6,7 @@ import colors from "../../../styles/colors";
 import { ROBOTO_FONTS } from "../../../styles/fonts";
 import { convertRFValue } from "../../../styles/spacing";
 
-export default LocalPresenter = ({}) => {
+export default LocalParticipantPresenter = ({}) => {
   const { toggleScreenShare } = useMeeting({});
   return (
     <View
