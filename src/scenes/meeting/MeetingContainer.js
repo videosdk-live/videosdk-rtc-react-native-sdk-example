@@ -3,9 +3,9 @@ import {
   ReactNativeForegroundService,
 } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
-import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
-import ConferenceMeetingViewer from "./ConferenceMeetingViewer";
-import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
+import OneToOneMeetingViewer from "./OneToOne";
+import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
+import ParticipantLimitViewer from "./OneToOne/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 

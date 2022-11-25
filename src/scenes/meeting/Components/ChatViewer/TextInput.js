@@ -1,9 +1,9 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
-import { Send } from "../../../assets/icons";
-import colors from "../../../styles/colors";
-import { ROBOTO_FONTS } from "../../../styles/fonts";
-import { useStandardHeight } from "../../../styles/spacing";
+import { Send } from "../../../../assets/icons";
+import colors from "../../../../styles/colors";
+import { ROBOTO_FONTS } from "../../../../styles/fonts";
+import { useStandardHeight } from "../../../../styles/spacing";
 
 export default function TextInputContainer({
   sendMessage,

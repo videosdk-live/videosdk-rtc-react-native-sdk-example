@@ -3,10 +3,8 @@ import React, { useEffect } from "react";
 import MiniVideoRTCView from "./MiniVideoRTCView";
 
 export default MiniViewContainer = ({ participantId }) => {
-  const { webcamOn, webcamStream, displayName, setQuality } = useParticipant(
-    participantId,
-    {}
-  );
+  const { webcamOn, webcamStream, displayName, setQuality, isLocal } =
+    useParticipant(participantId, {});
 
   useEffect(() => {
     setQuality("high");
@@ -17,6 +15,7 @@ export default MiniViewContainer = ({ participantId }) => {
       isOn={webcamOn}
       stream={webcamStream}
       displayName={displayName}
+      isLocal={isLocal}
     />
   );
 };

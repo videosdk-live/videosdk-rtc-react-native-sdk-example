@@ -5,10 +5,10 @@ import {
   RTCView,
   MediaStream,
 } from "@videosdk.live/react-native-sdk";
-import { MicOff } from "../../assets/icons";
-import { convertRFValue } from "../../styles/spacing";
-import colors from "../../styles/colors";
-import Avatar from "../../components/Avatar";
+import { convertRFValue } from "../../../styles/spacing";
+import colors from "../../../styles/colors";
+import Avatar from "../../../components/Avatar";
+import { MicOff } from "../../../assets/icons";
 
 export default function ParticipantView({ participantId }) {
   const onStreamEnabled = (stream) => {};
@@ -21,7 +21,6 @@ export default function ParticipantView({ participantId }) {
     isLocal,
     setQuality,
     isActiveSpeaker,
-    setViewPort,
   } = useParticipant(participantId, {
     onStreamEnabled,
     onStreamDisabled,

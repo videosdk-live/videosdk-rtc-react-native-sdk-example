@@ -1,24 +1,17 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { convertRFValue } from "../../../styles/spacing";
+import { convertRFValue } from "../../../../styles/spacing";
 import {
   MicOff,
   MicOn,
   VideoOff,
   VideoOn,
-  RaiseHand,
   Person,
-} from "../../../assets/icons";
-import { ROBOTO_FONTS } from "../../../styles/fonts";
-import colors from "../../../styles/colors";
+} from "../../../../assets/icons";
+import { ROBOTO_FONTS } from "../../../../styles/fonts";
+import colors from "../../../../styles/colors";
 import { useParticipant } from "@videosdk.live/react-native-sdk";
 
-// const areEqual = (prevProps, nextProps) => {
-//   return (
-//     prevProps.participantId === nextProps.participantId &&
-//     prevProps.raisedHand === nextProps.raisedHand
-//   );
-// };
 function ParticipantListItem({ participantId }) {
   const { displayName, webcamOn, micOn, isLocal } =
     useParticipant(participantId);

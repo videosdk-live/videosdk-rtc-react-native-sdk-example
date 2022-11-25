@@ -1,12 +1,10 @@
 import { useParticipant } from "@videosdk.live/react-native-sdk";
 import React, { useEffect } from "react";
 import { View } from "react-native";
-import colors from "../../../styles/colors";
-import LargeVideoRTCView from "./LargeView/LargeVideoRTCView";
-import LocalParticipantPresenter from "./LocalParticipantPresenter";
-import MiniVideoRTCView from "./MiniView/MiniVideoRTCView";
+import colors from "../../../../styles/colors";
+import LargeVideoRTCView from "./LargeVideoRTCView";
 
-export default function LocalViewContainer({ participantId }) {
+export default LargeViewContainer = ({ participantId }) => {
   const {
     screenShareOn,
     screenShareStream,
@@ -14,6 +12,7 @@ export default function LocalViewContainer({ participantId }) {
     webcamStream,
     displayName,
     setQuality,
+    isLocal,
   } = useParticipant(participantId, {});
 
   useEffect(() => {
@@ -30,22 +29,22 @@ export default function LocalViewContainer({ participantId }) {
       }}
     >
       {screenShareOn ? (
-        <>
-          <LocalParticipantPresenter />
-          <MiniVideoRTCView
-            isOn={webcamOn}
-            stream={webcamStream}
-            displayName={displayName}
-          />
-        </>
+        <LargeVideoRTCView
+          stream={screenShareStream}
+          isOn={screenShareOn}
+          displayName={displayName}
+          objectFit={"contain"}
+          isLocal={isLocal}
+        />
       ) : (
         <LargeVideoRTCView
           isOn={webcamOn}
           stream={webcamStream}
           displayName={displayName}
           objectFit={"cover"}
+          isLocal={isLocal}
         />
       )}
     </View>
   );
-}
+};

@@ -6,10 +6,10 @@ import {
   MediaStream,
 } from "@videosdk.live/react-native-sdk";
 import ParticipantView from "./ParticipantView";
-import colors from "../../styles/colors";
-import { convertRFValue } from "../../styles/spacing";
-import { ScreenShare } from "../../assets/icons";
-import { ROBOTO_FONTS } from "../../styles/fonts";
+import colors from "../../../styles/colors";
+import { convertRFValue } from "../../../styles/spacing";
+import { ROBOTO_FONTS } from "../../../styles/fonts";
+import { ScreenShare } from "../../../assets/icons";
 
 export default function RemoteParticipantPresenter({
   presenterId,

@@ -28,24 +28,24 @@ import {
   ScreenShare,
   VideoOff,
   VideoOn,
-} from "../../assets/icons";
-import colors from "../../styles/colors";
-import IconContainer from "../../components/IconContainer";
-import LocalViewContainer from "./Components/LocalViewContainer";
-import LargeView from "./Components/LargeView";
-import MiniView from "./Components/MiniView";
-import LocalParticipantPresenter from "./Components/LocalParticipantPresenter";
-import Menu from "../../components/Menu";
-import MenuItem from "./Components/MenuItem";
-import { ROBOTO_FONTS } from "../../styles/fonts";
+} from "../../../assets/icons";
+import colors from "../../../styles/colors";
+import IconContainer from "../../../components/IconContainer";
+import LocalViewContainer from "./LocalViewContainer";
+import LargeView from "./LargeView";
+import MiniView from "./MiniView";
+import LocalParticipantPresenter from "../Components/LocalParticipantPresenter";
+import Menu from "../../../components/Menu";
+import MenuItem from "../Components/MenuItem";
+import { ROBOTO_FONTS } from "../../../styles/fonts";
 import Toast from "react-native-simple-toast";
-import BottomSheet from "../../components/BottomSheet";
-import ParticipantListViewer from "./ParticipantListViewer";
-import ChatViewer from "./ChatViewer";
+import BottomSheet from "../../../components/BottomSheet";
+import ParticipantListViewer from "../Components/ParticipantListViewer";
+import ChatViewer from "../Components/ChatViewer";
 import Lottie from "lottie-react-native";
-import recording_lottie from "../../assets/animation/recording_lottie.json";
-import { fetchSession, getToken } from "../../api/api";
-import Blink from "../../components/Blink";
+import recording_lottie from "../../../assets/animation/recording_lottie.json";
+import { fetchSession, getToken } from "../../../api/api";
+import Blink from "../../../components/Blink";
 
 export default function OneToOneMeetingViewer() {
   const {
@@ -58,12 +58,10 @@ export default function OneToOneMeetingViewer() {
     changeWebcam,
     toggleWebcam,
     toggleMic,
-    enableScreenShare,
     presenterId,
     localScreenShareOn,
     toggleScreenShare,
     meetingId,
-    localParticipant,
     startRecording,
     stopRecording,
     meeting,
@@ -80,7 +78,6 @@ export default function OneToOneMeetingViewer() {
 
   const participantCount = participantIds ? participantIds.length : null;
 
-  // const [recordingState, setRecordingState] = useState("STOPPED");
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
 
