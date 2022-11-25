@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Animated,
   PanResponder,
+  Platform,
 } from "react-native";
 import styles from "./styles";
 
@@ -110,7 +111,7 @@ class Menu extends Component {
             styles.wrapper,
             {
               position: "absolute",
-              bottom: 80,
+              bottom: Platform.OS === "android" ? 50 : 80,
             },
             fullWidth && {
               flexGrow: 1,

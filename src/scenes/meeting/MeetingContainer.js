@@ -9,7 +9,7 @@ import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 
-export default function MeetingContainer({ webcamEnabled }) {
+export default function MeetingContainer({ webcamEnabled, meetingType }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 
@@ -48,5 +48,15 @@ export default function MeetingContainer({ webcamEnabled }) {
     };
   }, []);
 
-  return isJoined ? <ConferenceMeetingViewer /> : <WaitingToJoinView />;
+  return isJoined ? (
+    meetingType === "GROUP" ? (
+      <ConferenceMeetingViewer />
+    ) : participantLimit ? (
+      <ParticipantLimitViewer />
+    ) : (
+      <OneToOneMeetingViewer />
+    )
+  ) : (
+    <WaitingToJoinView />
+  );
 }

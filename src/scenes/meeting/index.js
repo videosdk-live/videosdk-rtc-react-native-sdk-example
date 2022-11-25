@@ -14,7 +14,8 @@ export default function ({ navigation, route }) {
   const micEnabled = route.params.micEnabled;
   const webcamEnabled = route.params.webcamEnabled;
   const name = route.params.name;
-
+  const meetingType = route.params.meetingType;
+  console.log("# TYPE", meetingType);
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
@@ -43,7 +44,12 @@ export default function ({ navigation, route }) {
           }}
         >
           {() => {
-            return <MeetingContainer webcamEnabled={webcamEnabled} />;
+            return (
+              <MeetingContainer
+                webcamEnabled={webcamEnabled}
+                meetingType={meetingType}
+              />
+            );
           }}
         </MeetingConsumer>
       </MeetingProvider>

@@ -30,8 +30,12 @@ export default function Join({ navigation }) {
   const [name, setName] = useState("");
   const [meetingId, setMeetingId] = useState("");
 
-  const joinTypes = ["One to One", "Group"];
-  const [joinType, setJoinType] = useState(joinTypes[0]);
+  const meetingTypes = [
+    { key: "ONE_TO_ONE", value: "One to One Meeting" },
+    { key: "GROUP", value: "Group Meeting" },
+  ];
+
+  const [meetingType, setMeetingType] = useState(meetingTypes[0]);
 
   const [isVisibleCreateMeetingContainer, setisVisibleCreateMeetingContainer] =
     useState(false);
@@ -239,7 +243,7 @@ export default function Join({ navigation }) {
                       fontFamily: ROBOTO_FONTS.RobotoBold,
                     }}
                   >
-                    {joinType}
+                    {meetingType.value}
                   </Text>
                 </TouchableOpacity>
                 <Menu
@@ -247,17 +251,17 @@ export default function Join({ navigation }) {
                   menuBackgroundColor={colors.primary[700]}
                   fullWidth
                 >
-                  {joinTypes.map((joinType, index) => {
+                  {meetingTypes.map((meetingType, index) => {
                     return (
                       <>
                         <MenuItem
-                          title={joinType}
+                          title={meetingType.value}
                           onPress={() => {
                             optionRef.current.close(true);
-                            setJoinType(joinType);
+                            setMeetingType(meetingType);
                           }}
                         />
-                        {index != joinTypes.length - 1 && (
+                        {index != meetingTypes.length - 1 && (
                           <View
                             style={{
                               height: 1,
@@ -289,6 +293,7 @@ export default function Join({ navigation }) {
                       meetingId: meetingId,
                       micEnabled: micOn,
                       webcamEnabled: videoOn,
+                      meetingType: meetingType.key,
                     });
                   }}
                 />
@@ -329,6 +334,7 @@ export default function Join({ navigation }) {
                         meetingId: meetingId.trim(),
                         micEnabled: micOn,
                         webcamEnabled: videoOn,
+                        meetingType: meetingType.key,
                       });
                     }
                   }}
