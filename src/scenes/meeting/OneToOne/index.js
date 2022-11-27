@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from "react-native";
 import {
   useMeeting,
@@ -46,6 +47,7 @@ import Lottie from "lottie-react-native";
 import recording_lottie from "../../../assets/animation/recording_lottie.json";
 import { fetchSession, getToken } from "../../../api/api";
 import Blink from "../../../components/Blink";
+import VideosdkRPK from "../../../../VideosdkRPK";
 
 export default function OneToOneMeetingViewer() {
   const {
@@ -66,6 +68,8 @@ export default function OneToOneMeetingViewer() {
     stopRecording,
     meeting,
     recordingState,
+    enableScreenShare,
+    disableScreenShare,
   } = useMeeting({});
 
   const leaveMenu = useRef();
@@ -116,6 +120,20 @@ export default function OneToOneMeetingViewer() {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
       }
+    };
+  }, []);
+
+  useEffect(() => {
+    VideosdkRPK.addListener("onScreenShare", (event) => {
+      if (event === "START_BROADCAST") {
+        enableScreenShare();
+      } else if (event === "STOP_BROADCAST") {
+        disableScreenShare();
+      }
+    });
+
+    return () => {
+      VideosdkRPK.removeSubscription("onScreenShare");
     };
   }, []);
 
@@ -352,7 +370,9 @@ export default function OneToOneMeetingViewer() {
             onPress={() => {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
-                toggleScreenShare();
+                Platform.OS === "android"
+                  ? toggleScreenShare()
+                  : VideosdkRPK.startBroadcast();
             }}
           />
         )}

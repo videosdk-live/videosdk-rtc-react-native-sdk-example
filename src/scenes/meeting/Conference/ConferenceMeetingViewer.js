@@ -5,6 +5,7 @@ import {
   Clipboard,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from "react-native";
 import {
   useMeeting,
@@ -44,6 +45,7 @@ import { fetchSession, getToken } from "../../../api/api";
 import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
+import VideosdkRPK from "../../../../VideosdkRPK";
 
 export default function ConferenceMeetingViewer() {
   const {
@@ -63,6 +65,8 @@ export default function ConferenceMeetingViewer() {
     stopRecording,
     meeting,
     recordingState,
+    enableScreenShare,
+    disableScreenShare,
   } = useMeeting({});
 
   const leaveMenu = useRef();
@@ -130,6 +134,20 @@ export default function ConferenceMeetingViewer() {
       }
     }
   }, [recordingState]);
+
+  useEffect(() => {
+    VideosdkRPK.addListener("onScreenShare", (event) => {
+      if (event === "START_BROADCAST") {
+        enableScreenShare();
+      } else if (event === "STOP_BROADCAST") {
+        disableScreenShare();
+      }
+    });
+
+    return () => {
+      VideosdkRPK.removeSubscription("onScreenShare");
+    };
+  }, []);
 
   return (
     <>
@@ -356,7 +374,9 @@ export default function ConferenceMeetingViewer() {
             onPress={() => {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
-                toggleScreenShare();
+                Platform.OS === "android"
+                  ? toggleScreenShare()
+                  : VideosdkRPK.startBroadcast();
             }}
           />
         )}

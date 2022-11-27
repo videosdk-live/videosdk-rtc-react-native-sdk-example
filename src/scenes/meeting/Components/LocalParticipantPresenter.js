@@ -7,7 +7,7 @@ import { ROBOTO_FONTS } from "../../../styles/fonts";
 import { convertRFValue } from "../../../styles/spacing";
 
 export default LocalParticipantPresenter = ({}) => {
-  const { toggleScreenShare } = useMeeting({});
+  const { disableScreenShare } = useMeeting({});
   return (
     <View
       style={{
@@ -42,7 +42,7 @@ export default LocalParticipantPresenter = ({}) => {
             marginVertical: 12,
           }}
           onPress={() => {
-            toggleScreenShare();
+            disableScreenShare();
           }}
         >
           <Text
