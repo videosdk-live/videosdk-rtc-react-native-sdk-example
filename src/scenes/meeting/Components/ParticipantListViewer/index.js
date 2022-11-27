@@ -1,9 +1,9 @@
 import React from "react";
 import ParticipantListItem from "./ParticipantListItem";
 import { FlatList, View, Text } from "react-native";
-import colors from "../../../styles/colors";
-import { ROBOTO_FONTS } from "../../../styles/fonts";
-function ParticipantsViewer({ participantIds }) {
+import colors from "../../../../styles/colors";
+import { ROBOTO_FONTS } from "../../../../styles/fonts";
+function ParticipantListViewer({ participantIds }) {
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ function ParticipantsViewer({ participantIds }) {
       </View>
       <FlatList
         data={participantIds}
-        // keyExtractor={(item) => `${item.participantId}_participant`}
+        keyExtractor={({ item }) => `${item}_participant`}
         style={{ marginBottom: 4 }}
         renderItem={({ item }) => {
           return <ParticipantListItem participantId={item} />;
@@ -42,4 +42,4 @@ function ParticipantsViewer({ participantIds }) {
   );
 }
 
-export default ParticipantsViewer;
+export default ParticipantListViewer;

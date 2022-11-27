@@ -12,6 +12,7 @@ export default LargeViewContainer = ({ participantId }) => {
     webcamStream,
     displayName,
     setQuality,
+    isLocal,
   } = useParticipant(participantId, {});
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export default LargeViewContainer = ({ participantId }) => {
           isOn={screenShareOn}
           displayName={displayName}
           objectFit={"contain"}
+          isLocal={isLocal}
         />
       ) : (
         <LargeVideoRTCView
@@ -40,6 +42,7 @@ export default LargeViewContainer = ({ participantId }) => {
           stream={webcamStream}
           displayName={displayName}
           objectFit={"cover"}
+          isLocal={isLocal}
         />
       )}
     </View>

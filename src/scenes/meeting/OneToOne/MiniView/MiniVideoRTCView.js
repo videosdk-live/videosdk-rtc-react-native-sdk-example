@@ -4,7 +4,7 @@ import { View } from "react-native";
 import Avatar from "../../../../components/Avatar";
 import colors from "../../../../styles/colors";
 
-export default MiniVideoRTCView = ({ stream, isOn, displayName }) => {
+export default MiniVideoRTCView = ({ stream, isOn, displayName, isLocal }) => {
   return (
     <View
       style={{
@@ -22,6 +22,7 @@ export default MiniVideoRTCView = ({ stream, isOn, displayName }) => {
         <RTCView
           objectFit="cover"
           zOrder={1}
+          mirror={isLocal ? true : false}
           style={{ flex: 1, backgroundColor: "#424242" }}
           streamURL={new MediaStream([stream.track]).toURL()}
         />

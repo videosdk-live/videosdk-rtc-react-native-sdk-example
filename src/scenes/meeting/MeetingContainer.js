@@ -3,12 +3,13 @@ import {
   ReactNativeForegroundService,
 } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
-import OneToOneMeetingViewer from "./OneToOneMeetingViewer";
-import ParticipantLimitViewer from "./Components/ParticipantLimitViewer";
+import OneToOneMeetingViewer from "./OneToOne";
+import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
+import ParticipantLimitViewer from "./OneToOne/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 
-export default function MeetingContainer({ webcamEnabled }) {
+export default function MeetingContainer({ webcamEnabled, meetingType }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 
@@ -48,7 +49,9 @@ export default function MeetingContainer({ webcamEnabled }) {
   }, []);
 
   return isJoined ? (
-    participantLimit ? (
+    meetingType === "GROUP" ? (
+      <ConferenceMeetingViewer />
+    ) : participantLimit ? (
       <ParticipantLimitViewer />
     ) : (
       <OneToOneMeetingViewer />

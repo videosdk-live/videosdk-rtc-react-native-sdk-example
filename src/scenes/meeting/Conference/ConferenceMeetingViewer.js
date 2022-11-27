@@ -4,8 +4,8 @@ import {
   Text,
   Clipboard,
   TouchableOpacity,
-  ActivityIndicator,
   Dimensions,
+  Platform,
 } from "react-native";
 import {
   useMeeting,
@@ -28,28 +28,27 @@ import {
   ScreenShare,
   VideoOff,
   VideoOn,
-} from "../../assets/icons";
-import colors from "../../styles/colors";
-import IconContainer from "../../components/IconContainer";
-import LocalViewContainer from "./Components/LocalViewContainer";
-import LargeView from "./Components/LargeView";
-import MiniView from "./Components/MiniView";
-import LocalPresenter from "./Components/LocalPresenter";
-import Menu from "../../components/Menu";
-import MenuItem from "./Components/MenuItem";
-import { ROBOTO_FONTS } from "../../styles/fonts";
+} from "../../../assets/icons";
+import colors from "../../../styles/colors";
+import IconContainer from "../../../components/IconContainer";
+import LocalParticipantPresenter from "../Components/LocalParticipantPresenter";
+import Menu from "../../../components/Menu";
+import MenuItem from "../Components/MenuItem";
+import { ROBOTO_FONTS } from "../../../styles/fonts";
 import Toast from "react-native-simple-toast";
-import BottomSheet from "../../components/BottomSheet";
-import ParticipantsViewer from "./ParticipantsViewer";
-import ChatViewer from "./ChatViewer";
+import BottomSheet from "../../../components/BottomSheet";
+import ParticipantListViewer from "../Components/ParticipantListViewer";
+import ChatViewer from "../Components/ChatViewer";
 import Lottie from "lottie-react-native";
-import recording_lottie from "../../assets/animation/recording_lottie.json";
-import { fetchSession, getToken } from "../../api/api";
-import Blink from "../../components/Blink";
+import recording_lottie from "../../../assets/animation/recording_lottie.json";
+import { fetchSession, getToken } from "../../../api/api";
+import Blink from "../../../components/Blink";
+import ParticipantView from "./ParticipantView";
+import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
+import VideosdkRPK from "../../../../VideosdkRPK";
 
-export default function OneToOneMeetingViewer() {
+export default function ConferenceMeetingViewer() {
   const {
-    join,
     participants,
     localWebcamOn,
     localMicOn,
@@ -58,16 +57,16 @@ export default function OneToOneMeetingViewer() {
     changeWebcam,
     toggleWebcam,
     toggleMic,
-    enableScreenShare,
     presenterId,
     localScreenShareOn,
     toggleScreenShare,
     meetingId,
-    localParticipant,
     startRecording,
     stopRecording,
     meeting,
     recordingState,
+    enableScreenShare,
+    disableScreenShare,
   } = useMeeting({});
 
   const leaveMenu = useRef();
@@ -80,7 +79,8 @@ export default function OneToOneMeetingViewer() {
 
   const participantCount = participantIds ? participantIds.length : null;
 
-  // const [recordingState, setRecordingState] = useState("STOPPED");
+  const perRow = participantCount >= 3 ? 2 : 1;
+
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
 
@@ -135,6 +135,20 @@ export default function OneToOneMeetingViewer() {
     }
   }, [recordingState]);
 
+  useEffect(() => {
+    VideosdkRPK.addListener("onScreenShare", (event) => {
+      if (event === "START_BROADCAST") {
+        enableScreenShare();
+      } else if (event === "STOP_BROADCAST") {
+        disableScreenShare();
+      }
+    });
+
+    return () => {
+      VideosdkRPK.removeSubscription("onScreenShare");
+    };
+  }, []);
+
   return (
     <>
       <View
@@ -188,7 +202,6 @@ export default function OneToOneMeetingViewer() {
               style={{
                 justifyContent: "center",
                 marginLeft: 10,
-                // marginTop: 4,
               }}
               onPress={() => {
                 Clipboard.setString(meetingId);
@@ -220,28 +233,34 @@ export default function OneToOneMeetingViewer() {
         </View>
       </View>
       {/* Center */}
-      <View style={{ flex: 1, marginTop: 8, marginBottom: 12 }}>
-        {participantCount > 1 ? (
-          <>
-            {localScreenShareOn ? (
-              <LocalPresenter />
-            ) : (
-              <LargeView participantId={participantIds[1]} />
-            )}
-            <MiniView
-              participantId={
-                participantIds[localScreenShareOn || presenterId ? 1 : 0]
-              }
-            />
-          </>
-        ) : participantCount === 1 ? (
-          <LocalViewContainer participantId={participantIds[0]} />
+      <View style={{ flex: 1, marginVertical: 12 }}>
+        {presenterId && !localScreenShareOn ? (
+          <RemoteParticipantPresenter
+            presenterId={presenterId}
+            participantIdArr={participantIds.splice(0, 2)}
+          />
+        ) : presenterId && localScreenShareOn ? (
+          <LocalParticipantPresenter />
         ) : (
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <ActivityIndicator size={"large"} />
-          </View>
+          Array.from(
+            { length: Math.ceil(participantCount / perRow) },
+            (_, i) => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                  }}
+                >
+                  {participantIds
+                    .slice(i * perRow, (i + 1) * perRow)
+                    .map((participantId) => {
+                      return <ParticipantView participantId={participantId} />;
+                    })}
+                </View>
+              );
+            }
+          )
         )}
       </View>
       <Menu
@@ -355,7 +374,9 @@ export default function OneToOneMeetingViewer() {
             onPress={() => {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
-                toggleScreenShare();
+                Platform.OS === "android"
+                  ? toggleScreenShare()
+                  : VideosdkRPK.startBroadcast();
             }}
           />
         )}
@@ -370,8 +391,8 @@ export default function OneToOneMeetingViewer() {
           icon={<Participants width={22} height={22} />}
           onPress={() => {
             setparticipantListViewer(true);
-            moreOptionsMenu.current.close(false);
             bottomSheetRef.current.show();
+            moreOptionsMenu.current.close();
           }}
         />
       </Menu>
@@ -388,7 +409,6 @@ export default function OneToOneMeetingViewer() {
             return <CallEnd height={26} width={26} fill="#FFF" />;
           }}
           onPress={() => {
-            // leave();
             leaveMenu.current.show();
           }}
         />
@@ -473,7 +493,7 @@ export default function OneToOneMeetingViewer() {
         {chatViewer ? (
           <ChatViewer />
         ) : participantListViewer ? (
-          <ParticipantsViewer participantIds={participantIds} />
+          <ParticipantListViewer participantIds={participantIds} />
         ) : null}
       </BottomSheet>
     </>

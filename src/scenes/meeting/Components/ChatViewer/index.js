@@ -11,10 +11,10 @@ import TextInputContainer from "./TextInput";
 import { useMeeting } from "@videosdk.live/react-native-sdk";
 import Hyperlink from "react-native-hyperlink";
 import moment from "moment";
-import colors from "../../../styles/colors";
-import { ROBOTO_FONTS } from "../../../styles/fonts";
-import { convertRFValue } from "../../../styles/spacing";
 import { usePubSub } from "@videosdk.live/react-native-sdk";
+import colors from "../../../../styles/colors";
+import { ROBOTO_FONTS } from "../../../../styles/fonts";
+import { convertRFValue } from "../../../../styles/spacing";
 
 const ChatViewer = ({}) => {
   const mpubsubRef = useRef();

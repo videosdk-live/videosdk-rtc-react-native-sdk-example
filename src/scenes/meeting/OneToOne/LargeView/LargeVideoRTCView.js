@@ -8,10 +8,12 @@ export default LargeVideoRTCView = ({
   displayName,
   isOn,
   objectFit,
+  isLocal = { isLocal },
 }) => {
   return isOn && stream ? (
     <RTCView
       objectFit={objectFit}
+      mirror={isLocal ? true : false}
       style={{ flex: 1, backgroundColor: "#424242" }}
       streamURL={new MediaStream([stream.track]).toURL()}
     />

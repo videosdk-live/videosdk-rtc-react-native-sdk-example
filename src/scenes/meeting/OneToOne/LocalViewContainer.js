@@ -3,17 +3,17 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import colors from "../../../styles/colors";
 import LargeVideoRTCView from "./LargeView/LargeVideoRTCView";
-import LocalPresenter from "./LocalPresenter";
+import LocalParticipantPresenter from "../Components/LocalParticipantPresenter";
 import MiniVideoRTCView from "./MiniView/MiniVideoRTCView";
 
 export default function LocalViewContainer({ participantId }) {
   const {
     screenShareOn,
-    screenShareStream,
     webcamOn,
     webcamStream,
     displayName,
     setQuality,
+    isLocal,
   } = useParticipant(participantId, {});
 
   useEffect(() => {
@@ -31,16 +31,12 @@ export default function LocalViewContainer({ participantId }) {
     >
       {screenShareOn ? (
         <>
-          {/* <LargeVideoRTCView
-            stream={screenShareStream}
-            isOn={screenShareOn}
-            objectFit={"contain"}
-          /> */}
-          <LocalPresenter />
+          <LocalParticipantPresenter />
           <MiniVideoRTCView
             isOn={webcamOn}
             stream={webcamStream}
             displayName={displayName}
+            isLocal={isLocal}
           />
         </>
       ) : (
@@ -49,6 +45,7 @@ export default function LocalViewContainer({ participantId }) {
           stream={webcamStream}
           displayName={displayName}
           objectFit={"cover"}
+          isLocal={isLocal}
         />
       )}
     </View>
