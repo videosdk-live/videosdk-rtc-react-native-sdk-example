@@ -22,7 +22,14 @@ export default function TextInputContainer({
           backgroundColor: colors.primary[600],
         }}
       >
-        <View style={{ flexDirection: "row", flex: 2 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            flex: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <TextInput
             multiline
             value={message}
@@ -32,6 +39,8 @@ export default function TextInputContainer({
               color: "white",
               marginLeft: 12,
               fontFamily: ROBOTO_FONTS.RobotoMedium,
+              margin: 4,
+              padding: 4,
             }}
             numberOfLines={2}
             onChangeText={setMessage}

@@ -70,7 +70,12 @@ export default function OneToOneMeetingViewer() {
     recordingState,
     enableScreenShare,
     disableScreenShare,
-  } = useMeeting({});
+  } = useMeeting({
+    onError: (data) => {
+      const { code, message } = data;
+      Toast.show(`Error: ${code}: ${message}`);
+    },
+  });
 
   const leaveMenu = useRef();
   const bottomSheetRef = useRef();
@@ -124,17 +129,19 @@ export default function OneToOneMeetingViewer() {
   }, []);
 
   useEffect(() => {
-    VideosdkRPK.addListener("onScreenShare", (event) => {
-      if (event === "START_BROADCAST") {
-        enableScreenShare();
-      } else if (event === "STOP_BROADCAST") {
-        disableScreenShare();
-      }
-    });
+    if (Platform.OS == "ios") {
+      VideosdkRPK.addListener("onScreenShare", (event) => {
+        if (event === "START_BROADCAST") {
+          enableScreenShare();
+        } else if (event === "STOP_BROADCAST") {
+          disableScreenShare();
+        }
+      });
 
-    return () => {
-      VideosdkRPK.removeSubscription("onScreenShare");
-    };
+      return () => {
+        VideosdkRPK.removeSubscription("onScreenShare");
+      };
+    }
   }, []);
 
   useEffect(() => {

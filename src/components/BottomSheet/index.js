@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Animated,
   PanResponder,
+  KeyboardAvoidingView,
 } from "react-native";
 import styles from "./styles";
 
@@ -101,33 +102,40 @@ class BottomSheet extends Component {
 
     return (
       <Modal transparent visible={modalVisible} onRequestClose={onRequestClose}>
-        <View
-          style={[
-            styles.wrapper,
-            { backgroundColor: backgroundColor || "#25252599" },
-          ]}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{
+            flex: 1,
+          }}
         >
-          <TouchableOpacity
-            style={styles.background}
-            activeOpacity={1}
-            onPress={onClose}
-          />
-          <Animated.View
-            {...(draggable && this.panResponder.panHandlers)}
+          <View
             style={[
-              panStyle,
-              styles.container,
-              {
-                height: animatedHeight,
-                borderTopRightRadius: radius || 10,
-                borderTopLeftRadius: radius || 10,
-                backgroundColor: sheetBackgroundColor || "#F3F3F3",
-              },
+              styles.wrapper,
+              { backgroundColor: backgroundColor || "#25252599" },
             ]}
           >
-            {children}
-          </Animated.View>
-        </View>
+            <TouchableOpacity
+              style={styles.background}
+              activeOpacity={1}
+              onPress={onClose}
+            />
+            <Animated.View
+              {...(draggable && this.panResponder.panHandlers)}
+              style={[
+                panStyle,
+                styles.container,
+                {
+                  height: animatedHeight,
+                  borderTopRightRadius: radius || 10,
+                  borderTopLeftRadius: radius || 10,
+                  backgroundColor: sheetBackgroundColor || "#F3F3F3",
+                },
+              ]}
+            >
+              {children}
+            </Animated.View>
+          </View>
+        </KeyboardAvoidingView>
       </Modal>
     );
   }
