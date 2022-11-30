@@ -83,7 +83,11 @@ export default function ConferenceMeetingViewer() {
 
   const participantIds = [...participants.keys()];
 
-  const participantCount = participantIds ? participantIds.length : null;
+  const participantCount = participantIds
+    ? participantIds.length > 6
+      ? 6
+      : participantIds.length
+    : null;
 
   const perRow = participantCount >= 3 ? 2 : 1;
 

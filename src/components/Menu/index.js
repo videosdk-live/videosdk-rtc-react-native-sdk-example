@@ -93,6 +93,7 @@ class Menu extends Component {
       left,
       right,
       fullWidth,
+      bottom
     } = this.props;
     const { animatedHeight, pan, modalVisible } = this.state;
     const panStyle = {
@@ -111,7 +112,7 @@ class Menu extends Component {
             styles.wrapper,
             {
               position: "absolute",
-              bottom: Platform.OS === "android" ? 50 : 80,
+              bottom: bottom ? bottom : Platform.OS === "android" ? 50 : 80,
             },
             fullWidth && {
               flexGrow: 1,

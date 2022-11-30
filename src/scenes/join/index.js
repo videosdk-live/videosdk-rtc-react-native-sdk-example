@@ -84,6 +84,7 @@ export default function Join({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{
         flex: 1,
+        backgroundColor: colors.primary["900"],
       }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -300,6 +301,57 @@ export default function Join({ navigation }) {
               </>
             ) : isVisibleJoinMeetingContainer ? (
               <>
+                <TouchableOpacity
+                  onPress={async () => {
+                    optionRef.current.show();
+                  }}
+                  style={{
+                    height: 50,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#202427",
+                    borderRadius: 12,
+                    marginVertical: 12,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: colors.primary["100"],
+                      fontSize: 16,
+                      fontFamily: ROBOTO_FONTS.RobotoBold,
+                    }}
+                  >
+                    {meetingType.value}
+                  </Text>
+                </TouchableOpacity>
+                <Menu
+                  ref={optionRef}
+                  menuBackgroundColor={colors.primary[700]}
+                  fullWidth
+                  bottom={120}
+                >
+                  {meetingTypes.map((meetingType, index) => {
+                    return (
+                      <>
+                        <MenuItem
+                          title={meetingType.value}
+                          onPress={() => {
+                            optionRef.current.close(true);
+                            setMeetingType(meetingType);
+                          }}
+                        />
+                        {index != meetingTypes.length - 1 && (
+                          <View
+                            style={{
+                              height: 1,
+                              backgroundColor: colors.primary["600"],
+                            }}
+                          />
+                        )}
+                      </>
+                    );
+                  })}
+                </Menu>
                 <TextInputContainer
                   placeholder={"Enter your name"}
                   value={name}
