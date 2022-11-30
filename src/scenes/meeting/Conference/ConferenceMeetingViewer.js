@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -47,6 +47,12 @@ import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
 import VideosdkRPK from "../../../../VideosdkRPK";
 
+const MemoizedParticipant = React.memo(
+  ParticipantView,
+  ({ participantId }, { participantId: oldParticipantId }) =>
+    participantId === oldParticipantId
+);
+
 export default function ConferenceMeetingViewer() {
   const {
     participants,
@@ -83,11 +89,13 @@ export default function ConferenceMeetingViewer() {
 
   const participantIds = [...participants.keys()];
 
-  const participantCount = participantIds
-    ? participantIds.length > 6
-      ? 6
-      : participantIds.length
-    : null;
+  const participantCount = useMemo(() => {
+    return participantIds
+      ? participantIds.length > 6
+        ? 6
+        : participantIds.length
+      : null;
+  }, [participantIds]);
 
   const perRow = participantCount >= 3 ? 2 : 1;
 
@@ -267,7 +275,9 @@ export default function ConferenceMeetingViewer() {
                   {participantIds
                     .slice(i * perRow, (i + 1) * perRow)
                     .map((participantId) => {
-                      return <ParticipantView participantId={participantId} />;
+                      return (
+                        <MemoizedParticipant participantId={participantId} />
+                      );
                     })}
                 </View>
               );
