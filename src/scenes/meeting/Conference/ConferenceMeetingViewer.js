@@ -46,6 +46,7 @@ import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
 import VideosdkRPK from "../../../../VideosdkRPK";
+import { convertRFValue } from "../../../styles/spacing";
 
 const MemoizedParticipant = React.memo(
   ParticipantView,
@@ -245,13 +246,38 @@ export default function ConferenceMeetingViewer() {
             {time}
           </Text>
         </View>
-        <View>
+        <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
+            style={{ marginRight: 12 }}
             onPress={() => {
               changeWebcam();
             }}
           >
             <CameraSwitch height={26} width={26} fill={colors.primary[100]} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setparticipantListViewer(true);
+              bottomSheetRef.current.show();
+            }}
+            activeOpacity={1}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginHorizontal: 8,
+            }}
+          >
+            <Participants height={24} width={24} fill={colors.primary[100]} />
+            <Text
+              style={{
+                fontSize: convertRFValue(14),
+                color: colors.primary[100],
+                marginLeft: 4,
+                fontFamily: ROBOTO_FONTS.RobotoMedium,
+              }}
+            >
+              {participantCount}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -405,21 +431,6 @@ export default function ConferenceMeetingViewer() {
             }}
           />
         )}
-        <View
-          style={{
-            height: 1,
-            backgroundColor: colors.primary["600"],
-          }}
-        />
-        <MenuItem
-          title={"Participants"}
-          icon={<Participants width={22} height={22} />}
-          onPress={() => {
-            setparticipantListViewer(true);
-            bottomSheetRef.current.show();
-            moreOptionsMenu.current.close();
-          }}
-        />
       </Menu>
       {/* Bottom */}
       <View
