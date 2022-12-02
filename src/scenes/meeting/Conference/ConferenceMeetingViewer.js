@@ -93,7 +93,12 @@ export default function ConferenceMeetingViewer() {
   const recordingRef = useRef();
 
   const participantIds = useMemo(() => {
-    const regularParticipants = [...participants.keys()].filter(
+    const pinnedParticipantId = [...pinnedParticipants.keys()].filter(
+      (participantId) => {
+        return participantId != localParticipant.id;
+      }
+    );
+    const regularParticipantIds = [...participants.keys()].filter(
       (participantId) => {
         return (
           ![...pinnedParticipants.keys()].includes(participantId) &&
@@ -103,10 +108,10 @@ export default function ConferenceMeetingViewer() {
     );
     const ids = [
       localParticipant.id,
-      ...pinnedParticipants.keys(),
-      ...regularParticipants,
+      ...pinnedParticipantId,
+      ...regularParticipantIds,
     ].slice(0, 6);
-    console.log(ids);
+
     // const ids = [...participants.keys()].slice(0, 6);
     if (activeSpeakerId) {
       if (!ids.includes(activeSpeakerId)) {
