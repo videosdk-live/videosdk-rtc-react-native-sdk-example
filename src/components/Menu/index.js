@@ -24,27 +24,28 @@ class Menu extends Component {
   setModalVisible(visible, withAnimation) {
     const { closeFunction, height } = this.props;
     const { animatedHeight, pan } = this.state;
-    if (visible) {
-      this.setState({ modalVisible: visible });
-      Animated.timing(animatedHeight, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.timing(animatedHeight, {
-        toValue: 0,
-        duration: withAnimation ? 400 : 0,
-        useNativeDriver: false,
-      }).start(() => {
-        pan.setValue({ x: 0, y: 0 });
-        this.setState({
-          modalVisible: visible,
-          animatedHeight: new Animated.Value(0),
-        });
-        if (typeof closeFunction === "function") closeFunction();
-      });
-    }
+    this.setState({
+      modalVisible: visible,
+      animatedHeight: new Animated.Value(0),
+    });
+    // if (visible) {
+    //   this.setState({ modalVisible: visible });
+    //   Animated.timing(animatedHeight, {
+    //     toValue: height,
+    //     duration: 300,
+    //     useNativeDriver: false,
+    //   }).start();
+    // } else {
+    //   Animated.timing(animatedHeight, {
+    //     toValue: 0,
+    //     duration: withAnimation ? 400 : 0,
+    //     useNativeDriver: false,
+    //   }).start(() => {
+    //     pan.setValue({ x: 0, y: 0 });
+       
+    //     if (typeof closeFunction === "function") closeFunction();
+    //   });
+    // }
   }
 
   createPanResponder(props) {

@@ -103,11 +103,11 @@ function ParticipantListItem({ participantId }) {
 
         <IconContainer
           style={{
-            borderWidth: !webcamOn ? 1 : 0,
-            backgroundColor: !webcamOn ? "transparent" : "#FF5D5D",
+            borderWidth: webcamOn ? 1 : 0,
+            backgroundColor: webcamOn ? "transparent" : "#FF5D5D",
           }}
           Icon={() => {
-            return !webcamOn ? (
+            return webcamOn ? (
               <VideoOn height={16} width={16} fill={colors.primary[100]} />
             ) : (
               <VideoOff width={24} height={24} fill={colors.primary[100]} />
