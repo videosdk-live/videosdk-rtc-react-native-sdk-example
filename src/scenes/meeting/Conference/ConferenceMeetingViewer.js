@@ -257,7 +257,7 @@ export default function ConferenceMeetingViewer() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setparticipantListViewer(true);
+              setBottomSheetView("PARTICIPANT_LIST")
               bottomSheetRef.current.show();
             }}
             activeOpacity={1}
