@@ -32,7 +32,7 @@ function ParticipantListViewer({ participantIds }) {
       </View>
       <FlatList
         data={participantIds}
-        keyExtractor={({ item }) => `${item}_participant`}
+        keyExtractor={(item) => `${item}_participant`}
         style={{ marginBottom: 4 }}
         renderItem={({ item }) => {
           return <ParticipantListItem participantId={item} />;

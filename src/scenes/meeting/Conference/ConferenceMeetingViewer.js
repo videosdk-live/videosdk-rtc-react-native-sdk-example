@@ -73,6 +73,7 @@ export default function ConferenceMeetingViewer() {
     recordingState,
     enableScreenShare,
     disableScreenShare,
+    activeSpeakerId,
   } = useMeeting({
     onError: (data) => {
       const { code, message } = data;
@@ -87,15 +88,17 @@ export default function ConferenceMeetingViewer() {
   const moreOptionsMenu = useRef();
   const recordingRef = useRef();
 
-  const participantIds = [...participants.keys()];
+  const participantIds = useMemo(() => {
+    const ids = [...participants.keys()].slice(0, 6);
+    if (activeSpeakerId) {
+      if (!ids.includes(activeSpeakerId)) {
+        ids[ids.length - 1] = activeSpeakerId;
+      }
+    }
+    return ids;
+  }, [participants, activeSpeakerId]);
 
-  const participantCount = useMemo(() => {
-    return participantIds
-      ? participantIds.length > 6
-        ? 6
-        : participantIds.length
-      : null;
-  }, [participantIds]);
+  const participantCount = participantIds.length;
 
   const perRow = participantCount >= 3 ? 2 : 1;
 
@@ -132,7 +135,7 @@ export default function ConferenceMeetingViewer() {
     setAudioDevice(devices);
   }
   useEffect(() => {
-    startTimer();
+    // startTimer();
     return () => {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
@@ -502,7 +505,7 @@ export default function ConferenceMeetingViewer() {
       </View>
       <BottomSheet
         sheetBackgroundColor={"#2B3034"}
-        draggable={true}
+        draggable={false}
         radius={12}
         hasDraggableIcon
         closeFunction={() => {
@@ -515,7 +518,7 @@ export default function ConferenceMeetingViewer() {
         {chatViewer ? (
           <ChatViewer />
         ) : participantListViewer ? (
-          <ParticipantListViewer participantIds={participantIds} />
+          <ParticipantListViewer participantIds={[...participants.keys()]} />
         ) : null}
       </BottomSheet>
     </>
