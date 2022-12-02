@@ -57,7 +57,9 @@ import { MemoizedParticipantGrid } from "./ConferenceParticipantGrid";
 
 export default function ConferenceMeetingViewer() {
   const {
+    localParticipant,
     participants,
+    pinnedParticipants,
     localWebcamOn,
     localMicOn,
     leave,
@@ -91,18 +93,25 @@ export default function ConferenceMeetingViewer() {
   const recordingRef = useRef();
 
   const participantIds = useMemo(() => {
-    const ids = [...participants.keys()].slice(0, 6);
-    // if (activeSpeakerId) {
-    //   if (!ids.includes(activeSpeakerId)) {
-    //     ids[ids.length - 1] = activeSpeakerId;
-    //   }
-    // }
+    const regularParticipants = [...participants.keys()].filter(
+      (participantId) => {
+        return (
+          ![...pinnedParticipants.keys()].includes(participantId) &&
+          localParticipant.id != participantId
+        );
+      }
+    );
+    const ids = [
+      localParticipant.id,
+      ...pinnedParticipants.keys(),
+      ...regularParticipants,
+    ].slice(0, 6);
+    // const ids = [...participants.keys()].slice(0, 6);
+    if (!ids.includes(activeSpeakerId)) {
+      ids[ids.length - 1] = activeSpeakerId;
+    }
     return ids;
-  }, [participants, activeSpeakerId]);
-
-  // useEffect(() => {
-  //   console.log("PARTICIPANT IDS CHANGED === ", participantIds);
-  // }, [participantIds]);
+  }, [participants, activeSpeakerId, pinnedParticipants]);
 
   const [bottomSheetView, setBottomSheetView] = useState("");
 
@@ -257,7 +266,7 @@ export default function ConferenceMeetingViewer() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setBottomSheetView("PARTICIPANT_LIST")
+              setBottomSheetView("PARTICIPANT_LIST");
               bottomSheetRef.current.show();
             }}
             activeOpacity={1}

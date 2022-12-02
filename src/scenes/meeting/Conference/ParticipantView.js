@@ -11,8 +11,6 @@ import Avatar from "../../../components/Avatar";
 import { MicOff } from "../../../assets/icons";
 
 export default function ParticipantView({ participantId, quality }) {
-  const onStreamEnabled = (stream) => {};
-  const onStreamDisabled = (stream) => {};
   const {
     displayName,
     webcamStream,
@@ -21,17 +19,7 @@ export default function ParticipantView({ participantId, quality }) {
     isLocal,
     setQuality,
     isActiveSpeaker,
-  } = useParticipant(participantId, {
-    onStreamEnabled,
-    onStreamDisabled,
-  });
-
-  useEffect(() => {
-    typeof webcamStream?.resume === "function" && webcamStream?.resume();
-    return () => {
-      typeof webcamStream?.pause === "function" && webcamStream?.pause();
-    };
-  }, []);
+  } = useParticipant(participantId, {});
 
   useEffect(() => {
     if (quality) {

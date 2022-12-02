@@ -5,9 +5,12 @@ import ParticipantView from "./ParticipantView";
 const MemoizedParticipant = React.memo(
   ParticipantView,
   (
-    { participantId, quality },
-    { participantId: oldParticipantId, quality: oldQuality }
-  ) => participantId === oldParticipantId && quality === oldQuality
+    { participantId, quality, key },
+    { participantId: oldParticipantId, quality: oldQuality, key: oldkey }
+  ) =>
+    participantId === oldParticipantId &&
+    quality === oldQuality &&
+    key === oldkey
 );
 
 function ConferenceParticipantGrid({ participantIds }) {
@@ -32,6 +35,7 @@ function ConferenceParticipantGrid({ participantIds }) {
             .map((participantId) => {
               return (
                 <MemoizedParticipant
+                  key={participantId}
                   participantId={participantId}
                   quality={quality}
                 />
