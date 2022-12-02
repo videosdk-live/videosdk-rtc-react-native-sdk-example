@@ -10,7 +10,7 @@ import colors from "../../../styles/colors";
 import Avatar from "../../../components/Avatar";
 import { MicOff } from "../../../assets/icons";
 
-export default function ParticipantView({ participantId }) {
+export default function ParticipantView({ participantId, quality }) {
   const onStreamEnabled = (stream) => {};
   const onStreamDisabled = (stream) => {};
   const {
@@ -32,6 +32,12 @@ export default function ParticipantView({ participantId }) {
       typeof webcamStream?.pause === "function" && webcamStream?.pause();
     };
   }, []);
+
+  useEffect(() => {
+    if (quality) {
+      setQuality(quality);
+    }
+  }, [quality]);
 
   const MicStatusComponent = () => {
     return (

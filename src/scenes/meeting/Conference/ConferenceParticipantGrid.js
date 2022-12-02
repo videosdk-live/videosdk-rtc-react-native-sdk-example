@@ -4,16 +4,18 @@ import ParticipantView from "./ParticipantView";
 
 const MemoizedParticipant = React.memo(
   ParticipantView,
-  ({ participantId }, { participantId: oldParticipantId }) =>
-    participantId === oldParticipantId
+  (
+    { participantId, quality },
+    { participantId: oldParticipantId, quality: oldQuality }
+  ) => participantId === oldParticipantId && quality === oldQuality
 );
 
 function ConferenceParticipantGrid({ participantIds }) {
   const participantCount = participantIds.length;
 
   const perRow = participantCount >= 3 ? 2 : 1;
-
-  console.log("NEW COMPONENT === ", participantIds);
+  const quality =
+    participantCount > 4 ? "low" : participantCount > 2 ? "med" : "high";
 
   return Array.from(
     { length: Math.ceil(participantCount / perRow) },
@@ -28,7 +30,12 @@ function ConferenceParticipantGrid({ participantIds }) {
           {participantIds
             .slice(i * perRow, (i + 1) * perRow)
             .map((participantId) => {
-              return <ParticipantView participantId={participantId} />;
+              return (
+                <MemoizedParticipant
+                  participantId={participantId}
+                  quality={quality}
+                />
+              );
             })}
         </View>
       );

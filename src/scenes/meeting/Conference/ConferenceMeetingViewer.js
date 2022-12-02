@@ -46,12 +46,7 @@ import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
 import VideosdkRPK from "../../../../VideosdkRPK";
-
-const MemoizedParticipant = React.memo(
-  ParticipantView,
-  ({ participantId }, { participantId: oldParticipantId }) =>
-    participantId === oldParticipantId
-);
+import { MemoizedParticipantGrid } from "./ConferenceParticipantGrid";
 
 export default function ConferenceMeetingViewer() {
   const {
@@ -90,20 +85,19 @@ export default function ConferenceMeetingViewer() {
 
   const participantIds = useMemo(() => {
     const ids = [...participants.keys()].slice(0, 6);
-    if (activeSpeakerId) {
-      if (!ids.includes(activeSpeakerId)) {
-        ids[ids.length - 1] = activeSpeakerId;
-      }
-    }
+    // if (activeSpeakerId) {
+    //   if (!ids.includes(activeSpeakerId)) {
+    //     ids[ids.length - 1] = activeSpeakerId;
+    //   }
+    // }
     return ids;
   }, [participants, activeSpeakerId]);
 
-  const participantCount = participantIds.length;
+  // useEffect(() => {
+  //   console.log("PARTICIPANT IDS CHANGED === ", participantIds);
+  // }, [participantIds]);
 
-  const perRow = participantCount >= 3 ? 2 : 1;
-
-  const [chatViewer, setchatViewer] = useState(false);
-  const [participantListViewer, setparticipantListViewer] = useState(false);
+  const [bottomSheetView, setBottomSheetView] = useState("");
 
   const [time, setTime] = useState("00:00");
   const timerIntervalRef = useRef();
@@ -134,14 +128,14 @@ export default function ConferenceMeetingViewer() {
     const devices = await getAudioDeviceList();
     setAudioDevice(devices);
   }
-  useEffect(() => {
-    // startTimer();
-    return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  // startTimer();
+  //   return () => {
+  //     if (timerIntervalRef.current) {
+  //       clearInterval(timerIntervalRef.current);
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (recordingRef.current) {
@@ -265,27 +259,7 @@ export default function ConferenceMeetingViewer() {
         ) : presenterId && localScreenShareOn ? (
           <LocalParticipantPresenter />
         ) : (
-          Array.from(
-            { length: Math.ceil(participantCount / perRow) },
-            (_, i) => {
-              return (
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                  }}
-                >
-                  {participantIds
-                    .slice(i * perRow, (i + 1) * perRow)
-                    .map((participantId) => {
-                      return (
-                        <MemoizedParticipant participantId={participantId} />
-                      );
-                    })}
-                </View>
-              );
-            }
-          )
+          <MemoizedParticipantGrid participantIds={participantIds} />
         )}
       </View>
       <Menu
@@ -415,7 +389,7 @@ export default function ConferenceMeetingViewer() {
           title={"Participants"}
           icon={<Participants width={22} height={22} />}
           onPress={() => {
-            setparticipantListViewer(true);
+            setBottomSheetView("PARTICIPANT_LIST");
             bottomSheetRef.current.show();
             moreOptionsMenu.current.close();
           }}
@@ -478,7 +452,7 @@ export default function ConferenceMeetingViewer() {
         />
         <IconContainer
           onPress={() => {
-            setchatViewer(true);
+            setBottomSheetView("CHAT");
             bottomSheetRef.current.show();
           }}
           style={{
@@ -509,15 +483,14 @@ export default function ConferenceMeetingViewer() {
         radius={12}
         hasDraggableIcon
         closeFunction={() => {
-          setparticipantListViewer(false);
-          setchatViewer(false);
+          setBottomSheetView("");
         }}
         ref={bottomSheetRef}
         height={Dimensions.get("window").height * 0.5}
       >
-        {chatViewer ? (
+        {bottomSheetView === "CHAT" ? (
           <ChatViewer />
-        ) : participantListViewer ? (
+        ) : bottomSheetView === "PARTICIPANT_LIST" ? (
           <ParticipantListViewer participantIds={[...participants.keys()]} />
         ) : null}
       </BottomSheet>
