@@ -106,9 +106,12 @@ export default function ConferenceMeetingViewer() {
       ...pinnedParticipants.keys(),
       ...regularParticipants,
     ].slice(0, 6);
+    console.log(ids);
     // const ids = [...participants.keys()].slice(0, 6);
-    if (!ids.includes(activeSpeakerId)) {
-      ids[ids.length - 1] = activeSpeakerId;
+    if (activeSpeakerId) {
+      if (!ids.includes(activeSpeakerId)) {
+        ids[ids.length - 1] = activeSpeakerId;
+      }
     }
     return ids;
   }, [participants, activeSpeakerId, pinnedParticipants]);
