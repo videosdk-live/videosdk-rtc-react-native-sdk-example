@@ -11,9 +11,11 @@ export default LocalParticipantPresenter = ({}) => {
   return (
     <View
       style={{
-        flex: 1,
+        flex: 3,
         backgroundColor: colors.primary[800],
         justifyContent: "center",
+        borderRadius: 8,
+        margin: 4,
       }}
     >
       <View

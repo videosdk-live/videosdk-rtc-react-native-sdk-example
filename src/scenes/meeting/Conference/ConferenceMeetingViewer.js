@@ -112,14 +112,7 @@ export default function ConferenceMeetingViewer() {
       localParticipant.id,
       ...pinnedParticipantId,
       ...regularParticipantIds,
-    ].slice(
-      0,
-      presenterId && !localScreenShareOn
-        ? 2
-        : presenterId && localScreenShareOn
-        ? 1
-        : 6
-    );
+    ].slice(0, presenterId ? 2 : 6);
 
     if (activeSpeakerId) {
       if (!ids.includes(activeSpeakerId)) {
