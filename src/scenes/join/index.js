@@ -28,7 +28,7 @@ export default function Join({ navigation }) {
   const [micOn, setMicon] = useState(true);
   const [videoOn, setVideoOn] = useState(true);
   const [name, setName] = useState("");
-  const [meetingId, setMeetingId] = useState("qsxd-xolb-5k7f");
+  const [meetingId, setMeetingId] = useState("");
 
   const meetingTypes = [
     { key: "ONE_TO_ONE", value: "One to One Meeting" },
