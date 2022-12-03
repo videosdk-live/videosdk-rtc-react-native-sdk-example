@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import ParticipantView from "./ParticipantView";
+import PauseInvisibleParticipants from "./PauseInvisibleParticipant";
 
 const MemoizedParticipant = React.memo(
   ParticipantView,
@@ -19,31 +20,32 @@ function ConferenceParticipantGrid({ participantIds }) {
   const perRow = participantCount >= 3 ? 2 : 1;
   const quality =
     participantCount > 4 ? "low" : participantCount > 2 ? "med" : "high";
-
-  return Array.from(
-    { length: Math.ceil(participantCount / perRow) },
-    (_, i) => {
-      return (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-          }}
-        >
-          {participantIds
-            .slice(i * perRow, (i + 1) * perRow)
-            .map((participantId) => {
-              return (
-                <MemoizedParticipant
-                  key={participantId}
-                  participantId={participantId}
-                  quality={quality}
-                />
-              );
-            })}
-        </View>
-      );
-    }
+  return (
+    <>
+      <PauseInvisibleParticipants visibleParticipantIds={participantIds} />
+      {Array.from({ length: Math.ceil(participantCount / perRow) }, (_, i) => {
+        return (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+            }}
+          >
+            {participantIds
+              .slice(i * perRow, (i + 1) * perRow)
+              .map((participantId) => {
+                return (
+                  <MemoizedParticipant
+                    key={participantId}
+                    participantId={participantId}
+                    quality={quality}
+                  />
+                );
+              })}
+          </View>
+        );
+      })}
+    </>
   );
 }
 
