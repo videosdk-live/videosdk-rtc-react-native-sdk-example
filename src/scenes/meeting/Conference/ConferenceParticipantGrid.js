@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { useOrientation } from "../../../utils/useOrientation";
 import ParticipantView from "./ParticipantView";
 import PauseInvisibleParticipants from "./PauseInvisibleParticipant";
 
@@ -14,10 +15,10 @@ const MemoizedParticipant = React.memo(
     key === oldkey
 );
 
-function ConferenceParticipantGrid({ participantIds }) {
+function ConferenceParticipantGrid({ participantIds, isPresenting }) {
+  const orientation = useOrientation();
   const participantCount = participantIds.length;
-
-  const perRow = participantCount >= 3 ? 2 : 1;
+  const perRow = isPresenting ? 2 : participantCount >= 3 ? 2 : 1;
   const quality =
     participantCount > 4 ? "low" : participantCount > 2 ? "med" : "high";
   return (
@@ -28,7 +29,7 @@ function ConferenceParticipantGrid({ participantIds }) {
           <View
             style={{
               flex: 1,
-              flexDirection: "row",
+              flexDirection: orientation == "PORTRAIT" ? "row" : "column",
             }}
           >
             {participantIds
@@ -51,6 +52,10 @@ function ConferenceParticipantGrid({ participantIds }) {
 
 export const MemoizedParticipantGrid = React.memo(
   ConferenceParticipantGrid,
-  ({ participantIds }, { participantIds: oldParticipantIds }) =>
-    JSON.stringify(participantIds) === JSON.stringify(oldParticipantIds)
+  (
+    { participantIds, isPresenting },
+    { participantIds: oldParticipantIds, isPresenting: oldIsPresenting }
+  ) =>
+    JSON.stringify(participantIds) === JSON.stringify(oldParticipantIds) &&
+    isPresenting === oldIsPresenting
 );
