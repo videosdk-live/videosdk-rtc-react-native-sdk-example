@@ -54,6 +54,7 @@ const MemoizedParticipant = React.memo(
     participantId === oldParticipantId
 );
 import { MemoizedParticipantGrid } from "./ConferenceParticipantGrid";
+import { useOrientation } from "../../../utils/useOrientation";
 
 export default function ConferenceMeetingViewer() {
   const {
@@ -91,6 +92,7 @@ export default function ConferenceMeetingViewer() {
   const audioDeviceMenuRef = useRef();
   const moreOptionsMenu = useRef();
   const recordingRef = useRef();
+  const orientation = useOrientation();
 
   const participantIds = useMemo(() => {
     const pinnedParticipantId = [...pinnedParticipants.keys()].filter(
@@ -110,16 +112,28 @@ export default function ConferenceMeetingViewer() {
       localParticipant.id,
       ...pinnedParticipantId,
       ...regularParticipantIds,
-    ].slice(0, 6);
+    ].slice(
+      0,
+      presenterId && !localScreenShareOn
+        ? 2
+        : presenterId && localScreenShareOn
+        ? 1
+        : 6
+    );
 
-    // const ids = [...participants.keys()].slice(0, 6);
     if (activeSpeakerId) {
       if (!ids.includes(activeSpeakerId)) {
         ids[ids.length - 1] = activeSpeakerId;
       }
     }
     return ids;
-  }, [participants, activeSpeakerId, pinnedParticipants]);
+  }, [
+    participants,
+    activeSpeakerId,
+    pinnedParticipants,
+    presenterId,
+    localScreenShareOn,
+  ]);
 
   const [bottomSheetView, setBottomSheetView] = useState("");
 
@@ -259,17 +273,23 @@ export default function ConferenceMeetingViewer() {
         </View>
       </View>
       {/* Center */}
-      <View style={{ flex: 1, marginVertical: 12 }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: orientation == "PORTRAIT" ? "column" : "row",
+          marginVertical: 12,
+        }}
+      >
         {presenterId && !localScreenShareOn ? (
-          <RemoteParticipantPresenter
-            presenterId={presenterId}
-            participantIdArr={participantIds.splice(0, 2)}
-          />
+          <RemoteParticipantPresenter presenterId={presenterId} />
         ) : presenterId && localScreenShareOn ? (
           <LocalParticipantPresenter />
-        ) : (
-          <MemoizedParticipantGrid participantIds={participantIds} />
-        )}
+        ) : null}
+
+        <MemoizedParticipantGrid
+          participantIds={participantIds}
+          isPresenting={presenterId != null}
+        />
       </View>
       <Menu
         ref={leaveMenu}
