@@ -185,7 +185,8 @@ export default function ConferenceMeetingViewer() {
       });
 
       return () => {
-        VideosdkRPK.removeSubscription("onScreenShare");
+        VideosdkRPK.removeAllListeners("onScreenShare");
+        // VideosdkRPK.removeSubscription("onScreenShare");
       };
     }
   }, []);

@@ -52,7 +52,7 @@ class VideosdkRPK: RCTEventEmitter {
   @objc func startBroadcastCallback(notification: NSNotification){
     status = "START_BROADCAST"
     sendEvent(withName: "onScreenShare", body: status)
-    
+    status="STARTED_BROADCASTING"
   }
   
   
