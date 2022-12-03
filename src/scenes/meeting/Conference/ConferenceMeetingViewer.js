@@ -123,43 +123,12 @@ export default function ConferenceMeetingViewer() {
 
   const [bottomSheetView, setBottomSheetView] = useState("");
 
-  const [time, setTime] = useState("00:00");
-  const timerIntervalRef = useRef();
   const [audioDevice, setAudioDevice] = useState([]);
-
-  async function startTimer() {
-    const token = await getToken();
-    const session = await fetchSession({ meetingId: meeting.id, token: token });
-    if (!timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
-    }
-    timerIntervalRef.current = setInterval(() => {
-      try {
-        const date = new Date(session.start);
-        const diffTime = Math.abs(new Date() - date);
-        const time =
-          Math.trunc(Math.trunc(diffTime / 1000) / 60)
-            .toString()
-            .padStart(2, "0") +
-          ":" +
-          (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
-        setTime(time);
-      } catch (error) {}
-    }, 1000);
-  }
 
   async function updateAudioDeviceList() {
     const devices = await getAudioDeviceList();
     setAudioDevice(devices);
   }
-  // useEffect(() => {
-  // startTimer();
-  //   return () => {
-  //     if (timerIntervalRef.current) {
-  //       clearInterval(timerIntervalRef.current);
-  //     }
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (recordingRef.current) {
@@ -253,16 +222,6 @@ export default function ConferenceMeetingViewer() {
               <Copy fill={colors.primary[100]} width={18} height={18} />
             </TouchableOpacity>
           </View>
-
-          <Text
-            style={{
-              color: "#9A9FA5",
-              fontSize: 14,
-              fontFamily: ROBOTO_FONTS.RobotoMedium,
-            }}
-          >
-            {time}
-          </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
