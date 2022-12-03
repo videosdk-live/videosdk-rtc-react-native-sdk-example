@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -46,10 +46,20 @@ import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
 import VideosdkRPK from "../../../../VideosdkRPK";
+import { convertRFValue } from "../../../styles/spacing";
+
+const MemoizedParticipant = React.memo(
+  ParticipantView,
+  ({ participantId }, { participantId: oldParticipantId }) =>
+    participantId === oldParticipantId
+);
+import { MemoizedParticipantGrid } from "./ConferenceParticipantGrid";
 
 export default function ConferenceMeetingViewer() {
   const {
+    localParticipant,
     participants,
+    pinnedParticipants,
     localWebcamOn,
     localMicOn,
     leave,
@@ -67,6 +77,7 @@ export default function ConferenceMeetingViewer() {
     recordingState,
     enableScreenShare,
     disableScreenShare,
+    activeSpeakerId,
   } = useMeeting({
     onError: (data) => {
       const { code, message } = data;
@@ -81,56 +92,43 @@ export default function ConferenceMeetingViewer() {
   const moreOptionsMenu = useRef();
   const recordingRef = useRef();
 
-  const participantIds = [...participants.keys()];
+  const participantIds = useMemo(() => {
+    const pinnedParticipantId = [...pinnedParticipants.keys()].filter(
+      (participantId) => {
+        return participantId != localParticipant.id;
+      }
+    );
+    const regularParticipantIds = [...participants.keys()].filter(
+      (participantId) => {
+        return (
+          ![...pinnedParticipants.keys()].includes(participantId) &&
+          localParticipant.id != participantId
+        );
+      }
+    );
+    const ids = [
+      localParticipant.id,
+      ...pinnedParticipantId,
+      ...regularParticipantIds,
+    ].slice(0, 6);
 
-  const participantCount = participantIds
-    ? participantIds.length > 6
-      ? 6
-      : participantIds.length
-    : null;
-
-  const perRow = participantCount >= 3 ? 2 : 1;
-
-  const [chatViewer, setchatViewer] = useState(false);
-  const [participantListViewer, setparticipantListViewer] = useState(false);
-
-  const [time, setTime] = useState("00:00");
-  const timerIntervalRef = useRef();
-  const [audioDevice, setAudioDevice] = useState([]);
-
-  async function startTimer() {
-    const token = await getToken();
-    const session = await fetchSession({ meetingId: meeting.id, token: token });
-    if (!timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
+    // const ids = [...participants.keys()].slice(0, 6);
+    if (activeSpeakerId) {
+      if (!ids.includes(activeSpeakerId)) {
+        ids[ids.length - 1] = activeSpeakerId;
+      }
     }
-    timerIntervalRef.current = setInterval(() => {
-      try {
-        const date = new Date(session.start);
-        const diffTime = Math.abs(new Date() - date);
-        const time =
-          Math.trunc(Math.trunc(diffTime / 1000) / 60)
-            .toString()
-            .padStart(2, "0") +
-          ":" +
-          (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
-        setTime(time);
-      } catch (error) {}
-    }, 1000);
-  }
+    return ids;
+  }, [participants, activeSpeakerId, pinnedParticipants]);
+
+  const [bottomSheetView, setBottomSheetView] = useState("");
+
+  const [audioDevice, setAudioDevice] = useState([]);
 
   async function updateAudioDeviceList() {
     const devices = await getAudioDeviceList();
     setAudioDevice(devices);
   }
-  useEffect(() => {
-    startTimer();
-    return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (recordingRef.current) {
@@ -156,7 +154,8 @@ export default function ConferenceMeetingViewer() {
       });
 
       return () => {
-        VideosdkRPK.removeSubscription("onScreenShare");
+        VideosdkRPK.removeAllListeners("onScreenShare");
+        // VideosdkRPK.removeSubscription("onScreenShare");
       };
     }
   }, []);
@@ -223,24 +222,39 @@ export default function ConferenceMeetingViewer() {
               <Copy fill={colors.primary[100]} width={18} height={18} />
             </TouchableOpacity>
           </View>
-
-          <Text
-            style={{
-              color: "#9A9FA5",
-              fontSize: 14,
-              fontFamily: ROBOTO_FONTS.RobotoMedium,
-            }}
-          >
-            {time}
-          </Text>
         </View>
-        <View>
+        <View style={{ flexDirection: "row" }}>
           <TouchableOpacity
+            style={{ marginRight: 12 }}
             onPress={() => {
               changeWebcam();
             }}
           >
             <CameraSwitch height={26} width={26} fill={colors.primary[100]} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setBottomSheetView("PARTICIPANT_LIST");
+              bottomSheetRef.current.show();
+            }}
+            activeOpacity={1}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginHorizontal: 8,
+            }}
+          >
+            <Participants height={24} width={24} fill={colors.primary[100]} />
+            <Text
+              style={{
+                fontSize: convertRFValue(14),
+                color: colors.primary[100],
+                marginLeft: 4,
+                fontFamily: ROBOTO_FONTS.RobotoMedium,
+              }}
+            >
+              {participants ? [...participants.keys()].length : 1}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -254,25 +268,7 @@ export default function ConferenceMeetingViewer() {
         ) : presenterId && localScreenShareOn ? (
           <LocalParticipantPresenter />
         ) : (
-          Array.from(
-            { length: Math.ceil(participantCount / perRow) },
-            (_, i) => {
-              return (
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                  }}
-                >
-                  {participantIds
-                    .slice(i * perRow, (i + 1) * perRow)
-                    .map((participantId) => {
-                      return <ParticipantView participantId={participantId} />;
-                    })}
-                </View>
-              );
-            }
-          )
+          <MemoizedParticipantGrid participantIds={participantIds} />
         )}
       </View>
       <Menu
@@ -392,21 +388,6 @@ export default function ConferenceMeetingViewer() {
             }}
           />
         )}
-        <View
-          style={{
-            height: 1,
-            backgroundColor: colors.primary["600"],
-          }}
-        />
-        <MenuItem
-          title={"Participants"}
-          icon={<Participants width={22} height={22} />}
-          onPress={() => {
-            setparticipantListViewer(true);
-            bottomSheetRef.current.show();
-            moreOptionsMenu.current.close();
-          }}
-        />
       </Menu>
       {/* Bottom */}
       <View
@@ -465,7 +446,7 @@ export default function ConferenceMeetingViewer() {
         />
         <IconContainer
           onPress={() => {
-            setchatViewer(true);
+            setBottomSheetView("CHAT");
             bottomSheetRef.current.show();
           }}
           style={{
@@ -492,20 +473,19 @@ export default function ConferenceMeetingViewer() {
       </View>
       <BottomSheet
         sheetBackgroundColor={"#2B3034"}
-        draggable={true}
+        draggable={false}
         radius={12}
         hasDraggableIcon
         closeFunction={() => {
-          setparticipantListViewer(false);
-          setchatViewer(false);
+          setBottomSheetView("");
         }}
         ref={bottomSheetRef}
         height={Dimensions.get("window").height * 0.5}
       >
-        {chatViewer ? (
+        {bottomSheetView === "CHAT" ? (
           <ChatViewer />
-        ) : participantListViewer ? (
-          <ParticipantListViewer participantIds={participantIds} />
+        ) : bottomSheetView === "PARTICIPANT_LIST" ? (
+          <ParticipantListViewer participantIds={[...participants.keys()]} />
         ) : null}
       </BottomSheet>
     </>

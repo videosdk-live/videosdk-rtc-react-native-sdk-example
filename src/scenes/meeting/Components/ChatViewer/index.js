@@ -81,7 +81,7 @@ const ChatViewer = ({}) => {
             data={mpubsub.messages}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, i }) => {
-              const { message, senderId, id, timestamp } = item;
+              const { message, senderId, timestamp, senderName } = item;
               const localSender = localParticipantId === senderId;
               const time = moment(timestamp).format("hh:mm a");
               return (

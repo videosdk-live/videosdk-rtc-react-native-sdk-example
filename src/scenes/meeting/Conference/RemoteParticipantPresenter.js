@@ -99,6 +99,7 @@ export default function RemoteParticipantPresenter({
         {participantIdArr.map((participantId) => {
           return (
             <View
+              key={participantId}
               style={{
                 flex: 2,
               }}
