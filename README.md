@@ -394,7 +394,7 @@ If you want to learn more about the SDK, read the Complete Documentation of [Rea
 
 > **Note :**
 >
-> - **master** branch: Better UI with One-to-One call experience.
+> - **main** branch: Better UI with One-to-One call experience.
 > - **v1-code-sample** branch: Simple UI with Group call experience.
 
 <br/>
