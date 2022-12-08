@@ -1,5 +1,5 @@
 import { RTCView, mediaDevices } from "@videosdk.live/react-native-sdk";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   SafeAreaView,
   View,
@@ -42,21 +42,32 @@ export default function Join({ navigation }) {
   const [isVisibleJoinMeetingContainer, setisVisibleJoinMeetingContainer] =
     useState(false);
 
-  useEffect(() => {
-    mediaDevices
-      .getUserMedia({ audio: false, video: true })
-      .then((stream) => {
-        setTrack(stream.toURL());
-      })
-      .catch((e) => {
-        console.log(e);
+  const disposeVideoTrack = () => {
+    setTrack((stream) => {
+      stream.getTracks().forEach((track) => {
+        track.enabled = false;
+        return track;
       });
-  }, []);
+    });
+  };
 
   const optionRef = useRef();
   const isMainScreen = () => {
     return !isVisibleJoinMeetingContainer && !isVisibleCreateMeetingContainer;
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      mediaDevices
+        .getUserMedia({ audio: false, video: true })
+        .then((stream) => {
+          setTrack(stream);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }, [])
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -115,9 +126,9 @@ export default function Join({ navigation }) {
                   overflow: "hidden",
                 }}
               >
-                {videoOn ? (
+                {videoOn && tracks ? (
                   <RTCView
-                    streamURL={tracks}
+                    streamURL={tracks.toURL()}
                     objectFit={"cover"}
                     mirror={true}
                     style={{
@@ -288,6 +299,7 @@ export default function Join({ navigation }) {
                     }
                     const token = await getToken();
                     let meetingId = await createMeeting({ token: token });
+                    disposeVideoTrack();
                     navigation.navigate(SCREEN_NAMES.Meeting, {
                       name: name.trim(),
                       token: token,
@@ -380,6 +392,7 @@ export default function Join({ navigation }) {
                       meetingId: meetingId.trim(),
                     });
                     if (valid) {
+                      disposeVideoTrack();
                       navigation.navigate(SCREEN_NAMES.Meeting, {
                         name: name.trim(),
                         token: token,
