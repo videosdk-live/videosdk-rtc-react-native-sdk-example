@@ -445,8 +445,8 @@ src
 ```
 scenes
 └── meeting
-	└── index.js
-	└── MeetingContainer.js
+    └── index.js
+    └── MeetingContainer.js
     └── Components
     └── Conference
     └── OneToOne
