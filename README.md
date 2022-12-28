@@ -187,7 +187,6 @@ Token is used to create and validate a meeting using API and also initialise a m
     participantId: "xyz",
   }}
   token={"token"}
-  joinWithoutUserInteraction // Boolean
 ></MeetingProvider>
 ```
 
@@ -403,63 +402,188 @@ If you want to learn more about the SDK, read the Complete Documentation of [Rea
 
 - **One-to-One meeting** - The One-to-One meeting allows 2 participants to join a meeting in the app.
 
-- **Group Meeting** - 🔜 **_COMING SOON_**
+- **Group Meeting** - The Group meeting allows any number of participants to join a meeting in the app with maximum 6 participants on screen.
 
 <br/>
 
 ## Project Structure
 
-**1. Create or join Meeting**
+We have separated screens and components in following folder structure:
+
+```
+src
+└── scenes
+    └── join
+      └── index.js
+    └── meeting
+```
+
+## 1. Join Screen
 
 - `scenes/join/index.js`: It shows the user with the option to create or join a meeting and to initiate webcam and mic status.
 
-  - `api.js` : It incldes all the API calls for create and validate meeting.
+- If `Join Meeting` is clicked, it will show following:
 
-  - If `Join Meeting` is clicked, it will show following:
+  - `EditText for ParticipantName` - This edit text will contain name of the participant.
 
-    - `EditText for ParticipantName` - This edit text will contain name of the participant.
-    - `EditText for MeetingId` - This edit text will contain the meeting Id that you want to join.
-    - `Join Meeting Button` - This button will call api for join meeting with meetingId that you entered
+  - `EditText for MeetingId` - This edit text will contain the meeting Id that you want to join.
 
-  - If `Create Meeting` is clicked, it will show following:
-    - `EditText for ParticipantName` - This edit text will contain name of the participant.
-    - `Join Meeting Button` - This button will call api for join meeting with a new meetingId
+  - `Join Meeting Button` - This button will call api for join meeting with meetingId that you entered
 
-  <p align="center">
+- If `Create Meeting` is clicked, it will show following:
+
+  - `EditText for ParticipantName` - This edit text will contain name of the participant.
+
+  - `Join Meeting Button` - This button will call api for join meeting with a new meetingId
+
+ <p align="center">
   <img width="230" height="450" src="./public/create_join.gif"/>
   </p>
 
-**2. PartcipantList**
+## 2. Meeting Screen
 
-- `scenes/meeting/ParticipantViewer/index.js` and `scenes/meeting/ParticipantViewer/ParticipantListItem.js` files are used to show Participant list.
-  <p align="center">
-  <img width="220" height="450" src="./public/participants.jpg"/>
+```
+scenes
+└── meeting
+	└── index.js
+	└── MeetingContainer.js
+    └── Components
+    └── Conference
+    └── OneToOne
+```
+
+- `meeting/index.js` : This file essentially initialise the meeting depending on the config given.
+- `meeting/MeetingContainer.js` : It directs users to the meeting type they have chosen, either `Conference` or `One-To-One`.
+
+### Components
+
+This folder contains all the common components used in `Conference` and `OneToOne` meeting type.
+
+```
+Components
+    └── ChatViewer
+    └── ParticipantListViewer
+    └── LocalParticipantPresenter.js
+	└── WaitingToJoinView.js
+```
+
+#### ChatViewer
+
+- This component is solely responsible for managing chat in the meeting.
+
+  <p align="left">
+  <img width="180"  src="./public/chat.png"/>
   </p>
 
-**3. Chat**
+#### ParticipantListViewer
 
-- `scenes/meeting/ChatViewer/index.js`: It contains the chat screen made using PubSub.
+- This component is solely responsible for managing Participant list in the meeting.
 
-### One-to-one
+  <p align="left">
+  <img width="180"  src="./public/participant_list.png"/>
+  </p>
 
-- `scenes/meeting/MeetinContainer.js`: It contains the complete layout for one to one meeting.
+#### LocalParticipantPresenter.js
 
-  - Meeting actions are handled using `Menu`.
+- This component is used when local participant share the screen, you can checkout the below image.
 
-    - **MoreOptions**:
-      <p align="center">
-      <img width="230" height="450" src="./public/more_options.gif"/>
-      </p>
-    - **AudioDeviceList**:
-      <p align="center">
-      <img width="230" height="450" src="./public/audio_device.gif"/>
-      </p>
-    - **LeaveOrEndDialog**:
-      <p align="center">
-      <img width="230" height="450" src="./public/end_call.gif"/>
-      </p>
+  <p align="left">
+  <img width="180"  src="./public/local_screen_share.png"/>
+  </p>
 
-  - `scenes/meeting/Components` contains all the components that are used to create the one to one meeting screen.
+#### WaitingToJoinView.js
+
+- This component is act as a loader if participant has not joined successfully.
+
+  <p align="left">
+  <img width="180"  src="./public/waiting.png"/>
+  </p>
+
+### Conference
+
+The whole user interface and business logic for the meeting type `Conference` are contained in this folder.
+
+```
+Conference
+    └── ConferenceMeetingViewer.js
+    └── ConferenceParticipantGrid.js
+    └── ParticipantView.js
+	└── PauseInvisibleParticipant.js
+	└── RemoteParticipantPresenter.js
+```
+
+#### ConferenceMeetingViewer.js
+
+- This file essentially contains the layout for the entire `Conference` meeting.
+
+  <p align="left">
+  <img width="180"  src="./public/conference.png"/>
+  </p>
+
+#### ConferenceParticipantGrid.js
+
+- This file is responsible for maintaining a grid with 6 participants in portrait and landscape modes.
+
+#### ParticipantView.js
+
+- This file essentially maintains the stream of a particular participant as well as the status of controls (Mic and Cam)
+
+#### PauseInvisibleParticipant.js
+
+- This file handles participants who are not in the participant grid.
+
+#### RemoteParticipantPresenter.js
+
+- This file handles the screen share of remote participant.
+
+  <p align="left">
+  <img width="180"  src="./public/remote_screen_share.png"/>
+  </p>
+
+### OneToOne
+
+The whole user interface and business logic for the meeting type `OneToOne` are contained in this folder.
+
+```
+OneToOne
+    └── index.js
+    └── LargeView
+    └── MiniView
+    └── LocalViewContainer.js
+	└── ParticipantLimitViewer.js
+```
+
+#### index.js
+
+- This file essentially contains the layout for the entire `OneToOne` meeting and manage `LargeView` and `MiniView` participant.
+
+  <p align="left">
+  <img width="180"  src="./public/one_to_one.png"/>
+  </p>
+
+#### LargeView
+
+- This component is solely responsible for managing remote participant streams, whether video or screen share streams.
+
+#### MiniView
+
+- This component is solely responsible for managing local participant video stream.
+
+#### LocalViewContainer.js
+
+- This component is managing local participant stream if 2nd participant is not present in the meeting.
+
+  <p align="left">
+  <img width="180"  src="./public/local_participant.png"/>
+  </p>
+
+#### ParticipantLimitViewer.js
+
+- This component is render if the meeting's participant limit is exceeded.
+
+  <p align="left">
+  <img width="180"  src="./public/oops.png"/>
+  </p>
 
 ## Examples
 
