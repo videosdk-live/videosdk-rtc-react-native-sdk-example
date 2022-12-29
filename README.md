@@ -508,8 +508,8 @@ Conference
     └── ConferenceMeetingViewer.js
     └── ConferenceParticipantGrid.js
     └── ParticipantView.js
-	└── PauseInvisibleParticipant.js
-	└── RemoteParticipantPresenter.js
+    └── PauseInvisibleParticipant.js
+    └── RemoteParticipantPresenter.js
 ```
 
 #### ConferenceMeetingViewer.js
@@ -550,7 +550,7 @@ OneToOne
     └── LargeView
     └── MiniView
     └── LocalViewContainer.js
-	└── ParticipantLimitViewer.js
+    └── ParticipantLimitViewer.js
 ```
 
 #### index.js
