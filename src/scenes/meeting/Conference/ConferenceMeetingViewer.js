@@ -109,7 +109,7 @@ export default function ConferenceMeetingViewer() {
       }
     );
     const ids = [
-      localParticipant.id,
+      localParticipant?.id,
       ...pinnedParticipantId,
       ...regularParticipantIds,
     ].slice(0, presenterId ? 2 : 6);

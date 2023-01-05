@@ -19,7 +19,34 @@ export default function ParticipantView({ participantId, quality }) {
     isLocal,
     setQuality,
     isActiveSpeaker,
+    getVideoStats,
+    isPresenting,
+    micStream,
+    getShareStats,
+    getAudioStats,
   } = useParticipant(participantId, {});
+
+  const updateStats = async () => {
+    let stats = [];
+    if (isPresenting) {
+      stats = await getShareStats();
+      console.log({ getShareStats: stats });
+    } else if (webcamStream) {
+      stats = await getVideoStats();
+      console.log("getVideoStats", { getVideoStats: stats, webcamStream });
+    } else if (micStream) {
+      stats = await getAudioStats();
+      console.log("getAudioStats", { getAudioStats: stats, micStream });
+    }
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      if (!isLocal) {
+        updateStats();
+      }
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     if (quality) {
