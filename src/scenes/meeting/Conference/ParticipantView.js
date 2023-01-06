@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import {
   useParticipant,
   RTCView,
@@ -8,9 +8,25 @@ import {
 import { convertRFValue } from "../../../styles/spacing";
 import colors from "../../../styles/colors";
 import Avatar from "../../../components/Avatar";
-import { MicOff } from "../../../assets/icons";
+import { MicOff, NetworkIcon } from "../../../assets/icons";
 
-export default function ParticipantView({ participantId, quality }) {
+const commonStyle = {
+  alignItems: "center",
+  position: "absolute",
+  top: 10,
+  padding: 8,
+  height: 26,
+  aspectRatio: 1,
+  backgroundColor: colors.primary[700],
+  borderRadius: 12,
+  justifyContent: "center",
+};
+
+export default function ParticipantView({
+  participantId,
+  quality,
+  openStatsBottomSheet,
+}) {
   const {
     displayName,
     webcamStream,
@@ -58,17 +74,8 @@ export default function ParticipantView({ participantId, quality }) {
     return (
       <View
         style={{
-          alignItems: "center",
-          position: "absolute",
-          top: 10,
-          padding: 8,
+          ...commonStyle,
           right: 10,
-          height: 26,
-          aspectRatio: 1,
-          backgroundColor: colors.primary[700],
-          flexDirection: "row",
-          borderRadius: 12,
-          justifyContent: "center",
         }}
       >
         <MicOff width={16} height={16} fill={"#fff"} />
@@ -169,6 +176,19 @@ export default function ParticipantView({ participantId, quality }) {
           borderRadius: 8,
         }}
       />
+      {micOn || webcamOn ? (
+        <TouchableOpacity
+          style={{
+            ...commonStyle,
+            left: 10,
+          }}
+          onPress={() => {
+            openStatsBottomSheet({ pId: participantId });
+          }}
+        >
+          <NetworkIcon fill={"#fff"} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
