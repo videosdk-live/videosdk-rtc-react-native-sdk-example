@@ -9,6 +9,7 @@ import { convertRFValue } from "../../../styles/spacing";
 import colors from "../../../styles/colors";
 import Avatar from "../../../components/Avatar";
 import { MicOff, NetworkIcon } from "../../../assets/icons";
+import useParticipantStat from "../Hooks/useParticipantStat";
 
 const commonStyle = {
   alignItems: "center",
@@ -41,6 +42,10 @@ export default function ParticipantView({
     getShareStats,
     getAudioStats,
   } = useParticipant(participantId, {});
+
+  const { score } = useParticipantStat({
+    participantId,
+  });
 
   const updateStats = async () => {
     let stats = [];
@@ -181,6 +186,12 @@ export default function ParticipantView({
           style={{
             ...commonStyle,
             left: 10,
+            backgroundColor:
+              score && score > 7
+                ? "#3BA55D"
+                : score > 4
+                ? "#faa713"
+                : "#FF5D5D",
           }}
           onPress={() => {
             openStatsBottomSheet({ pId: participantId });

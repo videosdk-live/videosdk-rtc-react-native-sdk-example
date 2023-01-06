@@ -45,9 +45,9 @@ import ParticipantListViewer from "../Components/ParticipantListViewer";
 import ChatViewer from "../Components/ChatViewer";
 import Lottie from "lottie-react-native";
 import recording_lottie from "../../../assets/animation/recording_lottie.json";
-import { fetchSession, getToken } from "../../../api/api";
 import Blink from "../../../components/Blink";
 import VideosdkRPK from "../../../../VideosdkRPK";
+import ParticipantStatsViewer from "../Components/ParticipantStatsViewer";
 
 export default function OneToOneMeetingViewer() {
   const {
@@ -89,44 +89,15 @@ export default function OneToOneMeetingViewer() {
 
   const [chatViewer, setchatViewer] = useState(false);
   const [participantListViewer, setparticipantListViewer] = useState(false);
+  const [participantStatsViewer, setparticipantStatsViewer] = useState(false);
 
-  const [time, setTime] = useState("00:00");
-  const timerIntervalRef = useRef();
   const [audioDevice, setAudioDevice] = useState([]);
-
-  async function startTimer() {
-    const token = await getToken();
-    const session = await fetchSession({ meetingId: meeting.id, token: token });
-    if (!timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
-    }
-    timerIntervalRef.current = setInterval(() => {
-      try {
-        const date = new Date(session.start);
-        const diffTime = Math.abs(new Date() - date);
-        const time =
-          Math.trunc(Math.trunc(diffTime / 1000) / 60)
-            .toString()
-            .padStart(2, "0") +
-          ":" +
-          (Math.ceil(diffTime / 1000) % 60).toString().padStart(2, "0");
-        setTime(time);
-      } catch (error) {}
-    }, 1000);
-  }
+  const [statParticipantId, setstatParticipantId] = useState("");
 
   async function updateAudioDeviceList() {
     const devices = await getAudioDeviceList();
     setAudioDevice(devices);
   }
-  useEffect(() => {
-    startTimer();
-    return () => {
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (Platform.OS == "ios") {
@@ -157,6 +128,11 @@ export default function OneToOneMeetingViewer() {
     }
   }, [recordingState]);
 
+  const openStatsBottomSheet = ({ pId }) => {
+    setparticipantStatsViewer(true);
+    setstatParticipantId(pId);
+    bottomSheetRef.current.show();
+  };
   return (
     <>
       <View
@@ -220,16 +196,6 @@ export default function OneToOneMeetingViewer() {
               <Copy fill={colors.primary[100]} width={18} height={18} />
             </TouchableOpacity>
           </View>
-
-          <Text
-            style={{
-              color: "#9A9FA5",
-              fontSize: 14,
-              fontFamily: ROBOTO_FONTS.RobotoMedium,
-            }}
-          >
-            {time}
-          </Text>
         </View>
         <View>
           <TouchableOpacity
@@ -248,9 +214,13 @@ export default function OneToOneMeetingViewer() {
             {localScreenShareOn ? (
               <LocalParticipantPresenter />
             ) : (
-              <LargeView participantId={participantIds[1]} />
+              <LargeView
+                participantId={participantIds[1]}
+                openStatsBottomSheet={openStatsBottomSheet}
+              />
             )}
             <MiniView
+              openStatsBottomSheet={openStatsBottomSheet}
               participantId={
                 participantIds[localScreenShareOn || presenterId ? 1 : 0]
               }
@@ -490,6 +460,8 @@ export default function OneToOneMeetingViewer() {
         closeFunction={() => {
           setparticipantListViewer(false);
           setchatViewer(false);
+          setparticipantStatsViewer(false);
+          setstatParticipantId("");
         }}
         ref={bottomSheetRef}
         height={Dimensions.get("window").height * 0.5}
@@ -498,6 +470,8 @@ export default function OneToOneMeetingViewer() {
           <ChatViewer />
         ) : participantListViewer ? (
           <ParticipantListViewer participantIds={participantIds} />
+        ) : participantStatsViewer ? (
+          <ParticipantStatsViewer participantId={statParticipantId} />
         ) : null}
       </BottomSheet>
     </>

@@ -1,10 +1,35 @@
 import { RTCView, MediaStream } from "@videosdk.live/react-native-sdk";
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
+import { NetworkIcon } from "../../../../assets/icons";
 import Avatar from "../../../../components/Avatar";
 import colors from "../../../../styles/colors";
+import useParticipantStat from "../../Hooks/useParticipantStat";
 
-export default MiniVideoRTCView = ({ stream, isOn, displayName, isLocal }) => {
+const buttonStyle = {
+  alignItems: "center",
+  position: "absolute",
+  top: 10,
+  padding: 8,
+  height: 26,
+  aspectRatio: 1,
+  borderRadius: 12,
+  justifyContent: "center",
+  left: 10,
+};
+
+export default MiniVideoRTCView = ({
+  stream,
+  isOn,
+  displayName,
+  isLocal,
+  openStatsBottomSheet,
+  micOn,
+  participantId,
+}) => {
+  const { score } = useParticipantStat({
+    participantId,
+  });
   return (
     <View
       style={{
@@ -39,6 +64,24 @@ export default MiniVideoRTCView = ({ stream, isOn, displayName, isLocal }) => {
           }}
         />
       )}
+      {micOn || isOn ? (
+        <TouchableOpacity
+          style={{
+            ...buttonStyle,
+            backgroundColor:
+              score && score > 7
+                ? "#3BA55D"
+                : score > 4
+                ? "#faa713"
+                : "#FF5D5D",
+          }}
+          onPress={() => {
+            openStatsBottomSheet({ pId: participantId });
+          }}
+        >
+          <NetworkIcon fill={"#fff"} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
