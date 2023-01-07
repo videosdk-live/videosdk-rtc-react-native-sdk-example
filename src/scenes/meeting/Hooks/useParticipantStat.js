@@ -36,10 +36,8 @@ function useParticipantStat({ participantId }) {
       stats = await getShareStats();
     } else if (webcamStream) {
       stats = await getVideoStats();
-      console.log({ getVideoStats: stats });
     } else if (micStream) {
       stats = await getAudioStats();
-      console.log({ getAudioStats: stats });
     }
 
     if (webcamStream || micStream || isPresenting) {

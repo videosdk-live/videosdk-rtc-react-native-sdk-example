@@ -51,13 +51,10 @@ export default function ParticipantView({
     let stats = [];
     if (isPresenting) {
       stats = await getShareStats();
-      console.log({ getShareStats: stats });
     } else if (webcamStream) {
       stats = await getVideoStats();
-      console.log("getVideoStats", { getVideoStats: stats, webcamStream });
     } else if (micStream) {
       stats = await getAudioStats();
-      console.log("getAudioStats", { getAudioStats: stats, micStream });
     }
   };
 

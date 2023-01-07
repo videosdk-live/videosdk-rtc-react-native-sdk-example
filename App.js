@@ -20,7 +20,7 @@ export default function App() {
           animationEnabled: false,
           presentation: "modal",
         }}
-        initialRouteName={SCREEN_NAMES.Meeting}
+        initialRouteName={SCREEN_NAMES.Join}
       >
         <RootStack.Screen
           name={SCREEN_NAMES.Join}
