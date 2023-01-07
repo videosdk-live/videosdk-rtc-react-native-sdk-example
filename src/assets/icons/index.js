@@ -18,6 +18,7 @@ import More from "./More";
 import RaiseHand from "./RaiseHand";
 import Person from "./Person";
 import Send from "./Send";
+import NetworkIcon from "./NetworkIcon";
 
 export {
   MicOff,
@@ -38,4 +39,5 @@ export {
   Leave,
   Recording,
   Participants,
+  NetworkIcon,
 };

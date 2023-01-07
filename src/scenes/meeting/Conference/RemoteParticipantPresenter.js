@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import {
   useParticipant,
   RTCView,
   MediaStream,
 } from "@videosdk.live/react-native-sdk";
-import ParticipantView from "./ParticipantView";
 import colors from "../../../styles/colors";
 import { convertRFValue } from "../../../styles/spacing";
 import { ROBOTO_FONTS } from "../../../styles/fonts";

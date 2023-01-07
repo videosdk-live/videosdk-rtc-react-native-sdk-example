@@ -6,6 +6,7 @@ import { SCREEN_NAMES } from "./src/navigators/screenNames";
 import Join from "./src/scenes/join";
 import Meeting from "./src/scenes/meeting";
 import { LogBox } from "react-native";
+import ParticipantStatsViewer from "./src/scenes/meeting/Components/ParticipantStatsViewer";
 LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
 

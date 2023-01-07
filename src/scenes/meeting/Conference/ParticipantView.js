@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import {
   useParticipant,
   RTCView,
@@ -8,9 +8,26 @@ import {
 import { convertRFValue } from "../../../styles/spacing";
 import colors from "../../../styles/colors";
 import Avatar from "../../../components/Avatar";
-import { MicOff } from "../../../assets/icons";
+import { MicOff, NetworkIcon } from "../../../assets/icons";
+import useParticipantStat from "../Hooks/useParticipantStat";
 
-export default function ParticipantView({ participantId, quality }) {
+const commonStyle = {
+  alignItems: "center",
+  position: "absolute",
+  top: 10,
+  padding: 8,
+  height: 26,
+  aspectRatio: 1,
+  backgroundColor: colors.primary[700],
+  borderRadius: 12,
+  justifyContent: "center",
+};
+
+export default function ParticipantView({
+  participantId,
+  quality,
+  openStatsBottomSheet,
+}) {
   const {
     displayName,
     webcamStream,
@@ -19,7 +36,35 @@ export default function ParticipantView({ participantId, quality }) {
     isLocal,
     setQuality,
     isActiveSpeaker,
+    getVideoStats,
+    isPresenting,
+    micStream,
+    getShareStats,
+    getAudioStats,
   } = useParticipant(participantId, {});
+
+  const { score } = useParticipantStat({
+    participantId,
+  });
+
+  const updateStats = async () => {
+    let stats = [];
+    if (isPresenting) {
+      stats = await getShareStats();
+    } else if (webcamStream) {
+      stats = await getVideoStats();
+    } else if (micStream) {
+      stats = await getAudioStats();
+    }
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      if (!isLocal) {
+        updateStats();
+      }
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     if (quality) {
@@ -31,17 +76,8 @@ export default function ParticipantView({ participantId, quality }) {
     return (
       <View
         style={{
-          alignItems: "center",
-          position: "absolute",
-          top: 10,
-          padding: 8,
+          ...commonStyle,
           right: 10,
-          height: 26,
-          aspectRatio: 1,
-          backgroundColor: colors.primary[700],
-          flexDirection: "row",
-          borderRadius: 12,
-          justifyContent: "center",
         }}
       >
         <MicOff width={16} height={16} fill={"#fff"} />
@@ -142,6 +178,25 @@ export default function ParticipantView({ participantId, quality }) {
           borderRadius: 8,
         }}
       />
+      {micOn || webcamOn ? (
+        <TouchableOpacity
+          style={{
+            ...commonStyle,
+            left: 10,
+            backgroundColor:
+              score && score > 7
+                ? "#3BA55D"
+                : score > 4
+                ? "#faa713"
+                : "#FF5D5D",
+          }}
+          onPress={() => {
+            openStatsBottomSheet({ pId: participantId });
+          }}
+        >
+          <NetworkIcon fill={"#fff"} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }

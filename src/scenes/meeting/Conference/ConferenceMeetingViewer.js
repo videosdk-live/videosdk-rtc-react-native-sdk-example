@@ -41,7 +41,6 @@ import ParticipantListViewer from "../Components/ParticipantListViewer";
 import ChatViewer from "../Components/ChatViewer";
 import Lottie from "lottie-react-native";
 import recording_lottie from "../../../assets/animation/recording_lottie.json";
-import { fetchSession, getToken } from "../../../api/api";
 import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
@@ -109,7 +108,7 @@ export default function ConferenceMeetingViewer() {
       }
     );
     const ids = [
-      localParticipant.id,
+      localParticipant?.id,
       ...pinnedParticipantId,
       ...regularParticipantIds,
     ].slice(0, presenterId ? 2 : 6);
