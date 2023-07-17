@@ -34,7 +34,7 @@
     "@babel/runtime": "^7.14.6",
     "@react-native-community/eslint-config": "^3.0.0",
     "babel-jest": "^27.0.6",
-    "eslint": "^7.30.0",
+    "eslint": "^8.45.0",
     "jest": "^27.0.6",
     "metro-react-native-babel-preset": "^0.66.1",
     "react-test-renderer": "17.0.1"
