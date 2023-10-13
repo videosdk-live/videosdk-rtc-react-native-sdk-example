@@ -13,8 +13,8 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.2",
-    "@videosdk.live/react-native-incallmanager": "^0.0.9",
-    "@videosdk.live/react-native-sdk": "0.0.41",
+    "@videosdk.live/react-native-incallmanager": "^0.0.10",
+    "@videosdk.live/react-native-sdk": "^0.0.52",
     "lottie-ios": "3.4.0",
     "lottie-react-native": "^5.1.4",
     "moment": "^2.29.4",

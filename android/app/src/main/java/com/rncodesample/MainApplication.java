@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.airbnb.android.react.lottie.LottiePackage;
 import live.videosdk.rnfgservice.ForegroundServicePackage;
-import live.videosdk.rnincallmanager.InCallManagerPackage;
 import live.videosdk.rnwebrtc.WebRTCModulePackage;
 
 
@@ -32,7 +31,6 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new ForegroundServicePackage());
-          packages.add(new InCallManagerPackage());
           packages.add(new WebRTCModulePackage());
           packages.add(new LottiePackage());
 
