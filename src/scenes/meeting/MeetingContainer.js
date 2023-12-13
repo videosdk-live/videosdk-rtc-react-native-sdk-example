@@ -13,7 +13,7 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 
-  const { join, changeWebcam, participants, leave } = useMeeting({
+  const { join, participants, leave } = useMeeting({
     onMeetingJoined: () => {
       setTimeout(() => {
         setJoined(true);
@@ -38,7 +38,6 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
     setTimeout(() => {
       if (!isJoined) {
         join();
-        if (webcamEnabled) changeWebcam();
       }
     }, 1000);
 
