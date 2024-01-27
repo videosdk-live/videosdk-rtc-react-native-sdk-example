@@ -11,8 +11,9 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.70.6)
   - fmt (6.2.1)
   - glog (0.3.5)
+  - JitsiWebRTC (106.0.0)
   - lottie-ios (3.4.0)
-  - lottie-react-native (5.1.4):
+  - lottie-react-native (5.1.6):
     - lottie-ios (~> 3.4.0)
     - React-Core
   - RCT-Folly (2021.07.22.00):
@@ -224,21 +225,13 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
-  - react-native-safe-area-context (4.4.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.8.0):
     - React-Core
-    - ReactCommon/turbomodule/core
   - react-native-simple-toast (1.1.4):
     - React-Core
     - Toast (~> 4.0.0)
-  - react-native-video (5.2.1):
-    - React-Core
-    - react-native-video/Video (= 5.2.1)
-  - react-native-video/Video (5.2.1):
-    - React-Core
-  - react-native-webrtc (0.0.4):
+  - react-native-webrtc (0.0.9):
+    - JitsiWebRTC (~> 106.0.0)
     - React-Core
   - React-perflogger (0.70.6)
   - React-RCTActionSheet (0.70.6):
@@ -306,14 +299,14 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - ReactNativeIncallManager (0.0.9):
-    - React
-  - RNGestureHandler (2.8.0):
+  - ReactNativeIncallManager (0.0.10):
     - React-Core
-  - RNScreens (3.18.2):
+  - RNGestureHandler (2.14.0):
+    - React-Core
+  - RNScreens (3.29.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (12.4.4):
+  - RNSVG (12.5.1):
     - React-Core
   - Toast (4.0.0)
   - Yoga (1.14.0)
@@ -343,7 +336,6 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
-  - react-native-video (from `../node_modules/react-native-video`)
   - "react-native-webrtc (from `../node_modules/@videosdk.live/react-native-webrtc`)"
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -366,6 +358,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - fmt
+    - JitsiWebRTC
     - Toast
 
 EXTERNAL SOURCES:
@@ -415,8 +408,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
-  react-native-video:
-    :path: "../node_modules/react-native-video"
   react-native-webrtc:
     :path: "../node_modules/@videosdk.live/react-native-webrtc"
   React-perflogger:
@@ -461,8 +452,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: dd1186fd05255e3457baa2f4ca65e94c2cd1e3ac
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
   lottie-ios: 69495122151a378fdc7d1bb4c5930347e37baf1f
-  lottie-react-native: b702fab740cdb952a8e2354713d3beda63ff97b0
+  lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: e1866f61af7049eb3d8e08e8b133abd38bc1ca7a
   RCTTypeSafety: 27c2ac1b00609a432ced1ae701247593f07f901e
@@ -477,10 +469,9 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b4a65947391c658450151275aa406f2b8263178f
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
-  react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
+  react-native-safe-area-context: d1c8161a1e9560f7066e8926a7d825eb57c5dab5
   react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
-  react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
-  react-native-webrtc: dd634e3326b632a7c00e3197b4129342a36a5f5a
+  react-native-webrtc: c0446f70edd9827a14687a27136d2db2a535d5c0
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
   React-RCTAnimation: 5341e288375451297057391227f691d9b2326c3d
@@ -493,13 +484,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  ReactNativeIncallManager: 4bd3287cd449bdd88de93309b462f96ba9f5e64a
-  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
-  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
-  RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
+  ReactNativeIncallManager: d05dcbdf1f398e15cc00e029df50c9fb070bac29
+  RNGestureHandler: 4279931048471f17faf46d912b2e96e10f1da99b
+  RNScreens: fa9b582d85ae5d62c91c66003b5278458fed7aaa
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
 
-PODFILE CHECKSUM: 24a1c6522dd275ba712e3f0f5c44609f513e53d5
+PODFILE CHECKSUM: 732e7255f124b21289c3e401c4c65764799a18cd
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3
