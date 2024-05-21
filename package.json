@@ -8,13 +8,14 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android"
+    "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.2",
-    "@videosdk.live/react-native-incallmanager": "^0.0.10",
-    "@videosdk.live/react-native-sdk": "0.1.2",
+    "@videosdk.live/react-native-incallmanager": "^0.1.3",
+    "@videosdk.live/react-native-sdk": "0.1.11",
     "lottie-ios": "3.4.0",
     "lottie-react-native": "^5.1.4",
     "moment": "^2.29.4",
@@ -23,6 +24,7 @@
     "react-native-dotenv": "^3.1.1",
     "react-native-gesture-handler": "^2.7.0",
     "react-native-hyperlink": "^0.0.22",
+    "react-native-modal": "^13.0.1",
     "react-native-responsive-fontsize": "^0.5.1",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.0",

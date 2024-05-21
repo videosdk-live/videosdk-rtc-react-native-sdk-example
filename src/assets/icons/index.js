@@ -19,6 +19,8 @@ import RaiseHand from "./RaiseHand";
 import Person from "./Person";
 import Send from "./Send";
 import NetworkIcon from "./NetworkIcon";
+import Speaker from "./Speaker";
+
 
 export {
   MicOff,
@@ -40,4 +42,5 @@ export {
   Recording,
   Participants,
   NetworkIcon,
+  Speaker
 };
