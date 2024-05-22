@@ -149,6 +149,7 @@ export default function Join({ navigation }) {
   }, [facing]);
 
   const toggleCameraFacing = () => {
+    disposeVideoTrack();
     setFacing((prevFacingMode) =>
       prevFacingMode === "environment" ? "user" : "environment"
     );
@@ -448,6 +449,7 @@ export default function Join({ navigation }) {
                       micEnabled: micOn,
                       webcamEnabled: videoOn,
                       meetingType: meetingType.key,
+                      defaultCamera: facing === "user" ? "front" : "back",
                     });
                   }}
                 />
@@ -541,6 +543,7 @@ export default function Join({ navigation }) {
                         micEnabled: micOn,
                         webcamEnabled: videoOn,
                         meetingType: meetingType.key,
+                        defaultCamera: facing === "user" ? "front" : "back",
                       });
                     }
                   }}
