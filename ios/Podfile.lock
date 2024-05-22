@@ -11,7 +11,7 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.70.6)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - JitsiWebRTC (106.0.0)
+  - JitsiWebRTC (118.0.0)
   - lottie-ios (3.4.0)
   - lottie-react-native (5.1.6):
     - lottie-ios (~> 3.4.0)
@@ -225,13 +225,13 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
-  - react-native-safe-area-context (4.8.0):
+  - react-native-safe-area-context (4.10.1):
     - React-Core
   - react-native-simple-toast (1.1.4):
     - React-Core
     - Toast (~> 4.0.0)
-  - react-native-webrtc (0.0.9):
-    - JitsiWebRTC (~> 106.0.0)
+  - react-native-webrtc (0.0.11):
+    - JitsiWebRTC (~> 118.0.0)
     - React-Core
   - React-perflogger (0.70.6)
   - React-RCTActionSheet (0.70.6):
@@ -299,11 +299,11 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - ReactNativeIncallManager (0.0.10):
+  - ReactNativeIncallManager (0.1.3):
     - React-Core
-  - RNGestureHandler (2.14.0):
+  - RNGestureHandler (2.16.2):
     - React-Core
-  - RNScreens (3.29.0):
+  - RNScreens (3.31.1):
     - React-Core
     - React-RCTImage
   - RNSVG (12.5.1):
@@ -452,7 +452,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: dd1186fd05255e3457baa2f4ca65e94c2cd1e3ac
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
-  JitsiWebRTC: f441eb0e2d67f0588bf24e21c5162e97342714fb
+  JitsiWebRTC: 3a41671ef65a51d7204323814b055a2690b921c7
   lottie-ios: 69495122151a378fdc7d1bb4c5930347e37baf1f
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
@@ -469,9 +469,9 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b4a65947391c658450151275aa406f2b8263178f
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
-  react-native-safe-area-context: d1c8161a1e9560f7066e8926a7d825eb57c5dab5
+  react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
   react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
-  react-native-webrtc: c0446f70edd9827a14687a27136d2db2a535d5c0
+  react-native-webrtc: ab10f160de285535bd0fefb504c71b1240106326
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
   React-RCTAnimation: 5341e288375451297057391227f691d9b2326c3d
@@ -484,13 +484,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
-  ReactNativeIncallManager: d05dcbdf1f398e15cc00e029df50c9fb070bac29
-  RNGestureHandler: 4279931048471f17faf46d912b2e96e10f1da99b
-  RNScreens: fa9b582d85ae5d62c91c66003b5278458fed7aaa
+  ReactNativeIncallManager: 70612310abc6c15be975054e4e43ff60cad77246
+  RNGestureHandler: 7d8bc16a05220fa1827ff734e418d9044b0cce3d
+  RNScreens: b940b46ae5987e138c4fadb6b264d09177932b4d
   RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
 
 PODFILE CHECKSUM: 732e7255f124b21289c3e401c4c65764799a18cd
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

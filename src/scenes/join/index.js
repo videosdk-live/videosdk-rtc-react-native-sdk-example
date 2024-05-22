@@ -1,5 +1,11 @@
-import { RTCView, mediaDevices } from "@videosdk.live/react-native-sdk";
-import React, { useState, useRef } from "react";
+import {
+  RTCView,
+  mediaDevices,
+  useMediaDevice,
+  createCameraVideoTrack,
+  switchAudioDevice,
+} from "@videosdk.live/react-native-sdk";
+import React, { useState, useRef, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,8 +16,17 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  StyleSheet,
+  FlatList,
 } from "react-native";
-import { MicOff, MicOn, VideoOff, VideoOn } from "../../assets/icons";
+import {
+  MicOff,
+  MicOn,
+  VideoOff,
+  VideoOn,
+  CameraSwitch,
+  Speaker,
+} from "../../assets/icons";
 import TextInputContainer from "../../components/TextInputContainer";
 import Button from "../../components/Button";
 import colors from "../../styles/colors";
@@ -23,12 +38,18 @@ import Menu from "../../components/Menu";
 import MenuItem from "../meeting/Components/MenuItem";
 import { ROBOTO_FONTS } from "../../styles/fonts";
 
+import Modal from "react-native-modal";
+
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
   const [micOn, setMicon] = useState(true);
   const [videoOn, setVideoOn] = useState(true);
   const [name, setName] = useState("");
   const [meetingId, setMeetingId] = useState("");
+  const [isAudioListVisible, setAudioListVisible] = useState(false);
+  const [facingMode, setfacingMode] = useState("user");
+  const [audioList, setAudioList] = useState([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
 
   const meetingTypes = [
     { key: "ONE_TO_ONE", value: "One to One Meeting" },
@@ -51,6 +72,43 @@ export default function Join({ navigation }) {
     });
   };
 
+  const { getAudioDeviceList } = useMediaDevice();
+
+  const fetchAudioDevices = async () => {
+    const devices = await getAudioDeviceList();
+    setAudioList(devices);
+  };
+
+  const renderAudioDevice = ({ item }) => (
+    <TouchableOpacity
+      style={[
+        styles.deviceButton,
+        item.deviceId === selectedDeviceId && styles.selectedDeviceButton,
+      ]}
+      onPress={() => handleDevicePress(item)}
+    >
+      <Text style={styles.deviceText}>{item.label}</Text>
+    </TouchableOpacity>
+  );
+
+  const handleDevicePress = async (device) => {
+    // Handle the device selection logic here
+    const id = device.deviceId;
+    await switchAudioDevice(id);
+    setSelectedDeviceId(id);
+
+    toggleAudioList();
+  };
+
+  const handleAudioButtonPress = async () => {
+    await fetchAudioDevices();
+    toggleAudioList();
+  };
+
+  const toggleAudioList = () => {
+    setAudioListVisible(!isAudioListVisible);
+  };
+
   const optionRef = useRef();
   const isMainScreen = () => {
     return !isVisibleJoinMeetingContainer && !isVisibleCreateMeetingContainer;
@@ -58,16 +116,32 @@ export default function Join({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      mediaDevices
-        .getUserMedia({ audio: false, video: true })
-        .then((stream) => {
-          setTrack(stream);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      getTrack();
     }, [])
   );
+
+  const getTrack = async () => {
+    const track = await createCameraVideoTrack({
+      optimizationMode: "motion",
+      encoderConfig: "h720p_w960p",
+      facingMode: facingMode,
+    });
+    setTrack(track);
+  };
+
+  useEffect(() => {
+    getTrack();
+  }, [facingMode]);
+
+  const toggleCameraFacing = () => {
+    try {
+      disposeVideoTrack();
+    } finally {
+      setfacingMode((prevFacingMode) =>
+        prevFacingMode === "environment" ? "user" : "environment"
+      );
+    }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -108,7 +182,67 @@ export default function Join({ navigation }) {
         >
           <View
             style={{
-              paddingTop: "15%",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              padding: 16,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                handleAudioButtonPress();
+              }}
+              style={{
+                height: 40,
+                width: 40,
+                justifyContent: "center",
+                padding: 10,
+                borderRadius: 10,
+                padding: 20,
+                marginRight: 10,
+              }}
+            >
+              {<Speaker width={25} height={25} fill={colors.primary[100]} />}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                toggleCameraFacing();
+              }}
+              style={{
+                height: 40,
+                width: 40,
+                justifyContent: "center",
+                padding: 10,
+                borderRadius: 10,
+                padding: 20,
+                marginRight: 10,
+              }}
+            >
+              {
+                <CameraSwitch
+                  width={25}
+                  height={25}
+                  fill={colors.primary[100]}
+                />
+              }
+            </TouchableOpacity>
+          </View>
+          <Modal
+            isVisible={isAudioListVisible}
+            onBackdropPress={toggleAudioList}
+            style={{ justifyContent: "flex-end", margin: 0 }}
+          >
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Available Audio Devices</Text>
+              <FlatList
+                data={audioList}
+                renderItem={renderAudioDevice}
+                keyExtractor={(item) => item.deviceId}
+              />
+            </View>
+          </Modal>
+          <View
+            style={{
+              paddingTop: "5%",
               height: "45%",
             }}
           >
@@ -307,6 +441,7 @@ export default function Join({ navigation }) {
                       micEnabled: micOn,
                       webcamEnabled: videoOn,
                       meetingType: meetingType.key,
+                      defaultCamera: facingMode === "user" ? "front" : "back",
                     });
                   }}
                 />
@@ -400,6 +535,7 @@ export default function Join({ navigation }) {
                         micEnabled: micOn,
                         webcamEnabled: videoOn,
                         meetingType: meetingType.key,
+                        defaultCamera: facingMode === "user" ? "front" : "back",
                       });
                     }
                   }}
@@ -412,3 +548,33 @@ export default function Join({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    fontSize: 18,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  deviceButton: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  deviceText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  selectedDeviceButton: {
+    backgroundColor: "#BBB5B4", // Lighter background color for selected device
+  },
+});

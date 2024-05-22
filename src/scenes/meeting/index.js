@@ -15,6 +15,7 @@ export default function ({ navigation, route }) {
   const webcamEnabled = route.params.webcamEnabled;
   const name = route.params.name;
   const meetingType = route.params.meetingType;
+  const defaultCamera = route.params.defaultCamera;
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
@@ -29,6 +30,7 @@ export default function ({ navigation, route }) {
             title: "Video SDK Meeting",
             message: "Meeting is running.",
           },
+          defaultCamera: defaultCamera,
         }}
         token={token}
       >
