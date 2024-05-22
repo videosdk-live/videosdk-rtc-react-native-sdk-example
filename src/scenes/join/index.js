@@ -73,16 +73,14 @@ export default function Join({ navigation }) {
   };
 
   const { getAudioDeviceList } = useMediaDevice();
+
   const AudioList = getAudioDeviceList();
 
   const fetchAudioDevices = async () => {
     const devices = await getAudioDeviceList();
+    console.log(devices);
     setAudioList(devices);
   };
-
-  useEffect(() => {
-    fetchAudioDevices();
-  }, []);
 
   const renderAudioDevice = ({ item }) => (
     <TouchableOpacity
@@ -135,6 +133,12 @@ export default function Join({ navigation }) {
   //   }, [facing])
   // );
 
+  useFocusEffect(
+    React.useCallback(() => {
+      getTrack();
+    }, [])
+  );
+
   const getTrack = async () => {
     const track = await createCameraVideoTrack({
       optimizationMode: "motion",
@@ -149,10 +153,13 @@ export default function Join({ navigation }) {
   }, [facing]);
 
   const toggleCameraFacing = () => {
-    disposeVideoTrack();
-    setFacing((prevFacingMode) =>
-      prevFacingMode === "environment" ? "user" : "environment"
-    );
+    try {
+      disposeVideoTrack();
+    } finally {
+      setFacing((prevFacingMode) =>
+        prevFacingMode === "environment" ? "user" : "environment"
+      );
+    }
   };
 
   useFocusEffect(
