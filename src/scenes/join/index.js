@@ -47,7 +47,7 @@ export default function Join({ navigation }) {
   const [name, setName] = useState("");
   const [meetingId, setMeetingId] = useState("");
   const [isAudioListVisible, setAudioListVisible] = useState(false);
-  const [facing, setFacing] = useState("user");
+  const [facingMode, setfacingMode] = useState("user");
   const [audioList, setAudioList] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
 
@@ -74,11 +74,8 @@ export default function Join({ navigation }) {
 
   const { getAudioDeviceList } = useMediaDevice();
 
-  const AudioList = getAudioDeviceList();
-
   const fetchAudioDevices = async () => {
     const devices = await getAudioDeviceList();
-    console.log(devices);
     setAudioList(devices);
   };
 
@@ -103,7 +100,7 @@ export default function Join({ navigation }) {
     toggleAudioList();
   };
 
-  const handleAudioPress = async () => {
+  const handleAudioButtonPress = async () => {
     await fetchAudioDevices();
     toggleAudioList();
   };
@@ -117,22 +114,6 @@ export default function Join({ navigation }) {
     return !isVisibleJoinMeetingContainer && !isVisibleCreateMeetingContainer;
   };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     mediaDevices
-  //       .getUserMedia({
-  //         audio: false,
-  //         video: { facingMode: { exact: facing } },
-  //       })
-  //       .then((stream) => {
-  //         setTrack(stream);
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //       });
-  //   }, [facing])
-  // );
-
   useFocusEffect(
     React.useCallback(() => {
       getTrack();
@@ -143,20 +124,20 @@ export default function Join({ navigation }) {
     const track = await createCameraVideoTrack({
       optimizationMode: "motion",
       encoderConfig: "h720p_w960p",
-      facingMode: facing,
+      facingMode: facingMode,
     });
     setTrack(track);
   };
 
   useEffect(() => {
     getTrack();
-  }, [facing]);
+  }, [facingMode]);
 
   const toggleCameraFacing = () => {
     try {
       disposeVideoTrack();
     } finally {
-      setFacing((prevFacingMode) =>
+      setfacingMode((prevFacingMode) =>
         prevFacingMode === "environment" ? "user" : "environment"
       );
     }
@@ -207,7 +188,9 @@ export default function Join({ navigation }) {
             }}
           >
             <TouchableOpacity
-              onPress={handleAudioPress}
+              onPress={() => {
+                handleAudioButtonPress();
+              }}
               style={{
                 height: 40,
                 width: 40,
@@ -221,7 +204,9 @@ export default function Join({ navigation }) {
               {<Speaker width={25} height={25} fill={colors.primary[100]} />}
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={toggleCameraFacing}
+              onPress={() => {
+                toggleCameraFacing();
+              }}
               style={{
                 height: 40,
                 width: 40,
@@ -456,7 +441,7 @@ export default function Join({ navigation }) {
                       micEnabled: micOn,
                       webcamEnabled: videoOn,
                       meetingType: meetingType.key,
-                      defaultCamera: facing === "user" ? "front" : "back",
+                      defaultCamera: facingMode === "user" ? "front" : "back",
                     });
                   }}
                 />
@@ -550,7 +535,7 @@ export default function Join({ navigation }) {
                         micEnabled: micOn,
                         webcamEnabled: videoOn,
                         meetingType: meetingType.key,
-                        defaultCamera: facing === "user" ? "front" : "back",
+                        defaultCamera: facingMode === "user" ? "front" : "back",
                       });
                     }
                   }}
