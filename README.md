@@ -159,7 +159,7 @@ The token is used to create and validate a meeting using API and also initialize
 
 - **Group Meeting** - The Group meeting allows any number of participants to join a meeting in the app with a maximum of 6 participants on screen.
 
-## Project Structure
+## 🏗️ Project Structure
 
 We have separated screens and components in the following folder structure:
 
@@ -171,7 +171,7 @@ src
     └── meeting
 ```
 
-## 1. Join Screen
+### 1. Join Screen
 
 - [scenes/join/index.js](src/scenes/join/index.js): This file provides an interface for users to create or join meetings, allowing control over audio, video, and camera orientation.
 
@@ -179,7 +179,7 @@ src
   <img width="230" height="450" src="./public/create_join.gif"/>
   </p>
 
-## 2. Meeting Screen
+### 2. Meeting Screen
 
 ```
 scenes
@@ -194,7 +194,7 @@ scenes
 - [meeting/index.js](src/scenes/meeting/index.js) : This file essentially initializes the meeting based on the provided configuration, such as meeting ID, participant name, and mic/camera status.
 - [meeting/MeetingContainer.js](src/scenes/meeting/MeetingContainer.js) : `MeetingContainer.js` manages joining and leaving meetings, tracking participant status and limits using `useMeeting`. It dynamically renders either `ConferenceMeetingViewer`, `OneToOneMeetingViewer`, or a waiting view based on the meeting type and participant count.
 
-### Components
+### [Components](src/scenes/meeting/Components)
 
 This folder contains all the common components used in the `Conference` and `OneToOne` meeting types.
 
@@ -203,42 +203,42 @@ Components
     └── ChatViewer
     └── ParticipantListViewer
     └── LocalParticipantPresenter.js
-	└── WaitingToJoinView.js
+    └── WaitingToJoinView.js
 ```
 
-#### ChatViewer
+#### 1. ChatViewer
 
 - [ChatViewer](src/scenes/meeting/Components/ChatViewer) provides a real-time chat interface, displaying messages in a scrollable list with sender names and timestamps.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/chat.png"/>
   </p>
 
-#### ParticipantListViewer
+#### 2. ParticipantListViewer
 
 - [ParticipantListViewer](src/scenes/meeting/Components/ParticipantListViewer) displays a list of meeting participants using their IDs, with each participant represented by a `ParticipantListItem` component.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/participant_list.png"/>
   </p>
 
-#### LocalParticipantPresenter.js
+#### 3. LocalParticipantPresenter.js
 
 - [LocalParticipantPresenter.js](src/scenes/meeting/Components/LocalParticipantPresenter.js) displays a view indicating that the local user is presenting, with options to manage screen sharing.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/local_screen_share.png"/>
   </p>
 
-#### WaitingToJoinView.js
+#### 4. WaitingToJoinView.js
 
 - [WaitingToJoinView.js](src/scenes/meeting/Components/WaitingToJoinView.js) provides a waiting screen with animation and message while a meeting room is being created.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/waiting.png"/>
   </p>
 
-### Conference
+### [Conference](src/scenes/meeting/Conference)
 
 The whole user interface and business logic for the meeting type `Conference` are contained in this folder.
 
@@ -251,35 +251,35 @@ Conference
     └── RemoteParticipantPresenter.js
 ```
 
-#### ConferenceMeetingViewer.js
+#### 1. ConferenceMeetingViewer.js
 
 - [ConferenceMeetingViewer.js](src/scenes/meeting/Conference/ConferenceMeetingViewer.js) manages the primary layout and interaction for conference-style meetings, showing participant views, recording status, and controls for toggling audio, video, and screen sharing. 
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/conference.png"/>
   </p>
 
-#### ConferenceParticipantGrid.js
+#### 2. ConferenceParticipantGrid.js
 
 - [ConferenceParticipantGrid.js](src/scenes/meeting/Conference/ConferenceParticipantGrid.js) arranges participant video feeds in a responsive grid, adjusting the number of participants per row and video quality based on the total participant count and whether someone is presenting. It uses a memoized [ParticipantView](src/scenes/meeting/Conference/ParticipantView.js) to improve rendering efficiency and includes a `BottomSheet` for viewing individual participant stats.
 
-#### ParticipantView.js
+#### 3. ParticipantView.js
 
 - [ParticipantView.js](src/scenes/meeting/Conference/ParticipantView.js) maintains the stream of a particular participant as well as the status of controls (Mic and Cam).
 
-#### PauseInvisibleParticipant.js
+#### 4. PauseInvisibleParticipant.js
 
 - [PauseInvisibleParticipant.js](src/scenes/meeting/Conference/PauseInvisibleParticipant.js) optimizes resource usage by pausing video streams of participants who are not visible on the screen. It maps through all participants and checks if each participant ID is within the list of visible participants, resuming streams for visible ones and pausing others.
 
-#### RemoteParticipantPresenter.js
+#### 5. RemoteParticipantPresenter.js
 
 - [RemoteParticipantPresenter.js](src/scenes/meeting/Conference/RemoteParticipantPresenter.js) displays the screen share of a remote participant.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/remote_screen_share.png"/>
   </p>
 
-### OneToOne
+### [OneToOne](src/scenes/meeting/OneToOne)
 
 The whole user interface and business logic for the meeting type `OneToOne` are contained in this folder.
 
@@ -292,40 +292,39 @@ OneToOne
     └── ParticipantLimitViewer.js
 ```
 
-#### index.js
+#### 1. index.js
 
 - The [OneToOneMeetingViewer](src/scenes/meeting/OneToOne/index.js) component defines the layout for one-on-one meetings, managing primary views for [LargeView](src/scenes/meeting/OneToOne/LargeView/index.js) and [MiniView](src/scenes/meeting/OneToOne/MiniView/index.js) participants. It provides controls for toggling audio, video, and screen sharing, and includes a `BottomSheet` for viewing participant stats, chat, and the participant list. The interface adapts dynamically based on participant count, screen-sharing status, and device orientation.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/one_to_one.png"/>
   </p>
 
-#### LargeView
+#### 2. LargeView
 
 - [LargeView](src/scenes/meeting/OneToOne/LargeView/index.js) displays a participant's video or screen share in full view, prioritizing high video quality.
 
-#### MiniView
+#### 3. MiniView
 
 - [MiniView](src/scenes/meeting/OneToOne/MiniView/index.js) is dedicated to displaying a minimized view of a local participant’s video stream.
 
-#### LocalViewContainer.js
+#### 4. LocalViewContainer.js
 
 - [LocalViewContainer.js](src/scenes/meeting/OneToOne/LocalViewContainer.js) handles displaying the local participant’s video stream when no other participants are present in the meeting. 
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/local_participant.png"/>
   </p>
 
-#### ParticipantLimitViewer.js
+#### 5. ParticipantLimitViewer.js
 
 - [ParticipantLimitViewer.js](src/scenes/meeting/OneToOne/ParticipantLimitViewer.js) notifies users when the maximum participant limit is reached in a meeting, displaying a message that only two participants are allowed.
 
-  <p align="left">
+  <p align="center">
   <img width="180"  src="./public/oops.png"/>
   </p>
   
 <br/>
-
 
 ## 📖 Examples
 
