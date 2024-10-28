@@ -86,7 +86,16 @@ Install all the dependencies to run the project.
 npm install
 ```
 
-### 4. Run the sample app
+### 5. Set Up for iOS (if applicable)
+
+For iOS, navigate to the ios folder and install the pods.
+
+```js
+cd ios
+pod install
+```
+
+### 6. Run the sample app
 
 Bingo, it's time to push the launch button.
 
