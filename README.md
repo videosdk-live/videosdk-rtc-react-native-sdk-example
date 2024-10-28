@@ -67,7 +67,7 @@ git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example
 Open your favorite code editor and copy `.env.example` to `.env` file.
 
 ```js
-$ cp .env.example .env
+cp .env.example .env
 ```
 
 ### 3. Modify `.env` file
