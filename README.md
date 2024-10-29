@@ -46,9 +46,9 @@ At Video SDK, we’re building tools to help companies create world-class collab
   - Android Studio (latest version recommended)
   - A physical or virtual mobile device running Android 5.0 or later
 - For iOS
-  - Xcode 9.4 or later
+  - Xcode 10 or later
   - CocoaPods
-  - A physical or virtual mobile device running iOS 9.0 or later
+  - A physical or virtual mobile device running iOS 12.0 or later
 
 ## 📦 Running the Sample App
 
