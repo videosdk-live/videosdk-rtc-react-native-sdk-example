@@ -1,30 +1,44 @@
 import ReplayKit
 
-
 private enum Constants {
     // the App Group ID value that the app and the broadcast extension targets are setup with. It differs for each app.
-    static let appGroupIdentifier = "group.com.example.broadcastScreen"
+    static let appGroupIdentifier = "group.com.ZujoNow.ScreenBroadcast"
+    static let videoSocketSuffix = "rtc_SSFD_video"
+    static let audioSocketSuffix = "rtc_SSFD_audio"
 }
 
 class SampleHandler: RPBroadcastSampleHandler {
     
-    private var clientConnection: SocketConnection?
-    private var uploader: SampleUploader?
+    private var videoConnection: SocketConnection?
+    private var audioConnection: SocketConnection?
+    private var videoUploader: SampleUploader?
+    private var audioUploader: SampleUploader?
     
     private var frameCount: Int = 0
+    private var audioFrameCount: Int = 0
     
-    var socketFilePath: String {
-      let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
-        return sharedContainer?.appendingPathComponent("rtc_SSFD").path ?? ""
+    var videoSocketFilePath: String {
+        let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
+        return sharedContainer?.appendingPathComponent(Constants.videoSocketSuffix).path ?? ""
+    }
+    
+    var audioSocketFilePath: String {
+        let sharedContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroupIdentifier)
+        return sharedContainer?.appendingPathComponent(Constants.audioSocketSuffix).path ?? ""
     }
     
     override init() {
-      super.init()
-        if let connection = SocketConnection(filePath: socketFilePath) {
-          clientConnection = connection
-          setupConnection()
-          
-          uploader = SampleUploader(connection: connection)
+        super.init()
+        if let videoConn = SocketConnection(filePath: videoSocketFilePath) {
+            videoConnection = videoConn
+            setupConnection(videoConn, type: .video)
+            videoUploader = SampleUploader(connection: videoConn, type: .video)
+        }
+        
+        if let audioConn = SocketConnection(filePath: audioSocketFilePath) {
+            audioConnection = audioConn
+            setupConnection(audioConn, type: .audio)
+            audioUploader = SampleUploader(connection: audioConn, type: .audio)
         }
     }
 
@@ -33,11 +47,10 @@ class SampleHandler: RPBroadcastSampleHandler {
         frameCount = 0
         
         DarwinNotificationCenter.shared.postNotification(.broadcastStarted)
-      
-        openConnection()
-      let notificationName = CFNotificationName("com.notification.start" as CFString)
-      let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
-      CFNotificationCenterPostNotification(notificationCenter, notificationName, nil, nil, true)
+        openConnections()
+        let notificationName = CFNotificationName("com.notification.start" as CFString)
+        let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterPostNotification(notificationCenter, notificationName, nil, nil, true)
     }
     
     override func broadcastPaused() {
@@ -51,21 +64,24 @@ class SampleHandler: RPBroadcastSampleHandler {
     override func broadcastFinished() {
         // User has requested to finish the broadcast.
         DarwinNotificationCenter.shared.postNotification(.broadcastStopped)
-        clientConnection?.close()
-      
-      let notificationName = CFNotificationName("com.notification.stop" as CFString)
-      let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
-      CFNotificationCenterPostNotification(notificationCenter, notificationName, nil, nil, true)
+        videoConnection?.close()
+        audioConnection?.close()
+        let notificationName = CFNotificationName("com.notification.stop" as CFString)
+        let notificationCenter = CFNotificationCenterGetDarwinNotifyCenter()
+        CFNotificationCenterPostNotification(notificationCenter, notificationName, nil, nil, true)
     }
     
     override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
         switch sampleBufferType {
         case RPSampleBufferType.video:
             // very simple mechanism for adjusting frame rate by using every third frame
-            frameCount += 1
-            if frameCount % 3 == 0 {
-                uploader?.send(sample: sampleBuffer)
-            }
+           frameCount += 1
+           if frameCount % 2 == 0 {
+               videoUploader?.send(sample: sampleBuffer)
+             frameCount = 0
+           }
+        case RPSampleBufferType.audioApp:
+            audioUploader?.send(audioSample: sampleBuffer)
         default:
             break
         }
@@ -73,15 +89,18 @@ class SampleHandler: RPBroadcastSampleHandler {
 }
 
 private extension SampleHandler {
-  
-    func setupConnection() {
-        clientConnection?.didClose = { [weak self] error in
-            print("client connection did close \(String(describing: error))")
-          
+    enum ConnectionType {
+        case video
+        case audio
+    }
+    
+    func setupConnection(_ connection: SocketConnection, type: ConnectionType) {
+        connection.didClose = { [weak self] error in
+            print("\(type) connection did close \(String(describing: error))")
+            
             if let error = error {
                 self?.finishBroadcastWithError(error)
             } else {
-                // the displayed failure message is more user friendly when using NSError instead of Error
                 let JMScreenSharingStopped = 10001
                 let customError = NSError(domain: RPRecordingErrorDomain, code: JMScreenSharingStopped, userInfo: [NSLocalizedDescriptionKey: "Screen sharing stopped"])
                 self?.finishBroadcastWithError(customError)
@@ -89,18 +108,21 @@ private extension SampleHandler {
         }
     }
     
-    func openConnection() {
-        let queue = DispatchQueue(label: "broadcast.connectTimer")
+    func openConnections() {
+        openConnection(videoConnection, type: .video)
+        openConnection(audioConnection, type: .audio)
+    }
+    
+    func openConnection(_ connection: SocketConnection?, type: ConnectionType) {
+        let queue = DispatchQueue(label: "broadcast.connectTimer.\(type)")
         let timer = DispatchSource.makeTimerSource(queue: queue)
         timer.schedule(deadline: .now(), repeating: .milliseconds(100), leeway: .milliseconds(500))
-        timer.setEventHandler { [weak self] in
-            guard self?.clientConnection?.open() == true else {
+        timer.setEventHandler { [weak connection] in
+            guard connection?.open() == true else {
                 return
             }
-            
             timer.cancel()
         }
-        
         timer.resume()
     }
 }
