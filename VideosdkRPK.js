@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter,Platform } from "react-native";
+import { NativeModules, NativeEventEmitter, Platform } from "react-native";
 
 class VideosdkRPK extends NativeEventEmitter {
   constructor(nativeModule) {
@@ -7,4 +7,4 @@ class VideosdkRPK extends NativeEventEmitter {
   }
 }
 
-export default new VideosdkRPK(NativeModules.VideosdkRPK);
+export default new VideosdkRPK(NativeModules.VideosdkRPK); 
