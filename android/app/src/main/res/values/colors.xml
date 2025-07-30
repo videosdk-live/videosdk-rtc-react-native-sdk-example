@@ -1,6 +1,4 @@
 <resources>
-    <item name="red" type="color">#FC0303</item>
-    <integer-array name="androidcolors">
-    <item>@color/red</item>
-    </integer-array>
+    <!-- Define the color 'red' used in notifications -->
+    <color name="red">#FC0303</color>
 </resources>

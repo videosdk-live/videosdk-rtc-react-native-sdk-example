@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from "../../styles/colors";
 import {
   MeetingConsumer,
@@ -18,6 +18,7 @@ export default function ({ navigation, route }) {
   const defaultCamera = route.params.defaultCamera;
   return (
     <SafeAreaView
+            edges={['top', 'bottom']}
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
     >
       <MeetingProvider

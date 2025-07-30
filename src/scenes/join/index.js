@@ -7,7 +7,6 @@ import {
 } from "@videosdk.live/react-native-sdk";
 import React, { useState, useRef, useEffect } from "react";
 import {
-  SafeAreaView,
   View,
   Text,
   TouchableOpacity,
@@ -19,6 +18,7 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   MicOff,
   MicOn,
@@ -174,6 +174,7 @@ export default function Join({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView
+        edges={['top', 'bottom']}
           style={{
             flex: 1,
             backgroundColor: colors.primary["900"],

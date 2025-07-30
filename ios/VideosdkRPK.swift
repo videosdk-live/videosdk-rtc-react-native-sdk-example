@@ -1,3 +1,10 @@
+//
+//  VideosdkRPK.swift
+//  MyApp
+//
+//  Created by Deep Bhupatkar on 16/06/25.
+//
+
 import Foundation
 import ReplayKit
 import Photos
@@ -70,7 +77,7 @@ class VideosdkRPK: RCTEventEmitter {
         frame: CGRect(x: 0, y: 0, width: 0, height: 0))
       var tap = pickerView.subviews.first as! UIButton
       pickerView.translatesAutoresizingMaskIntoConstraints = false
-      pickerView.preferredExtension = "org.reactjs.native.example.RNCodeSample"
+      pickerView.preferredExtension = "com.ZujoNow.example.ScreenBroadcast"
       tap.sendActions(for: .touchUpInside)
       
     }
@@ -87,4 +94,3 @@ class VideosdkRPK: RCTEventEmitter {
   }
   
 }
-
