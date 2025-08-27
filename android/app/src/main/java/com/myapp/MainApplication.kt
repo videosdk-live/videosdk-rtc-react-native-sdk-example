@@ -13,6 +13,7 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import live.videosdk.rnwebrtc.WebRTCModulePackage
 import live.videosdk.rnfgservice.ForegroundServicePackage
+import com.myapp.ForegroundServiceMediaPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -25,6 +26,7 @@ class MainApplication : Application(), ReactApplication {
           // Add VideoSDK WebRTC package manually
           packages.add(WebRTCModulePackage())
           packages.add(ForegroundServicePackage())
+          packages.add(ForegroundServiceMediaPackage())
           return packages
         }
 
