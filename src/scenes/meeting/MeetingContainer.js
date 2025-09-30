@@ -1,6 +1,5 @@
 import {
   useMeeting,
-  ReactNativeForegroundService,
 } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOne";
@@ -43,7 +42,6 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
 
     return () => {
       leave();
-      ReactNativeForegroundService.stopAll();
     };
   }, []);
 

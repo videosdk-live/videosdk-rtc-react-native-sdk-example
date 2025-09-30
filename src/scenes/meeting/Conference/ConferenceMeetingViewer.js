@@ -395,7 +395,7 @@ export default function ConferenceMeetingViewer() {
               moreOptionsMenu.current.close();
               if (presenterId == null || localScreenShareOn)
                 Platform.OS === "android"
-                  ? toggleScreenShare()
+                  ? toggleScreenShare({enableAudio:false})
                   : VideosdkRPK.startBroadcast();
             }}
           />
