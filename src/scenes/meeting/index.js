@@ -1,9 +1,6 @@
-import {
-  Platform,
-  NativeModules,
-  PermissionsAndroid,
-} from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useEffect, useState } from "react";
+import { Platform, NativeModules, PermissionsAndroid } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../styles/colors";
 import {
   MeetingConsumer,
@@ -14,51 +11,85 @@ import { SCREEN_NAMES } from "../../navigators/screenNames";
 const { ForegroundServiceModule } = NativeModules;
 
 const requestPermissions = async () => {
-  if (Platform.OS !== 'android') {
-    return true;
-  }
+  if (Platform.OS !== "android") return true;
 
   try {
-    console.log('Requesting runtime permissions...');
-    
     const permissions = [
       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
       PermissionsAndroid.PERMISSIONS.CAMERA,
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
     ];
-    
     const granted = await PermissionsAndroid.requestMultiple(permissions);
-    console.log('Permission results:', granted);
-    
     const allGranted = Object.values(granted).every(
-      permission => permission === PermissionsAndroid.RESULTS.GRANTED
+      (permission) => permission === PermissionsAndroid.RESULTS.GRANTED
     );
-    
-    if (allGranted) {
-      console.log('All permissions granted');
-      return true;
-    } else {
-      console.log('Some permissions denied:', granted);
-      return false;
-    }
+
+    console.log(allGranted ? "permissions granted" : "permissions denied");
+
+    return allGranted;
   } catch (err) {
-    console.error('Error requesting permissions:', err);
+    console.error("Error requesting permissions:", err);
     return false;
   }
-}
+};
 
 export default function ({ navigation, route }) {
-  const token = route.params.token;
-  const meetingId = route.params.meetingId;
-  const micEnabled = route.params.micEnabled;
-  const webcamEnabled = route.params.webcamEnabled;
-  const name = route.params.name;
-  const meetingType = route.params.meetingType;
-  const defaultCamera = route.params.defaultCamera;
+  const [permissionsGranted, setPermissionsGranted] = useState(false);
+
+  const {
+    token,
+    meetingId,
+    micEnabled,
+    webcamEnabled,
+    name,
+    meetingType,
+    defaultCamera,
+  } = route.params;
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const granted = await requestPermissions();
+      if (isMounted) setPermissionsGranted(granted);
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleMeetingJoined = async () => {
+    if (permissionsGranted) {
+      if (Platform.OS === "android") {
+        setTimeout(async () => {
+          try {
+            await ForegroundServiceModule.startService();
+          } catch (err) {
+            console.error("[Error starting foreground service:", err);
+          }
+        }, 300);
+      }
+    }
+  };
+
+  const handleMeetingLeft = () => {
+    if (Platform.OS === "android") {
+      ForegroundServiceModule.stopService();
+    }
+    navigation.navigate(SCREEN_NAMES.Join);
+  };
+
+  if (Platform.OS === "android" && !permissionsGranted) {
+    return (
+      <SafeAreaView
+        edges={["top", "bottom"]}
+        style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
+      />
+    );
+  }
 
   return (
     <SafeAreaView
-      edges={['top', 'bottom']}
+      edges={["top", "bottom"]}
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
     >
       <MeetingProvider
@@ -76,31 +107,15 @@ export default function ({ navigation, route }) {
         token={token}
       >
         <MeetingConsumer
-          {...{
-            onMeetingJoined: async () => {
-              await requestPermissions();
-              if (Platform.OS === "android") {
-                await ForegroundServiceModule.startService();
-                console.log("Foreground service started successfully");
-              }
-            },
-            onMeetingLeft: () => {
-              if (Platform.OS === "android"){
-                ForegroundServiceModule.stopService();
-                console.log("Foreground service stopped successfully");
-              }
-              navigation.navigate(SCREEN_NAMES.Join);
-            },
-          }}
+          onMeetingJoined={handleMeetingJoined}
+          onMeetingLeft={handleMeetingLeft}
         >
-          {() => {
-            return (
-              <MeetingContainer
-                webcamEnabled={webcamEnabled}
-                meetingType={meetingType}
-              />
-            );
-          }}
+          {() => (
+            <MeetingContainer
+              webcamEnabled={webcamEnabled}
+              meetingType={meetingType}
+            />
+          )}
         </MeetingConsumer>
       </MeetingProvider>
     </SafeAreaView>
