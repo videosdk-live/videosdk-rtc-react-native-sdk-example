@@ -3,13 +3,12 @@ import { useRef, useState, useEffect } from "react";
 
 function useParticipantStat({ participantId }) {
   const {
-    webcamStream,
-    micStream,
+    webcamOn,
+    micOn,
     getVideoStats,
     getAudioStats,
     getShareStats,
     isPresenting,
-    displayName,
   } = useParticipant(participantId);
 
   const statsIntervalIdRef = useRef();
@@ -34,13 +33,13 @@ function useParticipantStat({ participantId }) {
     let videoStats = [];
     if (isPresenting) {
       stats = await getShareStats();
-    } else if (webcamStream) {
+    } else if (webcamOn) {
       stats = await getVideoStats();
-    } else if (micStream) {
+    } else if (micOn) {
       stats = await getAudioStats();
     }
 
-    if (webcamStream || micStream || isPresenting) {
+    if (webcamOn || micOn || isPresenting) {
       videoStats = isPresenting ? await getShareStats() : await getVideoStats();
       audioStats = isPresenting ? [] : await getAudioStats();
     }
@@ -57,7 +56,7 @@ function useParticipantStat({ participantId }) {
   };
 
   useEffect(() => {
-    if (webcamStream || micStream) {
+    if (webcamOn || micOn) {
       updateStats();
 
       if (statsIntervalIdRef.current) {
@@ -75,13 +74,12 @@ function useParticipantStat({ participantId }) {
     return () => {
       if (statsIntervalIdRef.current) clearInterval(statsIntervalIdRef.current);
     };
-  }, [webcamStream, micStream]);
+  }, [webcamOn, micOn]);
 
   return {
     score,
     audioStats,
     videoStats,
-    displayName,
   };
 }
 

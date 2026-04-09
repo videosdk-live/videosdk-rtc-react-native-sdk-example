@@ -1,4 +1,8 @@
-import { RTCView, MediaStream } from "@videosdk.live/react-native-sdk";
+import {
+  useParticipant,
+  RTCView,
+  MediaStream,
+} from "@videosdk.live/react-native-sdk";
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { NetworkIcon } from "../../../../assets/icons";
@@ -18,18 +22,12 @@ const buttonStyle = {
   left: 10,
 };
 
-export default MiniVideoRTCView = ({
-  stream,
-  isOn,
-  displayName,
-  isLocal,
-  openStatsBottomSheet,
-  micOn,
-  participantId,
-}) => {
-  const { score } = useParticipantStat({
-    participantId,
-  });
+export default MiniVideoRTCView = ({ participantId, openStatsBottomSheet }) => {
+  const { webcamOn, webcamStream, displayName, isLocal, micOn } =
+    useParticipant(participantId, {});
+
+  const { score } = useParticipantStat({ participantId });
+
   return (
     <View
       style={{
@@ -43,13 +41,13 @@ export default MiniVideoRTCView = ({
         overflow: "hidden",
       }}
     >
-      {isOn && stream ? (
+      {webcamOn && webcamStream ? (
         <RTCView
           objectFit="cover"
           zOrder={1}
           mirror={isLocal ? true : false}
           style={{ flex: 1, backgroundColor: "#424242" }}
-          streamURL={new MediaStream([stream.track]).toURL()}
+          streamURL={new MediaStream([webcamStream.track]).toURL()}
         />
       ) : (
         <Avatar
@@ -64,7 +62,7 @@ export default MiniVideoRTCView = ({
           }}
         />
       )}
-      {micOn || isOn ? (
+      {micOn || webcamOn ? (
         <TouchableOpacity
           style={{
             ...buttonStyle,

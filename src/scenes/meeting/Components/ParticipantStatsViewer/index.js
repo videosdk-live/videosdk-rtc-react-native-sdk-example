@@ -2,10 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 import colors from "../../../../styles/colors";
 import { ROBOTO_FONTS } from "../../../../styles/fonts";
+import { useParticipant } from "@videosdk.live/react-native-sdk";
 import useParticipantStat from "../../Hooks/useParticipantStat";
 
 function ParticipantStatsViewer({ participantId }) {
-  const { audioStats, videoStats, displayName, score } = useParticipantStat({
+  const { displayName } = useParticipant(participantId);
+  const { audioStats, videoStats, score } = useParticipantStat({
     participantId,
   });
 
@@ -34,14 +36,14 @@ function ParticipantStatsViewer({ participantId }) {
       audio: audioStats
         ? audioStats[0]?.packetsLost
           ? `${parseFloat(
-              (audioStats[0]?.packetsLost * 100) / audioStats[0]?.totalPackets
+              (audioStats[0]?.packetsLost * 100) / audioStats[0]?.totalPackets,
             ).toFixed(2)}%`
           : "-"
         : "-",
       video: videoStats
         ? videoStats[0]?.packetsLost
           ? `${parseFloat(
-              (videoStats[0]?.packetsLost * 100) / videoStats[0]?.totalPackets
+              (videoStats[0]?.packetsLost * 100) / videoStats[0]?.totalPackets,
             ).toFixed(2)}%`
           : "-"
         : "-",
@@ -128,6 +130,7 @@ function ParticipantStatsViewer({ participantId }) {
       {qualityStateArray.map(({ label, audio, video }) => {
         return (
           <View
+            key={label}
             style={{
               paddingHorizontal: 12,
               flexDirection: "row",

@@ -25,8 +25,8 @@ const ChatViewer = ({}) => {
     mpubsubRef.current = mpubsub;
   }, [mpubsub]);
 
-  const mMeeting = useMeeting({});
-  const localParticipantId = mMeeting?.localParticipant?.id;
+  const { localParticipant } = useMeeting({});
+  const localParticipantId = localParticipant?.id;
 
   const [message, setMessage] = useState("");
 

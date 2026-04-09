@@ -28,6 +28,7 @@ export default function ParticipantView({
   quality,
   openStatsBottomSheet,
 }) {
+  // Extract only what this component renders
   const {
     displayName,
     webcamStream,
@@ -36,35 +37,10 @@ export default function ParticipantView({
     isLocal,
     setQuality,
     isActiveSpeaker,
-    getVideoStats,
-    isPresenting,
-    micStream,
-    getShareStats,
-    getAudioStats,
   } = useParticipant(participantId, {});
 
-  const { score } = useParticipantStat({
-    participantId,
-  });
-
-  const updateStats = async () => {
-    let stats = [];
-    if (isPresenting) {
-      stats = await getShareStats();
-    } else if (webcamStream) {
-      stats = await getVideoStats();
-    } else if (micStream) {
-      stats = await getAudioStats();
-    }
-  };
-
-  useEffect(() => {
-    setInterval(() => {
-      if (!isLocal) {
-        updateStats();
-      }
-    }, 4000);
-  }, []);
+  // Stats extracted separately — only re-renders when score changes
+  const { score } = useParticipantStat({ participantId });
 
   useEffect(() => {
     if (quality) {

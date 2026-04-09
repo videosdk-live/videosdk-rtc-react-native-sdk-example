@@ -32,9 +32,7 @@ export default LargeViewContainer = ({
     micOn,
   } = useParticipant(participantId, {});
 
-  const { score } = useParticipantStat({
-    participantId,
-  });
+  const { score } = useParticipantStat({ participantId });
 
   useEffect(() => {
     setQuality("high");
