@@ -19,32 +19,27 @@ function OneToOneErrorHandler() {
 
 function OneToOneMeetingViewer() {
   const bottomSheetRef = useRef();
-
-  const [chatViewer, setchatViewer] = useState(false);
-  const [participantListViewer, setparticipantListViewer] = useState(false);
-  const [participantStatsViewer, setparticipantStatsViewer] = useState(false);
+  const [bottomSheetView, setBottomSheetView] = useState("");
   const [statParticipantId, setstatParticipantId] = useState("");
 
   const openStatsBottomSheet = useCallback(({ pId }) => {
-    setparticipantStatsViewer(true);
+    setBottomSheetView("PARTICIPANT_STATS");
     setstatParticipantId(pId);
     bottomSheetRef.current.show();
   }, []);
 
   const onParticipantPress = useCallback(() => {
-    setparticipantListViewer(true);
+    setBottomSheetView("PARTICIPANT_LIST");
     bottomSheetRef.current.show();
   }, []);
 
   const onChatPress = useCallback(() => {
-    setchatViewer(true);
+    setBottomSheetView("CHAT");
     bottomSheetRef.current.show();
   }, []);
 
   const onBottomSheetClose = useCallback(() => {
-    setparticipantListViewer(false);
-    setchatViewer(false);
-    setparticipantStatsViewer(false);
+    setBottomSheetView("");
     setstatParticipantId("");
   }, []);
 
@@ -62,9 +57,7 @@ function OneToOneMeetingViewer() {
       />
       <OneToOneBottomSheet
         bottomSheetRef={bottomSheetRef}
-        chatViewer={chatViewer}
-        participantListViewer={participantListViewer}
-        participantStatsViewer={participantStatsViewer}
+        bottomSheetView={bottomSheetView}
         statParticipantId={statParticipantId}
         onClose={onBottomSheetClose}
       />

@@ -5,10 +5,9 @@ import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
 import ParticipantLimitViewer from "./OneToOne/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
-import useRenderCount from "../../utils/useRenderCount";
+
 
 function MeetingContainer({ webcamEnabled, meetingType }) {
-  useRenderCount("MeetingContainer");
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 

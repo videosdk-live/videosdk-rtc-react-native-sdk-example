@@ -25,16 +25,23 @@ export const getToken = async () => {
 
 export const createMeeting = async ({ token }) => {
   const url = `${API_BASE_URL}/rooms`;
+
   const options = {
     method: "POST",
-    headers: { Authorization: token, "Content-Type": "application/json" },
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
   };
 
-  const { roomId } = await fetch(url, options)
-    .then((response) => response.json())
-    .catch((error) => console.error("error", error));
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
 
-  return roomId;
+    return data.roomId;
+  } catch (error) {
+    console.error("error", error);
+  }
 };
 
 export const validateMeeting = async ({ meetingId, token }) => {

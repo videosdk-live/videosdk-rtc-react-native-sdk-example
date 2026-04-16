@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Platform, NativeModules, PermissionsAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../styles/colors";
@@ -34,36 +34,8 @@ const requestPermissions = async () => {
 };
 
 export default function ({ navigation, route }) {
-  const prevProps = useRef({ navigation, route });
-  const prevState = useRef({ permissionsGranted: false });
-
   const [permissionsGranted, setPermissionsGranted] = useState(false);
-
-  useEffect(() => {
-    const changedProps = Object.entries({ navigation, route }).filter(
-      ([key, value]) => prevProps.current[key] !== value,
-    );
-    if (changedProps.length > 0) {
-      console.log(
-        "Meeting Screen re-rendered due to PROPS change:",
-        Object.fromEntries(changedProps),
-      );
-    } else {
-      const changedState = Object.entries({ permissionsGranted }).filter(
-        ([key, value]) => prevState.current[key] !== value,
-      );
-      if (changedState.length > 0) {
-        console.log(
-          "Meeting Screen re-rendered due to STATE change:",
-          Object.fromEntries(changedState),
-        );
-      } else {
-        console.log("Meeting Screen re-rendered due to PARENT re-render");
-      }
-    }
-    prevProps.current = { navigation, route };
-    prevState.current = { permissionsGranted };
-  });
+  const permissionsGrantedRef = useRef(false);
 
   const {
     token,
@@ -79,33 +51,43 @@ export default function ({ navigation, route }) {
     let isMounted = true;
     (async () => {
       const granted = await requestPermissions();
-      if (isMounted) setPermissionsGranted(granted);
+      if (isMounted) {
+        permissionsGrantedRef.current = granted;
+        setPermissionsGranted(granted);
+      }
     })();
     return () => {
       isMounted = false;
     };
   }, []);
 
-  const handleMeetingJoined = async () => {
-    if (permissionsGranted) {
+  useEffect(() => {
+    if (!meetingId || !token) {
+      console.error("Meeting screen requires meetingId and token");
+      navigation.navigate(SCREEN_NAMES.Join);
+    }
+  }, [meetingId, token, navigation]);
+
+  const handleMeetingJoined = useCallback(async () => {
+    if (permissionsGrantedRef.current) {
       if (Platform.OS === "android") {
         setTimeout(async () => {
           try {
             await ForegroundServiceModule.startService();
           } catch (err) {
-            console.error("[Error starting foreground service:", err);
+            console.error("Error starting foreground service:", err);
           }
         }, 300);
       }
     }
-  };
+  }, []);
 
-  const handleMeetingLeft = () => {
+  const handleMeetingLeft = useCallback(() => {
     if (Platform.OS === "android") {
       ForegroundServiceModule.stopService();
     }
     navigation.navigate(SCREEN_NAMES.Join);
-  };
+  }, [navigation]);
 
   if (Platform.OS === "android" && !permissionsGranted) {
     return (
@@ -116,9 +98,13 @@ export default function ({ navigation, route }) {
     );
   }
 
+  if (!meetingId || !token) {
+    return null;
+  }
+
   return (
     <SafeAreaView
-      edges={["top", "bottom"]}
+      edges={Platform.OS === "ios" ? ["bottom"] : ["top", "bottom"]}
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
     >
       <MeetingProvider

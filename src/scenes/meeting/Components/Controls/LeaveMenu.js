@@ -6,7 +6,7 @@ import colors from "../../../../styles/colors";
 import Menu from "../../../../components/Menu";
 import MenuItem from "../MenuItem";
 
-const LeaveMenu = forwardRef(({ moreOptionsMenuRef }, ref) => {
+const LeaveMenu = forwardRef((_, ref) => {
   const { leave, end } = useMeeting({});
 
   return (

@@ -1,14 +1,33 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { View } from "react-native";
-import { switchAudioDevice } from "@videosdk.live/react-native-sdk";
+import {
+  switchAudioDevice,
+  useMediaDevice
+} from "@videosdk.live/react-native-sdk";
 import colors from "../../../../styles/colors";
 import Menu from "../../../../components/Menu";
 import MenuItem from "../MenuItem";
 
-const AudioDeviceMenu = forwardRef(({ audioDevice }, ref) => {
+const AudioDeviceMenu = forwardRef((_, ref) => {
+
+  const { getAudioDeviceList } = useMediaDevice();
+  const menuRef = useRef();
+  const [audioDevice, setAudioDevice] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    show: async () => {
+      const devices = await getAudioDeviceList();
+      setAudioDevice(devices);
+      menuRef.current.show();
+    },
+    close: () => {
+      menuRef.current.close();
+    },
+  }));
+
   return (
     <Menu
-      ref={ref}
+      ref={menuRef}
       menuBackgroundColor={colors.primary[700]}
       placement="left"
       left={70}
@@ -17,18 +36,10 @@ const AudioDeviceMenu = forwardRef(({ audioDevice }, ref) => {
         return (
           <React.Fragment key={device}>
             <MenuItem
-              title={
-                device == "SPEAKER_PHONE"
-                  ? "Speaker"
-                  : device == "EARPIECE"
-                  ? "Earpiece"
-                  : device == "BLUETOOTH"
-                  ? "Bluetooth"
-                  : "Wired Headset"
-              }
+              title={device.label}
               onPress={() => {
-                switchAudioDevice(device);
-                ref.current.close();
+                switchAudioDevice(device.label);
+                menuRef.current.close();
               }}
             />
 

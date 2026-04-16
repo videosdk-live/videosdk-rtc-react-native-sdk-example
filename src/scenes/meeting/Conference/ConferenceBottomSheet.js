@@ -1,6 +1,5 @@
 import React from "react";
 import { Dimensions } from "react-native";
-import { useMeeting } from "@videosdk.live/react-native-sdk";
 import BottomSheet from "../../../components/BottomSheet";
 import ChatViewer from "../Components/ChatViewer";
 import ParticipantListViewer from "../Components/ParticipantListViewer";
@@ -10,8 +9,6 @@ export default function ConferenceBottomSheet({
   bottomSheetView,
   setBottomSheetView,
 }) {
-  const { participants } = useMeeting({});
-
   return (
     <BottomSheet
       sheetBackgroundColor={"#2B3034"}
@@ -27,7 +24,7 @@ export default function ConferenceBottomSheet({
       {bottomSheetView === "CHAT" ? (
         <ChatViewer />
       ) : bottomSheetView === "PARTICIPANT_LIST" ? (
-        <ParticipantListViewer participantIds={[...participants.keys()]} />
+        <ParticipantListViewer />
       ) : null}
     </BottomSheet>
   );

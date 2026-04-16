@@ -68,10 +68,12 @@ export default function Join({ navigation }) {
 
   const disposeVideoTrack = () => {
     setTrack((stream) => {
-      stream.getTracks().forEach((track) => {
-        track.enabled = false;
-        return track;
-      });
+      if (stream && stream.getTracks) {
+        stream.getTracks().forEach((track) => {
+          track.enabled = false;
+          return track;
+        });
+      }
     });
   };
 

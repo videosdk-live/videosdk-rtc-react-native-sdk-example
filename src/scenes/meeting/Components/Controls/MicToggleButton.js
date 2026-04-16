@@ -4,7 +4,7 @@ import { MicOff, MicOn } from "../../../../assets/icons";
 import colors from "../../../../styles/colors";
 import IconContainer from "../../../../components/IconContainer";
 
-export default function MicToggleButton({ onDropDownPress }) {
+function MicToggleButton({ onDropDownPress }) {
   const { localMicOn, toggleMic } = useMeeting({});
 
   return (
@@ -29,3 +29,5 @@ export default function MicToggleButton({ onDropDownPress }) {
     />
   );
 }
+
+export default React.memo(MicToggleButton);

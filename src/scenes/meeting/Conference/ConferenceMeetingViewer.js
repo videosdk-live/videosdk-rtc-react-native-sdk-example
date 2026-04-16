@@ -9,7 +9,7 @@ import ParticipantGridContainer from "./ParticipantGridContainer";
 import ConferenceBottomSheet from "./ConferenceBottomSheet";
 import { IOSScreenShareHandler } from "../Hooks/useIOSScreenShare";
 import { useOrientation } from "../../../utils/useOrientation";
-import useRenderCount from "../../../utils/useRenderCount";
+
 
 function ConferenceErrorHandler() {
   useMeeting({
@@ -22,7 +22,6 @@ function ConferenceErrorHandler() {
 }
 
 function ConferenceMeetingViewer() {
-  useRenderCount("ConferenceMeetingViewer");
   const bottomSheetRef = useRef();
   const orientation = useOrientation();
   const [bottomSheetView, setBottomSheetView] = useState("");

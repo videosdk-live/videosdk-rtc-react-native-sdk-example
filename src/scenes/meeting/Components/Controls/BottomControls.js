@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { View } from "react-native";
-import { getAudioDeviceList } from "@videosdk.live/react-native-sdk";
 import { CallEnd, Chat, More } from "../../../../assets/icons";
 import IconContainer from "../../../../components/IconContainer";
 import LeaveMenu from "./LeaveMenu";
@@ -8,29 +7,20 @@ import AudioDeviceMenu from "./AudioDeviceMenu";
 import MicToggleButton from "./MicToggleButton";
 import VideoToggleButton from "./VideoToggleButton";
 import MoreOptionsMenu from "./MoreOptionsMenu";
-import useRenderCount from "../../../../utils/useRenderCount";
 
 function BottomControls({
   onChatPress,
   showParticipantMenuItem,
   onParticipantPress,
 }) {
-  useRenderCount("BottomControls");
   const leaveMenuRef = useRef();
   const audioDeviceMenuRef = useRef();
   const moreOptionsMenuRef = useRef();
 
-  const [audioDevice, setAudioDevice] = useState([]);
-
-  async function updateAudioDeviceList() {
-    const devices = await getAudioDeviceList();
-    setAudioDevice(devices);
-  }
-
   return (
     <>
-      <LeaveMenu ref={leaveMenuRef} moreOptionsMenuRef={moreOptionsMenuRef} />
-      <AudioDeviceMenu ref={audioDeviceMenuRef} audioDevice={audioDevice} />
+      <LeaveMenu ref={leaveMenuRef} />
+      <AudioDeviceMenu ref={audioDeviceMenuRef} />
       <MoreOptionsMenu
         ref={moreOptionsMenuRef}
         showParticipantMenuItem={showParticipantMenuItem}
@@ -53,8 +43,7 @@ function BottomControls({
         />
         <MicToggleButton
           onDropDownPress={async () => {
-            await updateAudioDeviceList();
-            audioDeviceMenuRef.current.show();
+            await audioDeviceMenuRef.current.show();
           }}
         />
         <VideoToggleButton />

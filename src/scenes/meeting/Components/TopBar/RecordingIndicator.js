@@ -5,7 +5,7 @@ import Lottie from "lottie-react-native";
 import recording_lottie from "../../../../assets/animation/recording_lottie.json";
 import Blink from "../../../../components/Blink";
 
-export default function RecordingIndicator() {
+function RecordingIndicator() {
   const { recordingState } = useMeeting({});
   const recordingRef = useRef();
 
@@ -45,3 +45,5 @@ export default function RecordingIndicator() {
     </View>
   );
 }
+
+export default React.memo(RecordingIndicator);

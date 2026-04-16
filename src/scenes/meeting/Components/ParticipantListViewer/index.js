@@ -1,9 +1,14 @@
 import React from "react";
 import ParticipantListItem from "./ParticipantListItem";
 import { FlatList, View, Text } from "react-native";
+import { useMeeting } from "@videosdk.live/react-native-sdk";
 import colors from "../../../../styles/colors";
 import { ROBOTO_FONTS } from "../../../../styles/fonts";
-function ParticipantListViewer({ participantIds }) {
+
+function ParticipantListViewer() {
+  const { participants } = useMeeting({});
+  const participantIds = [...participants.keys()];
+
   return (
     <View
       style={{

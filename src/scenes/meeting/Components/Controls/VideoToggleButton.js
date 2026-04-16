@@ -4,7 +4,7 @@ import { VideoOff, VideoOn } from "../../../../assets/icons";
 import colors from "../../../../styles/colors";
 import IconContainer from "../../../../components/IconContainer";
 
-export default function VideoToggleButton() {
+function VideoToggleButton() {
   const { localWebcamOn, toggleWebcam } = useMeeting({});
 
   return (
@@ -27,3 +27,5 @@ export default function VideoToggleButton() {
     />
   );
 }
+
+export default React.memo(VideoToggleButton);

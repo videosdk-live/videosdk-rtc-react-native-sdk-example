@@ -1,12 +1,13 @@
 import React from "react";
-import { View, Text, Clipboard, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useMeeting } from "@videosdk.live/react-native-sdk";
 import { Copy } from "../../../../assets/icons";
 import colors from "../../../../styles/colors";
 import { ROBOTO_FONTS } from "../../../../styles/fonts";
 import Toast from "react-native-simple-toast";
 
-export default function MeetingIdDisplay() {
+function MeetingIdDisplay() {
   const { meetingId } = useMeeting({});
 
   return (
@@ -36,3 +37,5 @@ export default function MeetingIdDisplay() {
     </View>
   );
 }
+
+export default React.memo(MeetingIdDisplay);

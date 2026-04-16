@@ -4,7 +4,7 @@ import { useMeeting } from "@videosdk.live/react-native-sdk";
 import { CameraSwitch } from "../../../../assets/icons";
 import colors from "../../../../styles/colors";
 
-export default function CameraSwitchButton({ style }) {
+function CameraSwitchButton({ style }) {
   const { changeWebcam } = useMeeting({});
 
   return (
@@ -18,3 +18,5 @@ export default function CameraSwitchButton({ style }) {
     </TouchableOpacity>
   );
 }
+
+export default React.memo(CameraSwitchButton);

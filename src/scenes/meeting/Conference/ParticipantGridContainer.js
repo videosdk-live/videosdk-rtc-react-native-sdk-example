@@ -8,7 +8,6 @@ export default function ParticipantGridContainer() {
     participants,
     pinnedParticipants,
     presenterId,
-    localScreenShareOn,
     activeSpeakerId,
   } = useMeeting({});
 
@@ -43,7 +42,6 @@ export default function ParticipantGridContainer() {
     activeSpeakerId,
     pinnedParticipants,
     presenterId,
-    localScreenShareOn,
   ]);
 
   return (
