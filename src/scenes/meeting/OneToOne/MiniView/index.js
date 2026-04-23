@@ -6,8 +6,7 @@ export default MiniViewContainer = ({
   participantId,
   openStatsBottomSheet,
 }) => {
-  const { webcamOn, webcamStream, displayName, setQuality, isLocal, micOn } =
-    useParticipant(participantId, {});
+  const { setQuality } = useParticipant(participantId, {});
 
   useEffect(() => {
     setQuality("high");
@@ -15,11 +14,6 @@ export default MiniViewContainer = ({
 
   return (
     <MiniVideoRTCView
-      isOn={webcamOn}
-      stream={webcamStream}
-      displayName={displayName}
-      isLocal={isLocal}
-      micOn={micOn}
       participantId={participantId}
       openStatsBottomSheet={openStatsBottomSheet}
     />

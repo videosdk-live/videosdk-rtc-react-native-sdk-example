@@ -1,6 +1,4 @@
-import {
-  useMeeting,
-} from "@videosdk.live/react-native-sdk";
+import { useMeeting } from "@videosdk.live/react-native-sdk";
 import { useEffect, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOne";
 import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
@@ -8,7 +6,8 @@ import ParticipantLimitViewer from "./OneToOne/ParticipantLimitViewer";
 import WaitingToJoinView from "./Components/WaitingToJoinView";
 import React from "react";
 
-export default function MeetingContainer({ webcamEnabled, meetingType }) {
+
+function MeetingContainer({ webcamEnabled, meetingType }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
 
@@ -57,3 +56,5 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
     <WaitingToJoinView />
   );
 }
+
+export default React.memo(MeetingContainer);

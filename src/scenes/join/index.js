@@ -18,7 +18,10 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import {
   MicOff,
   MicOn,
@@ -65,10 +68,12 @@ export default function Join({ navigation }) {
 
   const disposeVideoTrack = () => {
     setTrack((stream) => {
-      stream.getTracks().forEach((track) => {
-        track.enabled = false;
-        return track;
-      });
+      if (stream && stream.getTracks) {
+        stream.getTracks().forEach((track) => {
+          track.enabled = false;
+          return track;
+        });
+      }
     });
   };
 
@@ -117,7 +122,7 @@ export default function Join({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getTrack();
-    }, [])
+    }, []),
   );
 
   const getTrack = async () => {
@@ -138,7 +143,7 @@ export default function Join({ navigation }) {
       disposeVideoTrack();
     } finally {
       setfacingMode((prevFacingMode) =>
-        prevFacingMode === "environment" ? "user" : "environment"
+        prevFacingMode === "environment" ? "user" : "environment",
       );
     }
   };
@@ -157,11 +162,11 @@ export default function Join({ navigation }) {
 
       const subscription = BackHandler.addEventListener(
         "hardwareBackPress",
-        onBackPress
+        onBackPress,
       );
 
       return () => subscription.remove();
-    }, [isVisibleCreateMeetingContainer, isVisibleJoinMeetingContainer])
+    }, [isVisibleCreateMeetingContainer, isVisibleJoinMeetingContainer]),
   );
 
   return (
@@ -174,7 +179,7 @@ export default function Join({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView
-        edges={['top', 'bottom']}
+          edges={["top", "bottom"]}
           style={{
             flex: 1,
             backgroundColor: colors.primary["900"],
@@ -400,7 +405,7 @@ export default function Join({ navigation }) {
                 >
                   {meetingTypes.map((meetingType, index) => {
                     return (
-                      <>
+                      <React.Fragment key={meetingType.key}>
                         <MenuItem
                           title={meetingType.value}
                           onPress={() => {
@@ -416,7 +421,7 @@ export default function Join({ navigation }) {
                             }}
                           />
                         )}
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </Menu>
@@ -480,7 +485,7 @@ export default function Join({ navigation }) {
                 >
                   {meetingTypes.map((meetingType, index) => {
                     return (
-                      <>
+                      <React.Fragment key={meetingType.key}>
                         <MenuItem
                           title={meetingType.value}
                           onPress={() => {
@@ -496,7 +501,7 @@ export default function Join({ navigation }) {
                             }}
                           />
                         )}
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </Menu>

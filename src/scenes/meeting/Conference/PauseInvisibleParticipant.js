@@ -2,8 +2,7 @@ import { useMeeting, useParticipant } from "@videosdk.live/react-native-sdk";
 import React, { useEffect } from "react";
 
 const PauseInvisibleParticipant = ({ participantId, isVisible }) => {
-  const { webcamStream, webcamOn, isLocal, displayName } =
-    useParticipant(participantId);
+  const { webcamStream, isLocal } = useParticipant(participantId);
 
   useEffect(() => {
     if (typeof isVisible === "string") {
@@ -39,7 +38,7 @@ const PauseInvisibleParticipants = ({ visibleParticipantIds }) => {
               key={`PauseInvisibleParticipant_${participantId}`}
               participantId={participantId}
               isVisible={visibleParticipantIds.find(
-                (pId) => pId === participantId
+                (pId) => pId === participantId,
               )}
             />
           )

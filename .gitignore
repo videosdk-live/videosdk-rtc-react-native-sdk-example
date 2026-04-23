@@ -30,6 +30,8 @@ local.properties
 *.iml
 .cxx/
 
+.kotlin/
+
 # node.js
 #
 node_modules/
