@@ -42,7 +42,7 @@ class Menu extends Component {
     //     useNativeDriver: false,
     //   }).start(() => {
     //     pan.setValue({ x: 0, y: 0 });
-       
+
     //     if (typeof closeFunction === "function") closeFunction();
     //   });
     // }
@@ -94,7 +94,7 @@ class Menu extends Component {
       left,
       right,
       fullWidth,
-      bottom
+      bottom,
     } = this.props;
     const { animatedHeight, pan, modalVisible } = this.state;
     const panStyle = {

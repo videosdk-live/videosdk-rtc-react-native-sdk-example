@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -8,22 +8,15 @@ import {
   Linking,
 } from "react-native";
 import TextInputContainer from "./TextInput";
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import { useMeeting, usePubSub } from "@videosdk.live/react-native-sdk";
 import Hyperlink from "react-native-hyperlink";
 import moment from "moment";
-import { usePubSub } from "@videosdk.live/react-native-sdk";
 import colors from "../../../../styles/colors";
 import { ROBOTO_FONTS } from "../../../../styles/fonts";
 import { convertRFValue } from "../../../../styles/spacing";
 
 const ChatViewer = ({}) => {
-  const mpubsubRef = useRef();
-
   const mpubsub = usePubSub("CHAT", {});
-
-  useEffect(() => {
-    mpubsubRef.current = mpubsub;
-  }, [mpubsub]);
 
   const mMeeting = useMeeting({});
   const localParticipantId = mMeeting?.localParticipant?.id;
@@ -31,17 +24,20 @@ const ChatViewer = ({}) => {
   const [message, setMessage] = useState("");
 
   const flatListRef = React.useRef();
-  const [isSending, setIsSending] = useState(false);
 
-  const sendMessage = () => {
-    mpubsub.publish(message, { persist: true });
-    setMessage("");
-    setTimeout(() => {
-      scrollToBottom();
-    }, 100);
-  };
   const scrollToBottom = () => {
-    flatListRef.current.scrollToEnd({ animated: true });
+    flatListRef.current?.scrollToEnd({ animated: true });
+  };
+
+  const sendMessage = async () => {
+    try {
+      await mpubsub.publish(message, { persist: true });
+    } catch (err) {
+      console.error("Failed to publish chat message:", err);
+    } finally {
+      setMessage("");
+    }
+    setTimeout(scrollToBottom, 100);
   };
 
   return (
@@ -80,19 +76,17 @@ const ChatViewer = ({}) => {
             ref={flatListRef}
             data={mpubsub.messages}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item, i }) => {
+            renderItem={({ item }) => {
               const { message, senderId, timestamp, senderName } = item;
               const localSender = localParticipantId === senderId;
               const time = moment(timestamp).format("hh:mm a");
               return (
                 <View
-                  key={i}
                   style={{
                     backgroundColor: colors.primary[600],
                     paddingVertical: 8,
                     paddingHorizontal: 10,
                     marginVertical: 6,
-                    borderRadius: 4,
                     borderRadius: 10,
                     marginHorizontal: 12,
                     alignSelf: localSender ? "flex-end" : "flex-start",
@@ -138,7 +132,7 @@ const ChatViewer = ({}) => {
                 </View>
               );
             }}
-            keyExtractor={(item, index) => `${index}_message_list`}
+            keyExtractor={(item) => item.id}
             style={{
               marginVertical: 5,
             }}
@@ -152,7 +146,6 @@ const ChatViewer = ({}) => {
           <TextInputContainer
             message={message}
             setMessage={setMessage}
-            isSending={isSending}
             sendMessage={sendMessage}
           />
         </View>

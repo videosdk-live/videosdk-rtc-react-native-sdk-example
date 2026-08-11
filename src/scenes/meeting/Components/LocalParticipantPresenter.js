@@ -43,8 +43,8 @@ export default LocalParticipantPresenter = ({}) => {
             borderRadius: 12,
             marginVertical: 12,
           }}
-          onPress={() => {
-            disableScreenShare();
+          onPress={async () => {
+            await disableScreenShare();
           }}
         >
           <Text

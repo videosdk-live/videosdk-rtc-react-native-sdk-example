@@ -1,16 +1,14 @@
 import { useParticipant } from "@videosdk.live/react-native-sdk";
-import React, { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 import colors from "../../../styles/colors";
 import LargeVideoRTCView from "./LargeView/LargeVideoRTCView";
 
 export default function LocalViewContainer({ participantId }) {
-  const { webcamOn, webcamStream, displayName, setQuality, isLocal } =
-    useParticipant(participantId, {});
-
-  useEffect(() => {
-    setQuality("high");
-  }, []);
+  const { webcamOn, webcamStream, displayName, isLocal } = useParticipant(
+    participantId,
+    {}
+  );
 
   return (
     <View

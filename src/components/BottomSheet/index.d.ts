@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { Animated, StyleProp, ViewStyle } from 'react-native';
+import { Component } from "react";
+import { Animated, StyleProp, ViewStyle } from "react-native";
 export interface BottomSheetProps {
   height: number;
   closeFunction?: () => void;

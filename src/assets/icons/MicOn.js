@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Svg, {Defs, ClipPath, Path, G} from 'react-native-svg';
+import * as React from "react";
+import Svg, { Defs, ClipPath, Path, G } from "react-native-svg";
 
 function MicOn(props) {
   return (

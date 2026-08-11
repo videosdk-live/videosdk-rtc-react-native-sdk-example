@@ -52,8 +52,8 @@ export default function ParticipantLimitViewer() {
       <Button
         backgroundColor={colors.purple}
         text="Ok"
-        onPress={() => {
-          leave();
+        onPress={async () => {
+          await leave();
         }}
         style={{
           paddingHorizontal: 30,

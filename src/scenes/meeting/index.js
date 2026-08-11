@@ -17,7 +17,7 @@ const requestPermissions = async () => {
     const permissions = [
       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
       PermissionsAndroid.PERMISSIONS.CAMERA,
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     ];
     const granted = await PermissionsAndroid.requestMultiple(permissions);
     const allGranted = Object.values(granted).every(

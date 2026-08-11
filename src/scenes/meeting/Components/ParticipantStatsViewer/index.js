@@ -128,6 +128,7 @@ function ParticipantStatsViewer({ participantId }) {
       {qualityStateArray.map(({ label, audio, video }) => {
         return (
           <View
+            key={`quality-stat-${label}`}
             style={{
               paddingHorizontal: 12,
               flexDirection: "row",
