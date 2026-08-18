@@ -53,7 +53,11 @@ export default function ParticipantLimitViewer() {
         backgroundColor={colors.purple}
         text="Ok"
         onPress={async () => {
-          await leave();
+          try {
+            await leave();
+          } catch (err) {
+            console.error("Failed to leave meeting:", err);
+          }
         }}
         style={{
           paddingHorizontal: 30,

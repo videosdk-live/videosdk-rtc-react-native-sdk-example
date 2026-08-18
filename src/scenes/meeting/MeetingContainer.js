@@ -1,5 +1,5 @@
 import { useMeeting } from "@videosdk.live/react-native-sdk";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOne";
 import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
 import ParticipantLimitViewer from "./OneToOne/ParticipantLimitViewer";
@@ -8,10 +8,12 @@ import WaitingToJoinView from "./Components/WaitingToJoinView";
 export default function MeetingContainer({ webcamEnabled, meetingType }) {
   const [isJoined, setJoined] = useState(false);
   const [participantLimit, setParticipantLimit] = useState(false);
+  const isJoinedRef = useRef(false);
 
   const { join, participants, leave } = useMeeting({
     onMeetingJoined: () => {
       setTimeout(() => {
+        isJoinedRef.current = true;
         setJoined(true);
       }, 500);
     },
@@ -32,7 +34,7 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      if (!isJoined) {
+      if (!isJoinedRef.current) {
         try {
           await join();
         } catch (err) {
@@ -43,6 +45,9 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
 
     return () => {
       clearTimeout(timer);
+      if (!isJoinedRef.current) {
+        return;
+      }
       (async () => {
         try {
           await leave();

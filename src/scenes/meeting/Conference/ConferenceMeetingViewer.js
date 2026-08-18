@@ -428,7 +428,7 @@ export default function ConferenceMeetingViewer() {
               if (presenterId == null || localScreenShareOn) {
                 try {
                   if (Platform.OS === "android") {
-                    await toggleScreenShare(undefined, false);
+                    await toggleScreenShare();
                   } else {
                     VideosdkRPK.startBroadcast();
                   }

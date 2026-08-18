@@ -78,8 +78,12 @@ export default function Join({ navigation }) {
   const { getAudioDeviceList } = useMediaDevice();
 
   const fetchAudioDevices = async () => {
-    const devices = await getAudioDeviceList();
-    setAudioList(devices);
+    try {
+      const devices = await getAudioDeviceList();
+      setAudioList(devices);
+    } catch (err) {
+      console.error("Failed to fetch audio devices:", err);
+    }
   };
 
   const renderAudioDevice = ({ item }) => (
@@ -95,10 +99,13 @@ export default function Join({ navigation }) {
   );
 
   const handleDevicePress = async (device) => {
-    // Handle the device selection logic here
     const id = device.deviceId;
-    await switchAudioDevice(id);
-    setSelectedDeviceId(id);
+    try {
+      await switchAudioDevice(id);
+      setSelectedDeviceId(id);
+    } catch (err) {
+      console.error("Failed to switch audio device:", err);
+    }
 
     toggleAudioList();
   };

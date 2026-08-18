@@ -50,3 +50,6 @@ buck-out/
 .env
 yarn.lock
 android/local.properties
+
+# Xcode env (developer-local)
+ios/.xcode.env.local
