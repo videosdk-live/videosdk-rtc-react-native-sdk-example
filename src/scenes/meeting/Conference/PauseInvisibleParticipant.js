@@ -6,22 +6,31 @@ const PauseInvisibleParticipant = ({ participantId, isVisible }) => {
     useParticipant(participantId);
 
   useEffect(() => {
-    if (typeof isVisible === "string") {
-      if (!isLocal) {
-        if (isVisible) {
-          typeof webcamStream?.resume === "function" && webcamStream?.resume();
-          // consumeWebcamStreams();
+    (async () => {
+      try {
+        if (typeof isVisible === "string") {
+          if (!isLocal) {
+            if (isVisible) {
+              if (typeof webcamStream?.resume === "function") {
+                await webcamStream.resume();
+              }
+            } else {
+              if (typeof webcamStream?.pause === "function") {
+                await webcamStream.pause();
+              }
+            }
+          }
         } else {
-          typeof webcamStream?.pause === "function" && webcamStream?.pause();
-          // stopConsumingWebcamStreams();
+          if (!isLocal) {
+            if (typeof webcamStream?.pause === "function") {
+              await webcamStream.pause();
+            }
+          }
         }
+      } catch (err) {
+        console.error("Failed to pause/resume webcam stream:", err);
       }
-    } else {
-      if (!isLocal) {
-        typeof webcamStream?.pause === "function" && webcamStream?.pause();
-        // stopConsumingWebcamStreams();
-      }
-    }
+    })();
   }, [isLocal, isVisible, webcamStream]);
 
   return <></>;

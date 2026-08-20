@@ -18,7 +18,10 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import {
   MicOff,
   MicOn,
@@ -75,8 +78,12 @@ export default function Join({ navigation }) {
   const { getAudioDeviceList } = useMediaDevice();
 
   const fetchAudioDevices = async () => {
-    const devices = await getAudioDeviceList();
-    setAudioList(devices);
+    try {
+      const devices = await getAudioDeviceList();
+      setAudioList(devices);
+    } catch (err) {
+      console.error("Failed to fetch audio devices:", err);
+    }
   };
 
   const renderAudioDevice = ({ item }) => (
@@ -92,10 +99,13 @@ export default function Join({ navigation }) {
   );
 
   const handleDevicePress = async (device) => {
-    // Handle the device selection logic here
     const id = device.deviceId;
-    await switchAudioDevice(id);
-    setSelectedDeviceId(id);
+    try {
+      await switchAudioDevice(id);
+      setSelectedDeviceId(id);
+    } catch (err) {
+      console.error("Failed to switch audio device:", err);
+    }
 
     toggleAudioList();
   };
@@ -174,7 +184,7 @@ export default function Join({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView
-        edges={['top', 'bottom']}
+          edges={["top", "bottom"]}
           style={{
             flex: 1,
             backgroundColor: colors.primary["900"],
@@ -400,7 +410,7 @@ export default function Join({ navigation }) {
                 >
                   {meetingTypes.map((meetingType, index) => {
                     return (
-                      <>
+                      <React.Fragment key={meetingType.key}>
                         <MenuItem
                           title={meetingType.value}
                           onPress={() => {
@@ -416,7 +426,7 @@ export default function Join({ navigation }) {
                             }}
                           />
                         )}
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </Menu>
@@ -480,7 +490,7 @@ export default function Join({ navigation }) {
                 >
                   {meetingTypes.map((meetingType, index) => {
                     return (
-                      <>
+                      <React.Fragment key={meetingType.key}>
                         <MenuItem
                           title={meetingType.value}
                           onPress={() => {
@@ -496,7 +506,7 @@ export default function Join({ navigation }) {
                             }}
                           />
                         )}
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </Menu>

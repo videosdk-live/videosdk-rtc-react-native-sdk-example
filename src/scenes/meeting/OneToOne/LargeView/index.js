@@ -1,5 +1,5 @@
 import { useParticipant } from "@videosdk.live/react-native-sdk";
-import React, { useEffect } from "react";
+import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { NetworkIcon } from "../../../../assets/icons";
 import colors from "../../../../styles/colors";
@@ -30,15 +30,20 @@ export default LargeViewContainer = ({
     setQuality,
     isLocal,
     micOn,
-  } = useParticipant(participantId, {});
+  } = useParticipant(participantId, {
+    onStreamEnabled: async (stream) => {
+      if (isLocal || stream?.kind !== "video") return;
+      try {
+        await setQuality("high");
+      } catch (err) {
+        console.error("Failed to set quality:", err);
+      }
+    },
+  });
 
   const { score } = useParticipantStat({
     participantId,
   });
-
-  useEffect(() => {
-    setQuality("high");
-  }, []);
 
   return (
     <View

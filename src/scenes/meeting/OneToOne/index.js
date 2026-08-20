@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import {
   useMeeting,
-  getAudioDeviceList,
+  useMediaDevice,
   switchAudioDevice,
   Constants,
 } from "@videosdk.live/react-native-sdk";
@@ -94,18 +94,28 @@ export default function OneToOneMeetingViewer() {
   const [audioDevice, setAudioDevice] = useState([]);
   const [statParticipantId, setstatParticipantId] = useState("");
 
+  const { getAudioDeviceList } = useMediaDevice();
+
   async function updateAudioDeviceList() {
-    const devices = await getAudioDeviceList();
-    setAudioDevice(devices);
+    try {
+      const devices = await getAudioDeviceList();
+      setAudioDevice(devices);
+    } catch (err) {
+      console.error("Failed to fetch audio devices:", err);
+    }
   }
 
   useEffect(() => {
     if (Platform.OS == "ios") {
-      VideosdkRPK.addListener("onScreenShare", (event) => {
-        if (event === "START_BROADCAST") {
-          enableScreenShare();
-        } else if (event === "STOP_BROADCAST") {
-          disableScreenShare();
+      VideosdkRPK.addListener("onScreenShare", async (event) => {
+        try {
+          if (event === "START_BROADCAST") {
+            await enableScreenShare();
+          } else if (event === "STOP_BROADCAST") {
+            await disableScreenShare();
+          }
+        } catch (err) {
+          console.error("Failed to toggle screen share:", err);
         }
       });
 
@@ -199,8 +209,12 @@ export default function OneToOneMeetingViewer() {
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => {
-              changeWebcam();
+            onPress={async () => {
+              try {
+                await changeWebcam();
+              } catch (err) {
+                console.error("Failed to change webcam:", err);
+              }
             }}
           >
             <CameraSwitch height={26} width={26} fill={colors.primary[100]} />
@@ -245,9 +259,13 @@ export default function OneToOneMeetingViewer() {
           title={"Leave"}
           description={"Only you will leave the call"}
           icon={<Leave width={22} height={22} />}
-          onPress={() => {
-            leave();
-            moreOptionsMenu.current.close();
+          onPress={async () => {
+            leaveMenu.current.close();
+            try {
+              await leave();
+            } catch (err) {
+              console.error("Failed to leave meeting:", err);
+            }
           }}
         />
         <View
@@ -260,9 +278,13 @@ export default function OneToOneMeetingViewer() {
           title={"End"}
           description={"End call for all participants"}
           icon={<EndForAll />}
-          onPress={() => {
-            end();
-            moreOptionsMenu.current.close();
+          onPress={async () => {
+            leaveMenu.current.close();
+            try {
+              await end();
+            } catch (err) {
+              console.error("Failed to end meeting:", err);
+            }
           }}
         />
       </Menu>
@@ -273,21 +295,27 @@ export default function OneToOneMeetingViewer() {
         left={70}
       >
         {audioDevice.map((device, index) => {
+          const id = device?.deviceId;
+          const label =
+            device?.label ||
+            (id === "SPEAKER_PHONE"
+              ? "Speaker"
+              : id === "EARPIECE"
+              ? "Earpiece"
+              : id === "BLUETOOTH"
+              ? "Bluetooth"
+              : "Wired Headset");
           return (
-            <>
+            <React.Fragment key={id || `audio-device-${index}`}>
               <MenuItem
-                title={
-                  device == "SPEAKER_PHONE"
-                    ? "Speaker"
-                    : device == "EARPIECE"
-                    ? "Earpiece"
-                    : device == "BLUETOOTH"
-                    ? "Bluetooth"
-                    : "Wired Headset"
-                }
-                onPress={() => {
-                  switchAudioDevice(device);
+                title={label}
+                onPress={async () => {
                   audioDeviceMenuRef.current.close();
+                  try {
+                    await switchAudioDevice(id);
+                  } catch (err) {
+                    console.error("Failed to switch audio device:", err);
+                  }
                 }}
               />
 
@@ -299,7 +327,7 @@ export default function OneToOneMeetingViewer() {
                   }}
                 />
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </Menu>
@@ -320,18 +348,22 @@ export default function OneToOneMeetingViewer() {
               : "Stop"
           } Recording`}
           icon={<Recording width={22} height={22} />}
-          onPress={() => {
-            if (
-              !recordingState ||
-              recordingState === Constants.recordingEvents.RECORDING_STOPPED
-            ) {
-              startRecording();
-            } else if (
-              recordingState === Constants.recordingEvents.RECORDING_STARTED
-            ) {
-              stopRecording();
-            }
+          onPress={async () => {
             moreOptionsMenu.current.close();
+            try {
+              if (
+                !recordingState ||
+                recordingState === Constants.recordingEvents.RECORDING_STOPPED
+              ) {
+                await startRecording();
+              } else if (
+                recordingState === Constants.recordingEvents.RECORDING_STARTED
+              ) {
+                await stopRecording();
+              }
+            } catch (err) {
+              console.error("Failed to toggle recording:", err);
+            }
           }}
         />
         <View
@@ -344,12 +376,19 @@ export default function OneToOneMeetingViewer() {
           <MenuItem
             title={`${localScreenShareOn ? "Stop" : "Start"} Screen Share`}
             icon={<ScreenShare width={22} height={22} />}
-            onPress={() => {
+            onPress={async () => {
               moreOptionsMenu.current.close();
-              if (presenterId == null || localScreenShareOn)
-                Platform.OS === "android"
-                  ? toggleScreenShare()
-                  : VideosdkRPK.startBroadcast();
+              if (presenterId == null || localScreenShareOn) {
+                try {
+                  if (Platform.OS === "android") {
+                    await toggleScreenShare();
+                  } else {
+                    VideosdkRPK.startBroadcast();
+                  }
+                } catch (err) {
+                  console.error("Failed to toggle screen share:", err);
+                }
+              }
             }}
           />
         )}
@@ -397,8 +436,12 @@ export default function OneToOneMeetingViewer() {
             audioDeviceMenuRef.current.show();
           }}
           backgroundColor={!localMicOn ? colors.primary[100] : "transparent"}
-          onPress={() => {
-            toggleMic();
+          onPress={async () => {
+            try {
+              await toggleMic();
+            } catch (err) {
+              console.error("Failed to toggle mic:", err);
+            }
           }}
           Icon={() => {
             return localMicOn ? (
@@ -414,8 +457,12 @@ export default function OneToOneMeetingViewer() {
             borderColor: "#2B3034",
           }}
           backgroundColor={!localWebcamOn ? colors.primary[100] : "transparent"}
-          onPress={() => {
-            toggleWebcam();
+          onPress={async () => {
+            try {
+              await toggleWebcam();
+            } catch (err) {
+              console.error("Failed to toggle webcam:", err);
+            }
           }}
           Icon={() => {
             return localWebcamOn ? (

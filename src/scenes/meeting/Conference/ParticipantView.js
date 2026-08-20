@@ -41,7 +41,16 @@ export default function ParticipantView({
     micStream,
     getShareStats,
     getAudioStats,
-  } = useParticipant(participantId, {});
+  } = useParticipant(participantId, {
+    onStreamEnabled: async (stream) => {
+      if (isLocal || stream?.kind !== "video") return;
+      try {
+        await setQuality(quality || "high");
+      } catch (err) {
+        console.error("Failed to set quality:", err);
+      }
+    },
+  });
 
   const { score } = useParticipantStat({
     participantId,
@@ -67,10 +76,17 @@ export default function ParticipantView({
   }, []);
 
   useEffect(() => {
-    if (quality) {
-      setQuality(quality);
-    }
-  }, [quality]);
+    if (!quality) return;
+    if (isLocal) return;
+    if (!webcamStream) return;
+    (async () => {
+      try {
+        await setQuality(quality);
+      } catch (err) {
+        console.error("Failed to set quality:", err);
+      }
+    })();
+  }, [quality, isLocal, webcamStream]);
 
   const MicStatusComponent = () => {
     return (

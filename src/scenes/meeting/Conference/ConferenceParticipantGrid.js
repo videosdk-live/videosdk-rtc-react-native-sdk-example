@@ -43,6 +43,7 @@ function ConferenceParticipantGrid({ participantIds, isPresenting }) {
       {Array.from({ length: Math.ceil(participantCount / perRow) }, (_, i) => {
         return (
           <View
+            key={`participant-row-${i}`}
             style={{
               flex: 1,
               flexDirection: orientation == "PORTRAIT" ? "row" : "column",

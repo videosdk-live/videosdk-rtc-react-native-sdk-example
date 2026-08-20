@@ -15,12 +15,10 @@ import ScreenShare from "./ScreenShare";
 import DownArrow from "./DownArrow";
 import Chat from "./Chat";
 import More from "./More";
-import RaiseHand from "./RaiseHand";
 import Person from "./Person";
 import Send from "./Send";
 import NetworkIcon from "./NetworkIcon";
 import Speaker from "./Speaker";
-
 
 export {
   MicOff,
@@ -34,7 +32,6 @@ export {
   DownArrow,
   Chat,
   More,
-  RaiseHand,
   Person,
   Send,
   EndForAll,
@@ -42,5 +39,5 @@ export {
   Recording,
   Participants,
   NetworkIcon,
-  Speaker
+  Speaker,
 };
