@@ -13,9 +13,18 @@ export const getToken = async () => {
   } else if (VIDEOSDK_TOKEN) {
     return VIDEOSDK_TOKEN;
   } else if (API_AUTH_URL) {
+    if (!API_AUTH_URL.startsWith("https://")) {
+      console.error("Error: Auth Server URL must use HTTPS");
+      return;
+    }
     const res = await fetch(`${API_AUTH_URL}/get-token`, {
       method: "GET",
+      credentials: "include",
     });
+    if (!res.ok) {
+      console.error("Error: Failed to fetch token from Auth Server");
+      return;
+    }
     const { token } = await res.json();
     return token;
   } else {
