@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Platform, NativeModules, PermissionsAndroid } from "react-native";
+import { Platform, NativeModules } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../styles/colors";
 import {
@@ -8,34 +7,10 @@ import {
 } from "@videosdk.live/react-native-sdk";
 import MeetingContainer from "./MeetingContainer";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
+import { hasRequiredPermissions } from "../../utils/permissions";
 const { ForegroundServiceModule } = NativeModules;
 
-const requestPermissions = async () => {
-  if (Platform.OS !== "android") return true;
-
-  try {
-    const permissions = [
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-    ];
-    const granted = await PermissionsAndroid.requestMultiple(permissions);
-    const allGranted = Object.values(granted).every(
-      (permission) => permission === PermissionsAndroid.RESULTS.GRANTED
-    );
-
-    console.log(allGranted ? "permissions granted" : "permissions denied");
-
-    return allGranted;
-  } catch (err) {
-    console.error("Error requesting permissions:", err);
-    return false;
-  }
-};
-
 export default function ({ navigation, route }) {
-  const [permissionsGranted, setPermissionsGranted] = useState(false);
-
   const {
     token,
     meetingId,
@@ -46,28 +21,19 @@ export default function ({ navigation, route }) {
     defaultCamera,
   } = route.params;
 
-  useEffect(() => {
-    let isMounted = true;
-    (async () => {
-      const granted = await requestPermissions();
-      if (isMounted) setPermissionsGranted(granted);
-    })();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+  // Permissions are requested on the Join screen. Here we only check them
+  // (no dialog) and skip the foreground service if they were not granted.
   const handleMeetingJoined = async () => {
-    if (permissionsGranted) {
-      if (Platform.OS === "android") {
-        setTimeout(async () => {
-          try {
-            await ForegroundServiceModule.startService();
-          } catch (err) {
-            console.error("[Error starting foreground service:", err);
-          }
-        }, 300);
-      }
+    if (Platform.OS === "android") {
+      const granted = await hasRequiredPermissions();
+      if (!granted) return;
+      setTimeout(async () => {
+        try {
+          await ForegroundServiceModule.startService();
+        } catch (err) {
+          console.error("[Error starting foreground service:", err);
+        }
+      }, 300);
     }
   };
 
@@ -77,15 +43,6 @@ export default function ({ navigation, route }) {
     }
     navigation.navigate(SCREEN_NAMES.Join);
   };
-
-  if (Platform.OS === "android" && !permissionsGranted) {
-    return (
-      <SafeAreaView
-        edges={["top", "bottom"]}
-        style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
-      />
-    );
-  }
 
   return (
     <SafeAreaView

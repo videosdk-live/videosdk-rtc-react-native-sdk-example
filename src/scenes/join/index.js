@@ -40,6 +40,7 @@ import Toast from "react-native-simple-toast";
 import Menu from "../../components/Menu";
 import MenuItem from "../meeting/Components/MenuItem";
 import { ROBOTO_FONTS } from "../../styles/fonts";
+import { requestPermissions } from "../../utils/permissions";
 
 import Modal from "react-native-modal";
 
@@ -131,6 +132,13 @@ export default function Join({ navigation }) {
   );
 
   const getTrack = async () => {
+    // Ask for camera, mic and (Android 13+) notification permissions once,
+    // before the SDK creates any track.
+    const granted = await requestPermissions();
+    if (!granted) {
+      Toast.show("Camera and microphone permissions are required");
+      return;
+    }
     const track = await createCameraVideoTrack({
       optimizationMode: "motion",
       encoderConfig: "h720p_w960p",
