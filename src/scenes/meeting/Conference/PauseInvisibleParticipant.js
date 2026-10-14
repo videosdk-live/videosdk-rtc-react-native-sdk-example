@@ -1,4 +1,4 @@
-import { useMeeting, useParticipant } from "@videosdk.live/react-native-sdk";
+import { useRoom, useParticipant } from "@videosdk.live/react-native-sdk";
 import React, { useEffect } from "react";
 
 const PauseInvisibleParticipant = ({ participantId, isVisible }) => {
@@ -37,7 +37,7 @@ const PauseInvisibleParticipant = ({ participantId, isVisible }) => {
 };
 
 const PauseInvisibleParticipants = ({ visibleParticipantIds }) => {
-  const { participants } = useMeeting();
+  const { participants } = useRoom();
 
   return (
     <>

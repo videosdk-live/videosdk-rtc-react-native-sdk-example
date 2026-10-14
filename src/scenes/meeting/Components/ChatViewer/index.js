@@ -8,7 +8,7 @@ import {
   Linking,
 } from "react-native";
 import TextInputContainer from "./TextInput";
-import { useMeeting, usePubSub } from "@videosdk.live/react-native-sdk";
+import { useRoom, usePubSub } from "@videosdk.live/react-native-sdk";
 import Hyperlink from "react-native-hyperlink";
 import moment from "moment";
 import colors from "../../../../styles/colors";
@@ -18,7 +18,7 @@ import { convertRFValue } from "../../../../styles/spacing";
 const ChatViewer = ({}) => {
   const mpubsub = usePubSub("CHAT", {});
 
-  const mMeeting = useMeeting({});
+  const mMeeting = useRoom({});
   const localParticipantId = mMeeting?.localParticipant?.id;
 
   const [message, setMessage] = useState("");

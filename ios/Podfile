@@ -5,7 +5,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '18.0'
 prepare_react_native_project!
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -15,7 +15,7 @@ if linkage != nil
 end
 
 target 'MyApp' do
-  pod 'react-native-webrtc', :path => '../node_modules/@videosdk.live/react-native-webrtc'
+  pod 'VideoSDKRTC', :podspec => '../node_modules/@videosdk.live/react-native-sdk/ios/VideoSDKRTC.podspec'
 
   config = use_native_modules!
 
@@ -32,5 +32,11 @@ target 'MyApp' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    # Xcode 26+ refuses pods that target iOS older than 15; match the app's 18.0
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
+      end
+    end
   end
 end

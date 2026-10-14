@@ -47,24 +47,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
-    <!-- Foreground Service Metadata -->
-        <meta-data
-            android:name="live.videosdk.rnwebrtc.notification_channel_name"
-            android:value="Meeting Notification" />
-        <meta-data
-            android:name="live.videosdk.rnwebrtc.notification_channel_description"
-            android:value="Notification appears when meeting starts." />
-        <meta-data
-            android:name="live.videosdk.rnwebrtc.notification_color"
-            android:resource="@color/red" />
-
-        <!-- Foreground Services -->
-        <service
-            android:name="live.videosdk.rnwebrtc.MediaProjectionService"
-            android:foregroundServiceType="mediaProjection" />
-        <service
-            android:name="live.videosdk.rnwebrtc.MediaProjectionServiceTask" />
-
         <service android:name=".MyForegroundService"
         android:foregroundServiceType="camera|microphone"
         android:stopWithTask="true" />

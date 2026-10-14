@@ -144,7 +144,7 @@ export default function ParticipantView({
           <RTCView
             streamURL={new MediaStream([webcamStream.track]).toURL()}
             objectFit={"cover"}
-            mirror={isLocal ? true : false}
+            setMirror={isLocal ? true : false}
             style={{
               flex: 1,
               backgroundColor: colors.primary[800],

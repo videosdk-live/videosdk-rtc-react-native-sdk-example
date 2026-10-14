@@ -2,8 +2,8 @@ import { Platform, NativeModules } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../../styles/colors";
 import {
-  MeetingConsumer,
-  MeetingProvider,
+  RoomConsumer,
+  RoomProvider,
 } from "@videosdk.live/react-native-sdk";
 import MeetingContainer from "./MeetingContainer";
 import { SCREEN_NAMES } from "../../navigators/screenNames";
@@ -19,6 +19,7 @@ export default function ({ navigation, route }) {
     name,
     meetingType,
     defaultCamera,
+    customMicrophoneTrack,
   } = route.params;
 
   // Permissions are requested on the Join screen. Here we only check them
@@ -49,23 +50,20 @@ export default function ({ navigation, route }) {
       edges={["top", "bottom"]}
       style={{ flex: 1, backgroundColor: colors.primary[900], padding: 12 }}
     >
-      <MeetingProvider
+      <RoomProvider
         config={{
-          meetingId: meetingId,
+          roomId: meetingId,
           micEnabled: micEnabled,
-          webcamEnabled: webcamEnabled,
-          name: name,
-          notification: {
-            title: "Video SDK Meeting",
-            message: "Meeting is running.",
-          },
+          camEnabled: webcamEnabled,
+          participantName: name,
           defaultCamera: defaultCamera,
+          customMicrophoneTrack: customMicrophoneTrack,
         }}
         token={token}
       >
-        <MeetingConsumer
-          onMeetingJoined={handleMeetingJoined}
-          onMeetingLeft={handleMeetingLeft}
+        <RoomConsumer
+          onRoomJoined={handleMeetingJoined}
+          onRoomLeft={handleMeetingLeft}
         >
           {() => (
             <MeetingContainer
@@ -73,8 +71,8 @@ export default function ({ navigation, route }) {
               meetingType={meetingType}
             />
           )}
-        </MeetingConsumer>
-      </MeetingProvider>
+        </RoomConsumer>
+      </RoomProvider>
     </SafeAreaView>
   );
 }

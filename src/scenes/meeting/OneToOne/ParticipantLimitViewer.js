@@ -4,10 +4,10 @@ import { convertRFValue } from "../../../styles/spacing";
 import { Text, View } from "react-native";
 import colors from "../../../styles/colors";
 import Button from "../../../components/Button";
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import { useRoom } from "@videosdk.live/react-native-sdk";
 
 export default function ParticipantLimitViewer() {
-  const { leave } = useMeeting({});
+  const { leave } = useRoom({});
   return (
     <View
       style={{

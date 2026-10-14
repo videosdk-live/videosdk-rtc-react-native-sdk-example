@@ -5,12 +5,11 @@ import {
   Clipboard,
   TouchableOpacity,
   Dimensions,
-  Platform,
 } from "react-native";
 import {
-  useMeeting,
+  useRoom,
+  createScreenShareVideoTrack,
   useMediaDevice,
-  switchAudioDevice,
   Constants,
 } from "@videosdk.live/react-native-sdk";
 import {
@@ -44,7 +43,6 @@ import recording_lottie from "../../../assets/animation/recording_lottie.json";
 import Blink from "../../../components/Blink";
 import ParticipantView from "./ParticipantView";
 import RemoteParticipantPresenter from "./RemoteParticipantPresenter";
-import VideosdkRPK from "../../../../VideosdkRPK";
 import { convertRFValue } from "../../../styles/spacing";
 
 const MemoizedParticipant = React.memo(
@@ -60,25 +58,24 @@ export default function ConferenceMeetingViewer() {
     localParticipant,
     participants,
     pinnedParticipants,
-    localWebcamOn,
-    localMicOn,
+    isCamEnabled,
+    isMicEnabled,
     leave,
     end,
-    changeWebcam,
-    toggleWebcam,
+    changeCam,
+    toggleCam,
     toggleMic,
     presenterId,
-    localScreenShareOn,
-    toggleScreenShare,
-    meetingId,
+    isScreenSharing,
+    roomId,
     startRecording,
     stopRecording,
-    meeting,
     recordingState,
     enableScreenShare,
     disableScreenShare,
+    setAudioDevice,
     activeSpeakerId,
-  } = useMeeting({
+  } = useRoom({
     onError: (data) => {
       const { code, message } = data;
 
@@ -124,19 +121,19 @@ export default function ConferenceMeetingViewer() {
     activeSpeakerId,
     pinnedParticipants,
     presenterId,
-    localScreenShareOn,
+    isScreenSharing,
   ]);
 
   const [bottomSheetView, setBottomSheetView] = useState("");
 
-  const [audioDevice, setAudioDevice] = useState([]);
+  const [audioDeviceList, setAudioDeviceList] = useState([]);
 
-  const { getAudioDeviceList } = useMediaDevice();
+  const { getMics } = useMediaDevice();
 
   async function updateAudioDeviceList() {
     try {
-      const devices = await getAudioDeviceList();
-      setAudioDevice(devices);
+      const devices = await getMics();
+      setAudioDeviceList(devices);
     } catch (err) {
       console.error("Failed to fetch audio devices:", err);
     }
@@ -154,27 +151,6 @@ export default function ConferenceMeetingViewer() {
       }
     }
   }, [recordingState]);
-
-  useEffect(() => {
-    if (Platform.OS == "ios") {
-      VideosdkRPK.addListener("onScreenShare", async (event) => {
-        try {
-          if (event === "START_BROADCAST") {
-            await enableScreenShare();
-          } else if (event === "STOP_BROADCAST") {
-            await disableScreenShare();
-          }
-        } catch (err) {
-          console.error("Failed to toggle screen share:", err);
-        }
-      });
-
-      return () => {
-        VideosdkRPK.removeAllListeners("onScreenShare");
-        // VideosdkRPK.removeSubscription("onScreenShare");
-      };
-    }
-  }, []);
 
   return (
     <>
@@ -222,7 +198,7 @@ export default function ConferenceMeetingViewer() {
                 color: colors.primary[100],
               }}
             >
-              {meetingId ? meetingId : "xxx - xxx - xxx"}
+              {roomId ? roomId : "xxx - xxx - xxx"}
             </Text>
 
             <TouchableOpacity
@@ -231,7 +207,7 @@ export default function ConferenceMeetingViewer() {
                 marginLeft: 10,
               }}
               onPress={() => {
-                Clipboard.setString(meetingId);
+                Clipboard.setString(roomId);
                 Toast.show("Meeting Id copied Successfully");
               }}
             >
@@ -244,7 +220,7 @@ export default function ConferenceMeetingViewer() {
             style={{ marginRight: 12 }}
             onPress={async () => {
               try {
-                await changeWebcam();
+                await changeCam();
               } catch (err) {
                 console.error("Failed to change webcam:", err);
               }
@@ -286,9 +262,9 @@ export default function ConferenceMeetingViewer() {
           marginVertical: 12,
         }}
       >
-        {presenterId && !localScreenShareOn ? (
+        {presenterId && !isScreenSharing ? (
           <RemoteParticipantPresenter presenterId={presenterId} />
-        ) : presenterId && localScreenShareOn ? (
+        ) : presenterId && isScreenSharing ? (
           <LocalParticipantPresenter />
         ) : null}
 
@@ -341,7 +317,7 @@ export default function ConferenceMeetingViewer() {
         placement="left"
         left={70}
       >
-        {audioDevice.map((device, index) => {
+        {audioDeviceList.map((device, index) => {
           const id = device?.deviceId;
           const label =
             device?.label ||
@@ -359,14 +335,14 @@ export default function ConferenceMeetingViewer() {
                 onPress={async () => {
                   audioDeviceMenuRef.current.close();
                   try {
-                    await switchAudioDevice(id);
+                    await setAudioDevice(device);
                   } catch (err) {
                     console.error("Failed to switch audio device:", err);
                   }
                 }}
               />
 
-              {index != audioDevice.length - 1 && (
+              {index != audioDeviceList.length - 1 && (
                 <View
                   style={{
                     height: 1,
@@ -419,18 +395,19 @@ export default function ConferenceMeetingViewer() {
             backgroundColor: colors.primary["600"],
           }}
         />
-        {(presenterId == null || localScreenShareOn) && (
+        {(presenterId == null || isScreenSharing) && (
           <MenuItem
-            title={`${localScreenShareOn ? "Stop" : "Start"} Screen Share`}
+            title={`${isScreenSharing ? "Stop" : "Start"} Screen Share`}
             icon={<ScreenShare width={22} height={22} />}
             onPress={async () => {
               moreOptionsMenu.current.close();
-              if (presenterId == null || localScreenShareOn) {
+              if (presenterId == null || isScreenSharing) {
                 try {
-                  if (Platform.OS === "android") {
-                    await toggleScreenShare();
+                  if (isScreenSharing) {
+                    await disableScreenShare();
                   } else {
-                    VideosdkRPK.startBroadcast();
+                    // iOS shows the broadcast picker, Android asks for screen-capture consent
+                    await enableScreenShare(await createScreenShareVideoTrack());
                   }
                 } catch (err) {
                   console.error("Failed to toggle screen share:", err);
@@ -466,7 +443,7 @@ export default function ConferenceMeetingViewer() {
             await updateAudioDeviceList();
             audioDeviceMenuRef.current.show();
           }}
-          backgroundColor={!localMicOn ? colors.primary[100] : "transparent"}
+          backgroundColor={!isMicEnabled ? colors.primary[100] : "transparent"}
           onPress={async () => {
             try {
               await toggleMic();
@@ -475,7 +452,7 @@ export default function ConferenceMeetingViewer() {
             }
           }}
           Icon={() => {
-            return localMicOn ? (
+            return isMicEnabled ? (
               <MicOn height={24} width={24} fill="#FFF" />
             ) : (
               <MicOff height={28} width={28} fill="#1D2939" />
@@ -487,16 +464,16 @@ export default function ConferenceMeetingViewer() {
             borderWidth: 1.5,
             borderColor: "#2B3034",
           }}
-          backgroundColor={!localWebcamOn ? colors.primary[100] : "transparent"}
+          backgroundColor={!isCamEnabled ? colors.primary[100] : "transparent"}
           onPress={async () => {
             try {
-              await toggleWebcam();
+              await toggleCam();
             } catch (err) {
               console.error("Failed to toggle webcam:", err);
             }
           }}
           Icon={() => {
-            return localWebcamOn ? (
+            return isCamEnabled ? (
               <VideoOn height={24} width={24} fill="#FFF" />
             ) : (
               <VideoOff height={36} width={36} fill="#1D2939" />

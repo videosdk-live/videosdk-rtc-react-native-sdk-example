@@ -47,7 +47,7 @@ export default MiniVideoRTCView = ({
         <RTCView
           objectFit="cover"
           zOrder={1}
-          mirror={isLocal ? true : false}
+          setMirror={isLocal ? true : false}
           style={{ flex: 1, backgroundColor: "#424242" }}
           streamURL={new MediaStream([stream.track]).toURL()}
         />

@@ -1,9 +1,9 @@
 import {
   RTCView,
-  mediaDevices,
   useMediaDevice,
   createCameraVideoTrack,
-  switchAudioDevice,
+  createMicrophoneAudioTrack,
+  Constants,
 } from "@videosdk.live/react-native-sdk";
 import React, { useState, useRef, useEffect } from "react";
 import {
@@ -17,6 +17,8 @@ import {
   Keyboard,
   StyleSheet,
   FlatList,
+  Modal,
+  Pressable,
 } from "react-native";
 import {
   SafeAreaView,
@@ -42,7 +44,6 @@ import MenuItem from "../meeting/Components/MenuItem";
 import { ROBOTO_FONTS } from "../../styles/fonts";
 import { requestPermissions } from "../../utils/permissions";
 
-import Modal from "react-native-modal";
 
 export default function Join({ navigation }) {
   const [tracks, setTrack] = useState("");
@@ -51,9 +52,11 @@ export default function Join({ navigation }) {
   const [name, setName] = useState("");
   const [meetingId, setMeetingId] = useState("");
   const [isAudioListVisible, setAudioListVisible] = useState(false);
-  const [facingMode, setfacingMode] = useState("user");
+  const [facingMode, setfacingMode] = useState("front");
   const [audioList, setAudioList] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+  const [selectedAudioDevice, setSelectedAudioDevice] = useState(null);
+  // Track of the picked mic; RoomProvider takes it as customMicrophoneTrack
+  const [micTrack, setMicTrack] = useState(null);
 
   const meetingTypes = [
     { key: "ONE_TO_ONE", value: "One to One Meeting" },
@@ -67,20 +70,23 @@ export default function Join({ navigation }) {
   const [isVisibleJoinMeetingContainer, setisVisibleJoinMeetingContainer] =
     useState(false);
 
+  // Frees the preview camera so the meeting can open it
   const disposeVideoTrack = () => {
-    setTrack((stream) => {
-      stream.getTracks().forEach((track) => {
-        track.enabled = false;
-        return track;
-      });
-    });
+    if (tracks) tracks.stop();
+    setTrack("");
   };
 
-  const { getAudioDeviceList } = useMediaDevice();
+  // Frees the previous mic track before another mic is opened
+  const disposeMicTrack = () => {
+    if (micTrack) micTrack.stop();
+    setMicTrack(null);
+  };
+
+  const { getMics, requestPermission } = useMediaDevice();
 
   const fetchAudioDevices = async () => {
     try {
-      const devices = await getAudioDeviceList();
+      const devices = await getMics();
       setAudioList(devices);
     } catch (err) {
       console.error("Failed to fetch audio devices:", err);
@@ -91,7 +97,7 @@ export default function Join({ navigation }) {
     <TouchableOpacity
       style={[
         styles.deviceButton,
-        item.deviceId === selectedDeviceId && styles.selectedDeviceButton,
+        item.deviceId === selectedAudioDevice?.deviceId && styles.selectedDeviceButton,
       ]}
       onPress={() => handleDevicePress(item)}
     >
@@ -100,15 +106,16 @@ export default function Join({ navigation }) {
   );
 
   const handleDevicePress = async (device) => {
-    const id = device.deviceId;
-    try {
-      await switchAudioDevice(id);
-      setSelectedDeviceId(id);
-    } catch (err) {
-      console.error("Failed to switch audio device:", err);
-    }
-
     toggleAudioList();
+    disposeMicTrack();
+    setSelectedAudioDevice(device);
+    try {
+      setMicTrack(
+        await createMicrophoneAudioTrack({ microphoneId: device.deviceId })
+      );
+    } catch (err) {
+      console.error("Failed to open the selected mic:", err);
+    }
   };
 
   const handleAudioButtonPress = async () => {
@@ -139,12 +146,19 @@ export default function Join({ navigation }) {
       Toast.show("Camera and microphone permissions are required");
       return;
     }
-    const track = await createCameraVideoTrack({
-      optimizationMode: "motion",
-      encoderConfig: "h720p_w960p",
-      facingMode: facingMode,
-    });
-    setTrack(track);
+    if (Platform.OS === "ios") {
+      // The SDK track factories do not show the iOS camera prompt themselves
+      await requestPermission(Constants.permission.AUDIO_AND_VIDEO);
+    }
+    try {
+      const track = await createCameraVideoTrack({
+        encoderConfig: "h720p_w960p",
+        facingMode: facingMode,
+      });
+      setTrack(track);
+    } catch (err) {
+      console.error("Failed to open the camera preview:", err);
+    }
   };
 
   useEffect(() => {
@@ -156,7 +170,7 @@ export default function Join({ navigation }) {
       disposeVideoTrack();
     } finally {
       setfacingMode((prevFacingMode) =>
-        prevFacingMode === "environment" ? "user" : "environment"
+        prevFacingMode === "back" ? "front" : "back"
       );
     }
   };
@@ -246,17 +260,25 @@ export default function Join({ navigation }) {
             </TouchableOpacity>
           </View>
           <Modal
-            isVisible={isAudioListVisible}
-            onBackdropPress={toggleAudioList}
-            style={{ justifyContent: "flex-end", margin: 0 }}
+            visible={isAudioListVisible}
+            transparent
+            animationType="slide"
+            onRequestClose={toggleAudioList}
           >
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Available Audio Devices</Text>
-              <FlatList
-                data={audioList}
-                renderItem={renderAudioDevice}
-                keyExtractor={(item) => item.deviceId}
+            <View style={styles.modalBackdrop}>
+              {/* Tapping outside the sheet closes it */}
+              <Pressable
+                style={StyleSheet.absoluteFill}
+                onPress={toggleAudioList}
               />
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Available Audio Devices</Text>
+                <FlatList
+                  data={audioList}
+                  renderItem={renderAudioDevice}
+                  keyExtractor={(item) => item.deviceId}
+                />
+              </View>
             </View>
           </Modal>
           <View
@@ -283,7 +305,7 @@ export default function Join({ navigation }) {
                   <RTCView
                     streamURL={tracks.toURL()}
                     objectFit={"cover"}
-                    mirror={true}
+                    setMirror={true}
                     style={{
                       flex: 1,
                       borderRadius: 20,
@@ -460,8 +482,12 @@ export default function Join({ navigation }) {
                       micEnabled: micOn,
                       webcamEnabled: videoOn,
                       meetingType: meetingType.key,
-                      defaultCamera: facingMode === "user" ? "front" : "back",
+                      defaultCamera: facingMode,
+                      customMicrophoneTrack: micTrack ?? undefined,
                     });
+                    // The room owns the mic track now and ends it on leave
+                    setMicTrack(null);
+                    setSelectedAudioDevice(null);
                   }}
                 />
               </>
@@ -554,8 +580,12 @@ export default function Join({ navigation }) {
                         micEnabled: micOn,
                         webcamEnabled: videoOn,
                         meetingType: meetingType.key,
-                        defaultCamera: facingMode === "user" ? "front" : "back",
+                        defaultCamera: facingMode,
+                        customMicrophoneTrack: micTrack ?? undefined,
                       });
+                      // The room owns the mic track now and ends it on leave
+                      setMicTrack(null);
+                      setSelectedAudioDevice(null);
                     }
                   }}
                 />
@@ -576,6 +606,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalBackdrop: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalTitle: {
     fontSize: 18,

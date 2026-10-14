@@ -1,4 +1,4 @@
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import { useRoom } from "@videosdk.live/react-native-sdk";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ScreenShare } from "../../../assets/icons";
@@ -7,7 +7,7 @@ import { ROBOTO_FONTS } from "../../../styles/fonts";
 import { convertRFValue } from "../../../styles/spacing";
 
 export default LocalParticipantPresenter = ({}) => {
-  const { disableScreenShare } = useMeeting({});
+  const { disableScreenShare } = useRoom({});
   return (
     <View
       style={{

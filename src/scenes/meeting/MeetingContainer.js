@@ -1,4 +1,4 @@
-import { useMeeting } from "@videosdk.live/react-native-sdk";
+import { useRoom } from "@videosdk.live/react-native-sdk";
 import { useEffect, useRef, useState } from "react";
 import OneToOneMeetingViewer from "./OneToOne";
 import ConferenceMeetingViewer from "./Conference/ConferenceMeetingViewer";
@@ -10,8 +10,8 @@ export default function MeetingContainer({ webcamEnabled, meetingType }) {
   const [participantLimit, setParticipantLimit] = useState(false);
   const isJoinedRef = useRef(false);
 
-  const { join, participants, leave } = useMeeting({
-    onMeetingJoined: () => {
+  const { join, participants, leave } = useRoom({
+    onRoomJoined: () => {
       setTimeout(() => {
         isJoinedRef.current = true;
         setJoined(true);

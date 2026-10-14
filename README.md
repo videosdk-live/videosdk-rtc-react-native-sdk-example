@@ -42,17 +42,17 @@ At Video SDK, we’re building tools to help companies create world-class collab
 
 ## 🛠 Prerequisites
 
-- React Native 0.59.10 or later
-- Node 10 or later
+- React Native 0.74 or later (this sample uses 0.86)
+- Node 22.11 or later
 - Valid Video SDK [Account](https://app.videosdk.live/)
 - For Android
-  - Java Development Kit (JDK) 8 or later
+  - Java Development Kit (JDK) 17 or later
   - Android Studio (latest version recommended)
-  - A physical or virtual mobile device running Android 5.0 or later
+  - A physical or virtual mobile device running Android 7.0 (API 24) or later, arm64
 - For iOS
-  - Xcode 10 or later
+  - Xcode 16 or later
   - CocoaPods
-  - A physical or virtual mobile device running iOS 12.0 or later
+  - A physical or virtual mobile device running iOS 18.0 or later
 
 ## 📦 Running the Sample App
 

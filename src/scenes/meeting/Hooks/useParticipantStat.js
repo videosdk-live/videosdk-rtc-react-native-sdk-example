@@ -41,8 +41,10 @@ function useParticipantStat({ participantId }) {
     }
 
     if (webcamStream || micStream || isPresenting) {
-      videoStats = isPresenting ? await getShareStats() : await getVideoStats();
-      audioStats = isPresenting ? [] : await getAudioStats();
+      // iOS resolves null when there is nothing to report, Android an empty array
+      videoStats =
+        (isPresenting ? await getShareStats() : await getVideoStats()) ?? [];
+      audioStats = isPresenting ? [] : (await getAudioStats()) ?? [];
     }
 
     let score = stats
