@@ -1270,7 +1270,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context (5.10.1):
+  - react-native-safe-area-context (5.11.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1283,8 +1283,8 @@ PODS:
     - React-graphics
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.10.1)
-    - react-native-safe-area-context/fabric (= 5.10.1)
+    - react-native-safe-area-context/common (= 5.11.1)
+    - react-native-safe-area-context/fabric (= 5.11.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1294,7 +1294,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context/common (5.10.1):
+  - react-native-safe-area-context/common (5.11.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1316,7 +1316,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - react-native-safe-area-context/fabric (5.10.1):
+  - react-native-safe-area-context/fabric (5.11.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1720,7 +1720,7 @@ PODS:
     - React-utils (= 0.87.1)
     - ReactNativeDependencies
   - ReactNativeDependencies (0.87.1)
-  - RNGestureHandler (3.3.0):
+  - RNGestureHandler (3.5.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1742,31 +1742,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNScreens (4.30.0):
-    - hermes-engine
-    - RCTRequired
-    - RCTTypeSafety
-    - React-bridging
-    - React-Core
-    - React-Core-prebuilt
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-RCTImage
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/core
-    - ReactNativeDependencies
-    - RNScreens/common (= 4.30.0)
-    - Yoga
-  - RNScreens/common (4.30.0):
+  - RNScreens (4.30.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1788,8 +1764,32 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
+    - RNScreens/common (= 4.30.1)
     - Yoga
-  - RNSVG (15.15.5):
+  - RNScreens/common (4.30.1):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-bridging
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-RCTImage
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+  - RNSVG (15.16.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1810,9 +1810,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNSVG/common (= 15.15.5)
+    - RNSVG/common (= 15.16.1)
     - Yoga
-  - RNSVG/common (15.15.5):
+  - RNSVG/common (15.16.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1837,10 +1837,10 @@ PODS:
   - SocketRocket (0.7.1):
     - ReactNativeDependencies
   - Toast (4.1.1)
-  - VideoSDKReactNative (2.0.0):
+  - VideoSDKReactNative (2.0.3):
     - React-Core
     - VideoSDKRTC
-  - VideoSDKRTC (4.0.0)
+  - VideoSDKRTC (4.0.3)
   - Yoga (0.0.0):
     - React-Core-prebuilt
 
@@ -2184,7 +2184,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 295203fc648a43acf7fba609ddf573aa9fca849f
   React-microtasksnativemodule: 269f81deee27a2a9bedb6b2d1088c1ae93de9bd3
   React-mutationobservernativemodule: 877e9f730e0d8175c2e952901b55c170fc3d372f
-  react-native-safe-area-context: f2bf5d3db254014a48910436c4a58ab0c4e2fe1f
+  react-native-safe-area-context: dbee8606869d976bb8d23ed26e50df198cb5688d
   react-native-simple-toast: 6f292db7446ab22ca93f09082106127ce170b6e0
   React-NativeModulesApple: adb1dd8361dff80e9f6652fb3fdbf033cfbe2a89
   React-networking: c00b437c4408f0640ba0d4158357133488521eca
@@ -2222,13 +2222,13 @@ SPEC CHECKSUMS:
   ReactCodegen: 13d2ebfe2d8f1200052509b4fc4abf7a6825a7fc
   ReactCommon: 749169e12aa3461a3df3656a00e48dbe0456b2d6
   ReactNativeDependencies: 94c922c39e0e6150ee9ad05e2ca1946e0ef55783
-  RNGestureHandler: f1976ee206660832241a6802c866bc4b019be94d
-  RNScreens: ec5411f1f70271d6ebf5c27da2053ddcfff8f470
-  RNSVG: 6c9bcbf53822153be6f6c1484f6b0b57c0040d21
+  RNGestureHandler: 326ddc0d8d6b157d70e1f0fb357ce43ac573d5a5
+  RNScreens: fd649b2059b4c136530f10e8001464b69cb634f4
+  RNSVG: b63b54506f92434f6c62b34b17458e521fa47ea9
   SocketRocket: 37aec555668fb852ec12e3c0de59a86ca58f0871
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
-  VideoSDKReactNative: c454687ba1845afd6c2b14f1f3f95d3d31bcead7
-  VideoSDKRTC: 7f5c4a94f64fe8c60fe4b07da9a2c87c34904422
+  VideoSDKReactNative: b6dc54f6a2433b69f08d654ce8735cc8e12c7e78
+  VideoSDKRTC: 183808436d2d2f871812e3df3c2ca1f48f798390
   Yoga: d1c536142c5ff8ec8cd856ab2a7c227a1d875c8e
 
 PODFILE CHECKSUM: 84ba0953df0961416de924de292863f5f056ac4a
