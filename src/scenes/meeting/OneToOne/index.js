@@ -66,7 +66,7 @@ export default function OneToOneMeetingViewer() {
     recordingState,
     enableScreenShare,
     disableScreenShare,
-    setAudioDevice,
+    changeMic,
   } = useRoom({
     onError: (data) => {
       const { code, message } = data;
@@ -289,7 +289,7 @@ export default function OneToOneMeetingViewer() {
                 onPress={async () => {
                   audioDeviceMenuRef.current.close();
                   try {
-                    await setAudioDevice(device);
+                    await changeMic(device?.deviceId);
                   } catch (err) {
                     console.error("Failed to switch audio device:", err);
                   }

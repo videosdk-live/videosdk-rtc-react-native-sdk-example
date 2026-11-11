@@ -73,7 +73,7 @@ export default function ConferenceMeetingViewer() {
     recordingState,
     enableScreenShare,
     disableScreenShare,
-    setAudioDevice,
+    changeMic,
     activeSpeakerId,
   } = useRoom({
     onError: (data) => {
@@ -335,7 +335,7 @@ export default function ConferenceMeetingViewer() {
                 onPress={async () => {
                   audioDeviceMenuRef.current.close();
                   try {
-                    await setAudioDevice(device);
+                    await changeMic(device?.deviceId);
                   } catch (err) {
                     console.error("Failed to switch audio device:", err);
                   }
